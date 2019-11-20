@@ -224,18 +224,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Resource Include="Images\CustomWindow\Close.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\CustomWindow\Maximize.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\CustomWindow\Minimize.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\CustomWindow\Restore.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Close.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
