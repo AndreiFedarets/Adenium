@@ -79,8 +79,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="IActivator.cs" />
+    <Compile Include="Layouting\DefaultLayoutProvider.cs" />
     <Compile Include="Layouting\IAttachmentViewModel.cs" />
     <Compile Include="Layouting\_Internal\IHaveScope.cs" />
     <Compile Include="Layouting\_Internal\IHaveLayout.cs" />

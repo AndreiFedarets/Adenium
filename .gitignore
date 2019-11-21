@@ -1,5 +1,13 @@
 /build
 /packages
 /source/.vs
-/source/Adenuim/obj
-/source/Adenuim/bin
+/source/Adenium/obj
+/source/Adenium/bin
+/source/Adenium.Sample/obj
+/source/Adenium.Sample/bin
+/source/Adenium.Sample.ModuleA/bin
+/source/Adenium.Sample.ModuleA/obj
+/source/Adenium.Sample.ModuleB/bin
+/source/Adenium.Sample.ModuleB/obj
+/source/Adenium.Sample.ModuleC/bin
+/source/Adenium.Sample.ModuleC/obj

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Layout>
+  <ViewModel Type="Adenium.Sample.ViewModels.AViewModel, Adenium.Sample" Mode="Single" Activation="OnStartup" Order="10" />
+  <ViewModel Type="Adenium.Sample.ViewModels.BViewModel, Adenium.Sample" Mode="Single" Activation="OnStartup" Order="20" />
+  <ViewModel Type="Adenium.Sample.ViewModels.CViewModel, Adenium.Sample" Mode="Single" Activation="OnStartup" Order="30" />
+</Layout>
