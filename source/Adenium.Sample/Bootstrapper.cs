@@ -8,7 +8,7 @@ namespace Adenium.Sample
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
             base.OnStartup(sender, e);
-            DisplayRootViewFor<MainViewModel>();
+            DisplayRootViewFor<SampleTabViewModel>();
         }
     }
 }

@@ -6,11 +6,6 @@ namespace Adenium
 {
     public sealed class CustomWindowManager : WindowManager
     {
-        public CustomWindowManager()
-        {
-            
-        }
-
         protected override Window EnsureWindow(object model, object view, bool isDialog)
         {
             Window window = view as Window;

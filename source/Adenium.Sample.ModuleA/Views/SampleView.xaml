@@ -1,0 +1,8 @@
+﻿<v:View x:Class="Adenium.Sample.ModuleA.Views.SampleView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:v="clr-namespace:Adenium.Views;assembly=Adenium">
+    <Grid>
+        
+    </Grid>
+</v:View>

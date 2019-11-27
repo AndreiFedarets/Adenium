@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace Adenium
+namespace Adenium.Themes
 {
     public static class FontsAndColors
     {

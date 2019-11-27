@@ -1,10 +1,12 @@
-﻿using System.Windows.Input;
+﻿using Adenium.ViewModels;
+using System.Windows.Input;
 
 namespace Adenium.Sample.ViewModels
 {
     public class MainViewModel : ViewModel
     {
         private readonly IViewModelManager _viewModelManager;
+
         public MainViewModel(IViewModelManager viewModelManager)
         {
             _viewModelManager = viewModelManager;

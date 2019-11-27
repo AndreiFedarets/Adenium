@@ -73,89 +73,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="_Views\_Internal\ErrorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Container.cs" />
-    <Compile Include="IActivator.cs" />
-    <Compile Include="Layouting\DefaultLayoutProvider.cs" />
-    <Compile Include="Layouting\IAttachmentViewModel.cs" />
-    <Compile Include="Layouting\_Internal\IHaveScope.cs" />
-    <Compile Include="Layouting\_Internal\IHaveLayout.cs" />
-    <Compile Include="Layouting\ILayoutProvider.cs" />
-    <Compile Include="Layouting\LayoutFileReader.cs" />
-    <Compile Include="Layouting\_Internal\CompositeMenuControlHandler.cs" />
-    <Compile Include="Layouting\_Internal\ILayoutReader.cs" />
-    <Compile Include="Layouting\_Internal\JsonLayoutReader.cs" />
-    <Compile Include="Layouting\_Internal\MenuControlHandlerDefault.cs" />
-    <Compile Include="Layouting\_Internal\SmartLayoutReader.cs" />
-    <Compile Include="Layouting\_Internal\_Menu\MenuControlHandlerLazy.cs" />
-    <Compile Include="Layouting\_Internal\_ViewModel\IViewModelFactory.cs" />
-    <Compile Include="Layouting\_Internal\_ViewModel\MultiViewModelFactory.cs" />
-    <Compile Include="Layouting\_Internal\_ViewModel\SingleViewModelFactory.cs" />
-    <Compile Include="Layouting\_Internal\_ViewModel\ViewModelFactoryBase.cs" />
-    <Compile Include="Layouting\_Menu\MenuControlHandlerBase.cs" />
-    <Compile Include="Layouting\_Menu\IMenuControlHandler.cs" />
-    <Compile Include="_Extensions\_Internal\AssemblyExtensions.cs" />
-    <Compile Include="_Extensions\_Internal\EventExtensions.cs" />
-    <Compile Include="_Extensions\_Internal\XmlReaderExtension.cs" />
-    <Compile Include="Layouting\_Internal\_ViewModel\ViewModelLayout.cs" />
-    <Compile Include="IContainer.cs" />
-    <Compile Include="IDispatcher.cs" />
-    <Compile Include="PropertyChangedBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Themes\FontsAndColors.cs" />
-    <Compile Include="_Commands\ControlClickCommandBehavior.cs" />
-    <Compile Include="_Commands\ControlDoubleClickCommandBehavior.cs" />
-    <Compile Include="_Commands\ControlEventCommandBehavior.cs" />
-    <Compile Include="_Commands\Event.cs" />
-    <Compile Include="_Commands\ExtendedCommandBase.cs" />
-    <Compile Include="_Commands\IExtendedCommand.cs" />
-    <Compile Include="_Commands\SyncCommandBase.cs" />
-    <Compile Include="_Commands\SyncNonParameterizedCommand.cs" />
-    <Compile Include="_Commands\SyncParameterizedCommand.cs" />
-    <Compile Include="_Contracts\ContractBase.cs" />
-    <Compile Include="_Contracts\ContractCollection.cs" />
-    <Compile Include="_Contracts\ContractProxyObjectChangedEventArgs.cs" />
-    <Compile Include="_Contracts\_Dialog\DialogContract.cs" />
-    <Compile Include="_Contracts\_Dialog\IDialogContractConsumer.cs" />
-    <Compile Include="_Contracts\_Dialog\IDialogContractSource.cs" />
-    <Compile Include="_Contracts\EnableContractAttribute.cs" />
-    <Compile Include="_Contracts\IContract.cs" />
-    <Compile Include="_Contracts\IContractConsumer.cs" />
-    <Compile Include="_Contracts\IContractSource.cs" />
-    <Compile Include="Controls\_Generic\BindingRouter.cs" />
+    <Compile Include="Controls\_Specialized\ViewItem.cs" />
+    <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
+    <Compile Include="Controls\_Specialized\ViewItemsControl.cs" />
+    <Compile Include="Controls\_Specialized\ViewModelToViewItemConverter.cs" />
+    <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
+    <Compile Include="CustomWindowManager.cs" />
+    <Compile Include="DependencyContainer.cs" />
     <Compile Include="Controls\_Generic\BlurlessImage.cs" />
     <Compile Include="Controls\_Generic\ColorImage.cs" />
     <Compile Include="Controls\_Generic\ImageButton.cs" />
-    <Compile Include="_Converters\ResizeBorderThicknessToCaptionMarginConverter.cs" />
     <Compile Include="Controls\_Generic\TileButton.cs" />
-    <Compile Include="Controls\_Menu\ContextMenu.cs" />
-    <Compile Include="Controls\_Menu\Menu.cs" />
-    <Compile Include="Controls\_Menu\MenuControlConverter.cs" />
-    <Compile Include="Controls\_Menu\MenuItem.cs" />
-    <Compile Include="_Converters\BitmapToBitmapSourceConverter.cs" />
-    <Compile Include="_Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="_Converters\IconToBitmapSourceConverter.cs" />
-    <Compile Include="_Converters\InvertBoolConverter.cs" />
-    <Compile Include="_Converters\InvertBoolToVisibilityConverter.cs" />
-    <Compile Include="_Converters\PercentsToColorConverter.cs" />
-    <Compile Include="_Converters\UriToBitmapSourceConverter.cs" />
-    <Compile Include="_Extensions\_Internal\NumberExtensions.cs" />
-    <Compile Include="Layouting\_Internal\_Menu\MenuControl.cs" />
-    <Compile Include="Layouting\_Internal\_Menu\MenuControlCollection.cs" />
-    <Compile Include="Layouting\_Menu\IMenuControl.cs" />
-    <Compile Include="Layouting\_Menu\IMenuControlCollection.cs" />
-    <Compile Include="Layouting\_Menu\IMenu.cs" />
-    <Compile Include="Layouting\_Menu\IMenuCollection.cs" />
-    <Compile Include="Layouting\_Internal\_Menu\Menu.cs" />
-    <Compile Include="Layouting\_Internal\_Menu\MenuItem.cs" />
-    <Compile Include="Layouting\_Internal\_Menu\MenuCollection.cs" />
+    <Compile Include="Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="IBootstrapperEnvironment.cs" />
+    <Compile Include="IDependencyContainer.cs" />
+    <Compile Include="Layouts\Attachment.cs" />
+    <Compile Include="Layouts\ILayoutManager.cs" />
+    <Compile Include="Layouts\InstanceMode.cs" />
+    <Compile Include="Layouts\LayoutItem.cs" />
+    <Compile Include="Layouts\ActivationMode.cs" />
+    <Compile Include="Layouts\DisplayMode.cs" />
+    <Compile Include="Layouts\_Internal\ILayoutReader.cs" />
+    <Compile Include="Layouts\_Internal\JsonLayoutReader.cs" />
+    <Compile Include="Layouts\_Internal\LayoutManager.cs" />
+    <Compile Include="Layouts\_Internal\SmartLayoutReader.cs" />
+    <Compile Include="Layouts\_Internal\XmlLayoutReader.cs" />
+    <Compile Include="Themes\FontsAndColors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -169,49 +115,29 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Layouting\_Internal\XmlLayoutReader.cs" />
-    <Compile Include="Layouting\_Internal\_ViewModel\ViewModelActivation.cs" />
-    <Compile Include="Layouting\_Internal\_ViewModel\ViewModelMode.cs" />
-    <Compile Include="Layouting\_Internal\_ViewModel\ViewModelAttachment.cs" />
-    <Compile Include="_ViewModels\GridViewModel.cs" />
-    <Compile Include="_ViewModels\IContainerViewModel.cs" />
-    <Compile Include="_ViewModels\IViewModel.cs" />
-    <Compile Include="_ViewModels\IViewModelManager.cs" />
-    <Compile Include="_ViewModels\PlaceholderContent.cs" />
-    <Compile Include="_ViewModels\ViewModelAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="_ViewModels\ViewModelManager.cs" />
-    <Compile Include="_ViewModels\TabItemViewModel.cs" />
-    <Compile Include="_ViewModels\TabViewModel.cs" />
-    <Compile Include="_ViewModels\ViewModel.cs" />
-    <Compile Include="_ViewModels\ViewModelContext.cs" />
-    <Compile Include="_ViewModels\ViewModelEventArgs.cs" />
-    <Compile Include="_Views\ContentViewBehaviorExtension.cs" />
-    <Compile Include="_Views\GridViewBehaviorExtension.cs" />
-    <Compile Include="_Views\IViewBehaviorExtension.cs" />
-    <Compile Include="_Views\Position.cs" />
-    <Compile Include="_Views\TabItemView.cs" />
-    <Compile Include="_Views\TabViewBehaviorExtension.cs" />
-    <Compile Include="_Views\View.cs" />
-    <Compile Include="_Extensions\BitmapExtensions.cs" />
-    <Compile Include="_Extensions\DelayedNotification.cs" />
-    <Compile Include="_Extensions\DependencyObjectExtensions.cs" />
-    <Compile Include="_Extensions\DispatcherExtensions.cs" />
-    <Compile Include="_Extensions\FrameworkElementExtensions.cs" />
-    <Compile Include="_Extensions\GridViewComposition.cs" />
-    <Compile Include="_Extensions\GridViewSorting.cs" />
-    <Compile Include="_Extensions\TreeViewExtensions.cs" />
-    <Compile Include="_Extensions\TreeViewSelectedItemBehaviour.cs" />
-    <Compile Include="CustomWindowManager.cs" />
-    <Compile Include="_Views\ViewsManager.cs" />
-    <Compile Include="SmartDispatcher.cs" />
-    <Compile Include="_Views\_Internal\ErrorView.xaml.cs">
-      <DependentUpon>ErrorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="_Views\_Internal\GridViewBuilder.cs" />
-    <Compile Include="_Views\_Internal\GridViewItem.cs" />
-    <Compile Include="_Views\_Internal\TabViewControlDataContext.cs" />
+    <Compile Include="Contracts\ContractBase.cs" />
+    <Compile Include="Contracts\ContractCollection.cs" />
+    <Compile Include="Contracts\EnableContractAttribute.cs" />
+    <Compile Include="Contracts\IContract.cs" />
+    <Compile Include="Contracts\IContractConsumer.cs" />
+    <Compile Include="Contracts\IContractSource.cs" />
+    <Compile Include="Layouts\Layout.cs" />
+    <Compile Include="ViewModels\ItemsViewModel.cs" />
+    <Compile Include="ViewModels\IItemsViewModel.cs" />
+    <Compile Include="ViewModels\IViewModel.cs" />
+    <Compile Include="ViewModels\IViewModelManager.cs" />
+    <Compile Include="ViewModels\LayoutedItemsViewModel.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelAttribute.cs" />
+    <Compile Include="ViewModels\ViewModelEventArgs.cs" />
+    <Compile Include="ViewModels\_Internal\ApplicationViewModel.cs" />
+    <Compile Include="ViewModels\_Internal\ViewModelItem.cs" />
+    <Compile Include="ViewModels\_Internal\ViewModelItemCollection.cs" />
+    <Compile Include="ViewModels\_Internal\ViewModelManager.cs" />
+    <Compile Include="Views\View.cs" />
+    <Compile Include="Extensions\XmlReaderExtension.cs" />
+    <Compile Include="Views\_Internal\ViewManager.cs" />
+    <Compile Include="_Internal\BootstrapperEnvironment.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -224,9 +150,8 @@
     <AppDesigner Include="Properties\" />
     <None Include="Properties\StrongName.snk" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Images\Close.png" />
+    <Folder Include="Extensions\_Internal\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

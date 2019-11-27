@@ -1,4 +1,4 @@
-﻿using Adenium.Layouting;
+﻿using Adenium.Layouts;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -8,35 +8,25 @@ namespace Adenium
 {
     public abstract class Bootstrapper : BootstrapperBase
     {
-        protected readonly IContainer Container;
+        protected readonly IDependencyContainer Container;
 
         public Bootstrapper()
         {
-            Container = new Container();
+            Container = new DependencyContainer();
             Initialize();
         }
+
+        internal static ILayoutManager LayoutManager { get; private set; }
 
         protected sealed override void Configure()
         {
             base.Configure();
             ConfigureContainer();
-            IViewModelManager viewModelManager = Container.Resolve<IViewModelManager>();
-            IEnumerable<ILayoutProvider> layoutProviders = CreateLayoutProviders();
-            foreach (ILayoutProvider layoutProvider in layoutProviders)
-            {
-                viewModelManager.RegisterLayoutProvider(layoutProvider);
-            }
         }
 
         protected virtual void ConfigureContainer()
         {
             Container.RegisterType<IWindowManager, CustomWindowManager>(true);
-            Container.RegisterType<IViewModelManager, ViewModelManager>(true);
-        }
-
-        protected virtual IEnumerable<ILayoutProvider> CreateLayoutProviders()
-        {
-            yield return Container.Resolve<DefaultLayoutProvider>();
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)

@@ -1,6 +1,8 @@
-﻿namespace Adenium.Sample.ViewModels
+﻿using Adenium.ViewModels;
+
+namespace Adenium.Sample.ViewModels
 {
-    public sealed class SampleGridViewModel : GridViewModel
+    public sealed class SampleGridViewModel : ItemsViewModel
     {
         public SampleGridViewModel()
         {

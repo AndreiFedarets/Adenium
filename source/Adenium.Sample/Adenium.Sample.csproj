@@ -59,47 +59,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\CViewModel.cs" />
-    <Compile Include="ViewModels\BViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SampleTabViewModel.cs" />
     <Compile Include="ViewModels\SampleGridViewModel.cs" />
-    <Compile Include="ViewModels\AViewModel.cs" />
-    <Compile Include="Views\BView.xaml.cs">
-      <DependentUpon>BView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CView.xaml.cs">
-      <DependentUpon>CView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AView.xaml.cs">
-      <DependentUpon>AView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SampleTabView.xaml.cs">
       <DependentUpon>SampleTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SampleGridView.xaml.cs">
       <DependentUpon>SampleGridView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
-    <Page Include="Views\BView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\AView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\SampleTabView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -107,10 +79,6 @@
     <Page Include="Views\SampleGridView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MainView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +104,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Sample.layout" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Layouts\Adenium.Sample.ViewModels.SampleGridViewModel.layout">

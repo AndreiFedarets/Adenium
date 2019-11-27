@@ -1,7 +1,7 @@
-﻿<a:View x:Class="Adenium.Sample.Views.MainView"
+﻿<v:View x:Class="Adenium.Sample.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:a="clr-namespace:Adenium;assembly=Adenium"
+        xmlns:v="clr-namespace:Adenium.Views;assembly=Adenium"
         Height="500" Width="500">
     <Grid>
         <Grid.RowDefinitions>
@@ -11,4 +11,4 @@
         <Button Grid.Row="0" Content="Open Grid" Command="{Binding OpenGridViewCommand}" />
         <Button Grid.Row="1" Content="Open Tab" Command="{Binding OpenTabViewCommand}" />
     </Grid>
-</a:View>
+</v:View>

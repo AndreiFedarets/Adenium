@@ -1,6 +1,8 @@
-﻿namespace Adenium.Sample.ViewModels
+﻿using Adenium.ViewModels;
+
+namespace Adenium.Sample.ViewModels
 {
-    public sealed class SampleTabViewModel : TabViewModel
+    public sealed class SampleTabViewModel : ItemsViewModel
     {
         public SampleTabViewModel()
         {
