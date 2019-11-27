@@ -29,7 +29,7 @@ namespace Adenium.Views
             if (itemsViewModel != null)
             {
                 ContentControl contentControl = ViewManager.FindViewContent(this);
-                switch (itemsViewModel.Layout.DisplayMode)
+                switch (itemsViewModel.DisplayMode)
                 {
                     case Layouts.DisplayMode.Tab:
                         contentControl.Content = new ViewTabControl() { ViewModel = itemsViewModel };
@@ -38,7 +38,7 @@ namespace Adenium.Views
                         contentControl.Content = new ViewGridControl() { ViewModel = itemsViewModel };
                         break;
                     default:
-                        throw new NotSupportedException($"DisplayMode.'{itemsViewModel.Layout.DisplayMode}' value is not supported");
+                        throw new NotSupportedException($"DisplayMode.'{itemsViewModel.DisplayMode}' value is not supported");
                 }
             }
         }

@@ -4,7 +4,6 @@ namespace Adenium.ViewModels
 {
     public interface IViewModelManager
     {
-        //void RegisterLayoutProvider(ILayoutProvider layoutProvider);
 
         //void ShowWindow(IViewModel viewModel);
 

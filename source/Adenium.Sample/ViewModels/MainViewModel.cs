@@ -1,9 +1,9 @@
-﻿using Adenium.ViewModels;
-using System.Windows.Input;
+﻿using System;
+using Adenium.ViewModels;
 
 namespace Adenium.Sample.ViewModels
 {
-    public class MainViewModel : ViewModel
+    public class MainViewModel : LayoutedItemsViewModel
     {
         private readonly IViewModelManager _viewModelManager;
 
@@ -11,22 +11,16 @@ namespace Adenium.Sample.ViewModels
         {
             _viewModelManager = viewModelManager;
             DisplayName = "Main View";
-            OpenGridViewCommand = new SyncCommand(OpenGridView);
-            OpenTabViewCommand = new SyncCommand(OpenTabView);
+        }
+        
+        public void OpenGridView()
+        {
+            ActivateItem("Adenium.Sample.Grid");
         }
 
-        public ICommand OpenGridViewCommand { get; private set; }
-
-        public ICommand OpenTabViewCommand { get; private set; }
-
-        private void OpenGridView()
+        public void OpenTabView()
         {
-            _viewModelManager.ShowDialog<SampleGridViewModel>();
-        }
-
-        private void OpenTabView()
-        {
-            _viewModelManager.ShowDialog<SampleTabViewModel>();
+            ActivateItem("Adenium.Sample.Tab");
         }
     }
 }

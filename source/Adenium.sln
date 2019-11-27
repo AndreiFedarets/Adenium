@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29418.71
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adenium.Sample", "Adenium.Sample\Adenium.Sample.csproj", "{70DC53A7-90BE-4C62-98CA-60C88C57135E}"
 EndProject
@@ -28,6 +28,7 @@ Global
 		{8ABFD019-E257-4896-A31C-CF180936D329}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8ABFD019-E257-4896-A31C-CF180936D329}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C05CA1DD-92FC-458F-87E5-EDC4DEDCE6DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C05CA1DD-92FC-458F-87E5-EDC4DEDCE6DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C05CA1DD-92FC-458F-87E5-EDC4DEDCE6DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C05CA1DD-92FC-458F-87E5-EDC4DEDCE6DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB337A97-2A48-4419-886D-5242646AD62F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

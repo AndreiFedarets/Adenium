@@ -13,7 +13,7 @@ namespace Adenium.Controls
 
         static ViewTabControl()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof (ViewItemsControl), new FrameworkPropertyMetadata(typeof (ViewItemsControl)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (ViewTabControl), new FrameworkPropertyMetadata(typeof (ViewTabControl)));
             ViewItemConverterProperty = DependencyProperty.Register("ViewItemConverter", typeof(IValueConverter), typeof(ViewTabControl), new PropertyMetadata(null));
         }
 

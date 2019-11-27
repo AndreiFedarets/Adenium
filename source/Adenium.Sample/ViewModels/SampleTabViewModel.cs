@@ -2,6 +2,7 @@
 
 namespace Adenium.Sample.ViewModels
 {
+    [ViewModel("Adenium.Sample.Tab")]
     public sealed class SampleTabViewModel : ItemsViewModel
     {
         public SampleTabViewModel()

@@ -32,8 +32,8 @@ namespace Adenium.Layouts
         {
             //TODO: handle LayoutItems duplication
             List<LayoutItem> layoutItems = new List<LayoutItem>();
-            layoutItems.AddRange(layout.Items);
-            layoutItems.AddRange(attachments.SelectMany(x => x.Items));
+            layoutItems.AddRange(layout);
+            layoutItems.AddRange(attachments.SelectMany(x => x));
             layoutItems.Sort((x, y) => x.Order - y.Order);
             return new Layout(layout.DisplayMode, layoutItems);
         }

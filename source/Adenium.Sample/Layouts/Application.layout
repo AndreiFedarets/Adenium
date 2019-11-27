@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Layout DisplayMode="Window">
+  <ViewModel Type="Adenium.Sample.ViewModels.MainViewModel, Adenium.Sample" Mode="Single" Activation="OnStartup" Order="10" />
+</Layout>

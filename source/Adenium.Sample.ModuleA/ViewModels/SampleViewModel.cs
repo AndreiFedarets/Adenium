@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Adenium.ViewModels;
 
 namespace Adenium.Sample.ModuleA.ViewModels
 {
-    [ViewModel("Adenium.Sample.ModuleA.SampleViewModel")]
+    [ViewModel("Adenium.Sample.ModuleA.Sample")]
     public sealed class SampleViewModel : ViewModel
     {
     }

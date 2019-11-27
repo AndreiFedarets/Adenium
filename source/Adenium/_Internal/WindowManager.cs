@@ -1,10 +1,9 @@
-﻿using Caliburn.Micro;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Adenium
 {
-    public sealed class CustomWindowManager : WindowManager
+    internal sealed class WindowManager : Caliburn.Micro.WindowManager
     {
         protected override Window EnsureWindow(object model, object view, bool isDialog)
         {

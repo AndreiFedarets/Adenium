@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SampleTabViewModel.cs" />
     <Compile Include="ViewModels\SampleGridViewModel.cs" />
     <Compile Include="Views\SampleTabView.xaml.cs">
@@ -99,15 +100,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Layouts\Application.layout">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Sample.layout" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Layouts\Adenium.Sample.ViewModels.SampleGridViewModel.layout">
+    <None Include="Layouts\Adenium.Sample.Tab.layout">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

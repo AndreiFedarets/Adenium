@@ -81,7 +81,7 @@
     <Compile Include="Controls\_Specialized\ViewItemsControl.cs" />
     <Compile Include="Controls\_Specialized\ViewModelToViewItemConverter.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
-    <Compile Include="CustomWindowManager.cs" />
+    <Compile Include="_Internal\WindowManager.cs" />
     <Compile Include="DependencyContainer.cs" />
     <Compile Include="Controls\_Generic\BlurlessImage.cs" />
     <Compile Include="Controls\_Generic\ColorImage.cs" />

@@ -12,6 +12,11 @@ namespace Adenium.ViewModels
         {
         }
 
+        public ViewModelItem FindByName(string viewModelName)
+        {
+            throw new NotImplementedException();
+        }
+
         private static List<ViewModelItem> BuildViewModelItems(IEnumerable<LayoutItem> layoutItems, IDependencyContainer container)
         {
             List<ViewModelItem> viewModelItems = new List<ViewModelItem>();

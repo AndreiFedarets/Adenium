@@ -6,17 +6,17 @@ namespace Adenium.ViewModels
     {
         public static string GetViewModelFullName(IViewModel viewModel)
         {
-            string codeName;
+            string fullName;
             ViewModelAttribute attribute = ViewModelAttribute.GetAttribute(viewModel);
             if (attribute != null)
             {
-                codeName = attribute.CodeName;
+                fullName = attribute.CodeName;
             }
             else
             {
-                codeName = viewModel.GetType().FullName;
+                fullName = viewModel.GetType().FullName;
             }
-            return codeName.ToLowerInvariant();
+            return fullName.ToLowerInvariant();
         }
 
         //public static IItemsViewModel GetViewModelParent(IViewModel viewModel)

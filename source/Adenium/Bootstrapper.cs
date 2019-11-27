@@ -26,7 +26,7 @@ namespace Adenium
 
         protected virtual void ConfigureContainer()
         {
-            Container.RegisterType<IWindowManager, CustomWindowManager>(true);
+            Container.RegisterType<IWindowManager, WindowManager>(true);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
