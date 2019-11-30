@@ -16,7 +16,15 @@ namespace Adenium.Layouts
 
         public Type Type
         {
-            get { return Type.GetType(TypeFullName); }
+            get
+            {
+                Type type = Type.GetType(TypeFullName);
+                if (type == null)
+                {
+                    throw new Exception($"The system cannot find type '{TypeFullName}'");
+                }
+                return type;
+            }
         }
 
         public int Order { get; private set; }

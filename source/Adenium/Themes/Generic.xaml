@@ -3,7 +3,9 @@
                     xmlns:caliburn="http://www.caliburnproject.org"
                     xmlns:controls="clr-namespace:Adenium.Controls"
                     xmlns:views="clr-namespace:Adenium.Views"
-                    xmlns:themes="clr-namespace:Adenium.Themes">
+                    xmlns:themes="clr-namespace:Adenium.Themes"
+                    xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase">
 
     <Style x:Key="BaseStyle" TargetType="{x:Type FrameworkElement}">
         <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
@@ -11,8 +13,8 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="TextBlock.FontFamily" Value="{x:Static themes:FontsAndColors.FontFamily}" />
         <Setter Property="TextBlock.FontSize" Value="{x:Static themes:FontsAndColors.ContentFontSize}" />
-        <Setter Property="Margin" Value="2" />
-        <Setter Property="Control.Padding" Value="3" />
+        <Setter Property="Margin" Value="3" />
+        <!--<Setter Property="Control.Padding" Value="3" />-->
         <Setter Property="Focusable" Value="False" />
     </Style>
 
@@ -24,10 +26,9 @@
         <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style>
 
-
     <!-- TextBlock ============================================================================================================== -->
     <Style x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Padding" Value="1" />
     </Style>
@@ -396,6 +397,8 @@
     <Style TargetType="{x:Type controls:ImageButton}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Focusable" Value="True" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ImageButton}">
@@ -457,72 +460,6 @@
         </Setter>
     </Style>-->
 
-    <!-- views:View ======================================================================================================== -->
-    <Style TargetType="{x:Type views:View}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type views:View}">
-                    <Grid>
-                        <Border x:Name="AdornerBorder" BorderThickness="1" BorderBrush="#cccccc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Border Grid.Row="0" x:Name="PanelHeaderBorder" BorderThickness="0,0,0,1" BorderBrush="#cccccc" Background="#f8f8f8">
-                                    <TextBlock Text="{Binding DataContext.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="7,3,7,3" />
-                                </Border>
-                                <Border x:Name="ContentBorder" Grid.Row="1" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                                </Border>
-                            </Grid>
-                        </Border>
-                    </Grid>
-                    <!--<ControlTemplate.Triggers>
-                        <Trigger Property="DisplayPanel" Value="True">
-                            <Setter TargetName="PanelHeaderBorder" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="AdornerBorder" Property="BorderThickness" Value="1" />
-                            <Setter TargetName="ContentBorder" Property="Background" Value="#ffffff" />
-                        </Trigger>
-                        <Trigger Property="DisplayPanel" Value="False">
-                            <Setter TargetName="PanelHeaderBorder" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="AdornerBorder" Property="BorderThickness" Value="0" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>-->
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <!--<Style TargetType="{x:Type views:View}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type views:View}">
-                    <ContentControl x:Name="PanelContentControl">
-                        <ContentPresenter />
-                    </ContentControl>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="DisplayPanel" Value="True">
-                            <Setter TargetName="PanelContentControl" Property="Style" Value="{StaticResource PanelContentControlStyle}" />
-                        </Trigger>
-                        <Trigger Property="DisplayPanel" Value="False">
-                            <Setter TargetName="PanelContentControl" Property="Style" Value="{x:Null}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
 
     <!-- TabItemViewStyle ======================================================================================================= -->
     <!--<Style TargetType="{x:Type views:TabItemView}" BasedOn="{StaticResource BaseStyle}">
@@ -620,16 +557,131 @@
         </Setter>
     </Style>-->
 
+    <!-- views:View ======================================================================================================== -->
+    
+    
+    <!--<Style TargetType="{x:Type views:View}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type views:View}">
+                    <Grid>
+                        <Border x:Name="AdornerBorder" BorderThickness="1" BorderBrush="#cccccc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" x:Name="PanelHeaderBorder" BorderThickness="0,0,0,1" BorderBrush="#cccccc" Background="#f8f8f8">
+                                    <TextBlock Text="{Binding DataContext.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="7,3,7,3" />
+                                </Border>
+                                <Border x:Name="ContentBorder" Grid.Row="1" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="DisplayPanel" Value="True">
+                            <Setter TargetName="PanelHeaderBorder" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="AdornerBorder" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="ContentBorder" Property="Background" Value="#ffffff" />
+                        </Trigger>
+                        <Trigger Property="DisplayPanel" Value="False">
+                            <Setter TargetName="PanelHeaderBorder" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="AdornerBorder" Property="BorderThickness" Value="0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+    <!--<Style TargetType="{x:Type views:View}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type views:View}">
+                    <ContentControl x:Name="PanelContentControl">
+                        <ContentPresenter />
+                    </ContentControl>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="DisplayPanel" Value="True">
+                            <Setter TargetName="PanelContentControl" Property="Style" Value="{StaticResource PanelContentControlStyle}" />
+                        </Trigger>
+                        <Trigger Property="DisplayPanel" Value="False">
+                            <Setter TargetName="PanelContentControl" Property="Style" Value="{x:Null}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
 
 
-    <Style x:Key="{x:Type controls:ViewTabControl}" TargetType="{x:Type controls:ViewTabControl}" BasedOn="{StaticResource BaseStyle}">
+    <Style TargetType="{x:Type controls:ViewItem}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ViewItem}">
+                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type views:View}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type views:View}">
+                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--diag:PresentationTraceSources.TraceLevel=High-->
+    <Style x:Key="{x:Type controls:ViewTabControl}" TargetType="{x:Type controls:ViewTabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
+        <Setter Property="ItemsSource" Value="{Binding Items}"/>
+        <Setter Property="SelectedItem" Value="{Binding ActiveItem}" />
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding DisplayName, Mode=OneWay}" />
+                        <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="DeactivateItem($dataContext, 'true')" caliburn:Bind.ModelWithoutContext="{Binding Parent}" />
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <controls:ViewItem ViewModel="{Binding}" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--<Style x:Key="{x:Type controls:ViewTabControl}" TargetType="{x:Type controls:ViewTabControl}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ViewTabControl}">
-                    <TabControl ItemsSource="{TemplateBinding Items}" SelectedItem="{Binding Path=ViewModel.ActiveItem, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, Converter={Binding ViewItemConverter, RelativeSource={RelativeSource TemplatedParent}}}" >
+                    <TabControl ItemsSource="{TemplateBinding Items}" SelectedItem="{TemplateBinding ActiveItem}" >
                         <TabControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid DataContext="{Binding}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto" />
@@ -642,7 +694,8 @@
                     </TabControl>
                 </ControlTemplate>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
+        
         <!--<Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -650,7 +703,6 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>-->
-    </Style>
 
 </ResourceDictionary>
  

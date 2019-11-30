@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Adenium
@@ -10,6 +11,7 @@ namespace Adenium
         public BootstrapperEnvironment()
         {
             _probingPaths = new List<string>();
+            AddProbingPath(AppDomain.CurrentDomain.BaseDirectory);
         }
 
         public void AddProbingPath(string path)
@@ -26,38 +28,31 @@ namespace Adenium
 
         public string FindFile(string searchPattern)
         {
-            List<string> probingPaths = GetProbingPathsCopy();
-            foreach (string probingPath in probingPaths)
+            lock (_probingPaths)
             {
-                string[] files = Directory.GetFiles(probingPath, searchPattern);
-                if (files.Length > 0)
+                foreach (string probingPath in _probingPaths)
                 {
-                    return files[0];
+                    string[] files = Directory.GetFiles(probingPath, searchPattern, SearchOption.AllDirectories);
+                    if (files.Length > 0)
+                    {
+                        return files[0];
+                    }
                 }
+                return string.Empty;
             }
-            return string.Empty;
         }
 
         public IEnumerable<string> FindFiles(string searchPattern)
         {
-            List<string> probingPaths = GetProbingPathsCopy();
             List<string> files = new List<string>();
-            foreach (string probingPath in probingPaths)
+            lock (_probingPaths)
             {
-                files.AddRange(Directory.GetFiles(probingPath, searchPattern));
+                foreach (string probingPath in _probingPaths)
+                {
+                    files.AddRange(Directory.GetFiles(probingPath, searchPattern, SearchOption.AllDirectories));
+                }
             }
             return files;
         }
-
-        private List<string> GetProbingPathsCopy()
-        {
-            List<string> probingPaths;
-            lock (_probingPaths)
-            {
-                probingPaths = new List<string>(_probingPaths);
-            }
-            return probingPaths;
-        }
-
     }
 }

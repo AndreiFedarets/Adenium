@@ -4,6 +4,7 @@ namespace Adenium.ViewModels
 {
     public interface IViewModelManager
     {
+        IViewModel Activate(params string[] codeNames);
 
         //void ShowWindow(IViewModel viewModel);
 

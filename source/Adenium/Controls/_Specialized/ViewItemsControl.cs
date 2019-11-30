@@ -1,8 +1,11 @@
 ﻿using Adenium.ViewModels;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -20,8 +23,8 @@ namespace Adenium.Controls
         static ViewItemsControl()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ViewItemsControl), new FrameworkPropertyMetadata(typeof(ViewItemsControl)));
-            ViewModelProperty = DependencyProperty.Register("ViewModel", typeof(IItemsViewModel), typeof(ViewItemsControl), new FrameworkPropertyMetadata(OnViewModelPropertyChanged));
-            ActiveItemProperty = DependencyProperty.Register("ActiveItem", typeof(ViewItem), typeof(ViewTabControl), new FrameworkPropertyMetadata(OnActiveItemPropertyChanged));
+            ViewModelProperty = DependencyProperty.Register("ViewModel", typeof(ItemsViewModel), typeof(ViewItemsControl), new FrameworkPropertyMetadata(OnViewModelPropertyChanged));
+            ActiveItemProperty = DependencyProperty.Register("ActiveItem", typeof(ViewItem), typeof(ViewItemsControl), new FrameworkPropertyMetadata(OnActiveItemPropertyChanged));
             ItemsPropertyKey = DependencyProperty.RegisterReadOnly("Items", typeof(IEnumerable<ViewItem>), typeof(ViewItemsControl), new PropertyMetadata(null));
             ItemsProperty = ItemsPropertyKey.DependencyProperty;
         }
@@ -32,10 +35,16 @@ namespace Adenium.Controls
             Items = _items;
         }
 
-        public IItemsViewModel ViewModel
+        public ItemsViewModel ViewModel
         {
-            get { return (IItemsViewModel)GetValue(ViewModelProperty); }
+            get { return (ItemsViewModel)GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
+        }
+
+        public ViewItem ActiveItem
+        {
+            get { return (ViewItem)GetValue(ActiveItemProperty); }
+            set { SetValue(ActiveItemProperty, value); }
         }
 
         public IEnumerable<ViewItem> Items
@@ -50,52 +59,91 @@ namespace Adenium.Controls
             {
                 return;
             }
-            foreach (IViewModel viewModel in ViewModel)
-            {
-                ViewItem viewItem = new ViewItem() { ViewModel = viewModel };
-                _items.Add(viewItem);
-            }
+            InitializeItems();
             ViewModel.CollectionChanged += OnViewModelCollectionChanged;
+            ViewModel.ActivationProcessed += OnViewModelActivationProcessed;
         }
 
-        protected virtual void Uninitialize(IItemsViewModel oldViewModel)
+        private void InitializeItems()
         {
-            if (oldViewModel == null)
-            {
-                return;
-            }
-            oldViewModel.CollectionChanged -= OnViewModelCollectionChanged;
             _items.Clear();
+            foreach (IViewModel viewModel in ViewModel)
+            {
+                //ViewItem viewItem = new ViewItem(viewModel);
+                //_items.Add(viewItem);
+            }
+        }
+
+        protected virtual void Uninitialize(ItemsViewModel oldViewModel)
+        {
+            _items.Clear();
+            if (oldViewModel != null)
+            {
+                oldViewModel.CollectionChanged -= OnViewModelCollectionChanged;
+                oldViewModel.ActivationProcessed -= OnViewModelActivationProcessed;
+            }
+        }
+
+        private void OnViewModelActivationProcessed(object sender, ActivationProcessedEventArgs e)
+        {
+            if (e.Success)
+            {
+                ViewItem activeItem = _items.FirstOrDefault(x => ReferenceEquals(x.ViewModel, e.Item));
+                if (!ReferenceEquals(ActiveItem, activeItem))
+                {
+                    ActiveItem = activeItem;
+                }
+            }
         }
 
         private void OnViewModelCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            throw new NotImplementedException();
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
+                    int insertIndex = e.NewStartingIndex;
+                    foreach (object newItem in e.NewItems)
+                    {
+                        IViewModel viewModel = (IViewModel)newItem;
+                        //ViewItem viewItem = new ViewItem(viewModel);
+                        //_items.Insert(insertIndex, viewItem);
+                        insertIndex++;
+                    }
                     break;
                 case NotifyCollectionChangedAction.Move:
+                    throw new NotImplementedException();
                     break;
                 case NotifyCollectionChangedAction.Remove:
+                    throw new NotImplementedException();
                     break;
                 case NotifyCollectionChangedAction.Replace:
+                    throw new NotImplementedException();
                     break;
                 case NotifyCollectionChangedAction.Reset:
+                    InitializeItems();
                     break;
             }
         }
-        
+
+        private void OnActiveItemChanged()
+        {
+            IViewModel activeItem = ActiveItem?.ViewModel;
+            if (!ReferenceEquals(ViewModel.ActiveItem, activeItem))
+            {
+                ViewModel.ActiveItem = activeItem;
+            }
+        }
+
         private static void OnActiveItemPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs eventArgs)
         {
-            //ViewTabControl viewTabControl = (ViewTabControl)sender;
-           // viewTabControl.OnActiveItemChanged((ViewItem)eventArgs.NewValue, (ViewItem)eventArgs.OldValue);
+            ViewItemsControl viewItemsControl = (ViewItemsControl)sender;
+            viewItemsControl.OnActiveItemChanged();
         }
 
         private static void OnViewModelPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs eventArgs)
         {
             ViewItemsControl control = (ViewItemsControl)sender;
-            IItemsViewModel oldViewModel = eventArgs.OldValue as IItemsViewModel;
+            ItemsViewModel oldViewModel = eventArgs.OldValue as ItemsViewModel;
             control.Uninitialize(oldViewModel);
             control.Initialize();
         }

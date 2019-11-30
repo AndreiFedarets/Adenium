@@ -79,8 +79,9 @@
     <Compile Include="Controls\_Specialized\ViewItem.cs" />
     <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
     <Compile Include="Controls\_Specialized\ViewItemsControl.cs" />
-    <Compile Include="Controls\_Specialized\ViewModelToViewItemConverter.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
+    <Compile Include="ViewModels\_Internal\IRequireDependencyContainer.cs" />
+    <Compile Include="_Internal\AssemblyResolver.cs" />
     <Compile Include="_Internal\WindowManager.cs" />
     <Compile Include="DependencyContainer.cs" />
     <Compile Include="Controls\_Generic\BlurlessImage.cs" />
@@ -123,7 +124,6 @@
     <Compile Include="Contracts\IContractSource.cs" />
     <Compile Include="Layouts\Layout.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
-    <Compile Include="ViewModels\IItemsViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\IViewModelManager.cs" />
     <Compile Include="ViewModels\LayoutedItemsViewModel.cs" />
@@ -152,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\_Internal\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Close.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

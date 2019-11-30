@@ -19,11 +19,11 @@ namespace Adenium.Layouts
             _layoutReader = layoutReader;
         }
 
-        public Layout LoadLayout(IItemsViewModel itemsViewModel)
+        public Layout LoadLayout(LayoutedItemsViewModel itemsViewModel)
         {
-            string viewModelFullName = ViewModelManager.GetViewModelFullName(itemsViewModel);
-            Layout layout = LoadLayout(viewModelFullName);
-            List<Attachment> attachments = LoadAttachments(viewModelFullName);
+            string codeName = ViewModelManager.GetViewModelCodeName(itemsViewModel);
+            Layout layout = LoadLayout(codeName);
+            List<Attachment> attachments = LoadAttachments(codeName);
             layout = MergeLayout(layout, attachments);
             return layout;
         }

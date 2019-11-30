@@ -1,4 +1,6 @@
 ﻿using Adenium.Layouts;
+using Adenium.ViewModels;
+using Adenium.Views;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,11 @@ namespace Adenium
     public abstract class Bootstrapper : BootstrapperBase
     {
         protected readonly IDependencyContainer Container;
+
+        static Bootstrapper()
+        {
+            ViewManager.Initialize();
+        }
 
         public Bootstrapper()
         {
@@ -22,11 +29,30 @@ namespace Adenium
         {
             base.Configure();
             ConfigureContainer();
+            ConfigureAssemblyResolver();
+        }
+
+        protected override void OnStartup(object sender, StartupEventArgs e)
+        {
+            base.OnStartup(sender, e);
+            ApplicationViewModel applicationViewModel = Container.Resolve<ApplicationViewModel>();
+            applicationViewModel.Initialize();
         }
 
         protected virtual void ConfigureContainer()
         {
             Container.RegisterType<IWindowManager, WindowManager>(true);
+            Container.RegisterType<IViewModelManager, ViewModelManager>(true);
+            Container.RegisterType<IBootstrapperEnvironment, BootstrapperEnvironment>(true);
+            Container.RegisterType<ILayoutReader, SmartLayoutReader>(true);
+            Container.RegisterType<ILayoutManager, LayoutManager>(true);
+
+            //Container.RegisterType<IViewManager, ViewManager>(true);
+        }
+
+        protected virtual void ConfigureAssemblyResolver()
+        {
+            Container.Resolve<AssemblyResolver>().Initialize();
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)

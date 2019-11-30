@@ -4,19 +4,69 @@ namespace Adenium.ViewModels
 {
     internal class ViewModelManager : IViewModelManager
     {
-        public static string GetViewModelFullName(IViewModel viewModel)
+        private readonly ApplicationViewModel _applicationViewModel;
+
+        public ViewModelManager(ApplicationViewModel applicationViewModel)
         {
-            string fullName;
+            _applicationViewModel = applicationViewModel;
+        }
+
+        //TODO: move to extensions
+        public static string GetViewModelCodeName(IViewModel viewModel)
+        {
+            string codeName;
             ViewModelAttribute attribute = ViewModelAttribute.GetAttribute(viewModel);
             if (attribute != null)
             {
-                fullName = attribute.CodeName;
+                codeName = attribute.CodeName;
             }
             else
             {
-                fullName = viewModel.GetType().FullName;
+                codeName = viewModel.GetType().FullName;
             }
-            return fullName.ToLowerInvariant();
+            return codeName.ToLowerInvariant();
+        }
+
+        //TODO: move to extensions
+        public static bool AreCodeNameEquals(IViewModel viewModel1, IViewModel viewModel2)
+        {
+            return AreCodeNameEquals(GetViewModelCodeName(viewModel1), GetViewModelCodeName(viewModel2));
+        }
+
+        //TODO: move to extensions
+        public static bool AreCodeNameEquals(IViewModel viewModel, string codeName)
+        {
+            return AreCodeNameEquals(GetViewModelCodeName(viewModel), codeName);
+        }
+
+        //TODO: move to extensions
+        public static bool AreCodeNameEquals(string codeName1, string codeName2)
+        {
+            return string.Equals(codeName1, codeName2, StringComparison.InvariantCulture);
+        }
+
+        public IViewModel Activate(params string[] codeNames)
+        {
+            IViewModel currentViewModel = _applicationViewModel;
+            foreach (string codeName in codeNames)
+            {
+                ItemsViewModel itemsViewModel = currentViewModel as ItemsViewModel;
+                if (itemsViewModel == null)
+                {
+                    return null;
+                }
+                currentViewModel = TryActivate(itemsViewModel, codeName);
+            }
+            return currentViewModel;
+        }
+
+        private IViewModel TryActivate(ItemsViewModel itemsViewModel, string childCodeName)
+        {
+            if (itemsViewModel.ActivateItem(childCodeName))
+            {
+                return itemsViewModel.ActiveItem;
+            }
+            return null;
         }
 
         //public static IItemsViewModel GetViewModelParent(IViewModel viewModel)

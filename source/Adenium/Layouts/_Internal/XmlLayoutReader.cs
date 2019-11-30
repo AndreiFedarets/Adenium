@@ -12,10 +12,10 @@ namespace Adenium.Layouts
         private const string ItemElementName = "Item";
         private const string AttachmentElementName = "Attachment";
 
-        private const string DisplayModeAttributeName = "DisplayMode";
-        private const string ViewModelTypeAttributeName = "ViewModelType";
-        private const string ActivationModeAttributeName = "ActivationMode";
-        private const string InstanceModeAttributeName = "InstanceMode";
+        private const string DisplayModeAttributeName = "Display";
+        private const string ViewModelTypeAttributeName = "Type";
+        private const string ActivationModeAttributeName = "Activation";
+        private const string InstanceModeAttributeName = "Instance";
         private const string OrderAttributeName = "Order";
 
         public bool SupportsContentType(string layoutContent)
@@ -127,14 +127,14 @@ namespace Adenium.Layouts
 
         private LayoutItem ReadLayoutItem(XmlReader reader)
         {
-            //Move to <ViewModel> element
+            //Move to <Item> element
             MoveToElement(reader, ItemElementName);
             //Define defaults
             string viewModelTypeName = string.Empty;
             InstanceMode instanceMode = InstanceMode.Multiple;
             ActivationMode activationMode = ActivationMode.OnStartup;
             int order = 0;
-            //Read <ViewModel> attributes
+            //Read <Item> attributes
             while (reader.MoveToNextAttribute())
             {
                 switch (reader.Name)

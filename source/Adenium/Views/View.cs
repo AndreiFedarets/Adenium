@@ -25,17 +25,17 @@ namespace Adenium.Views
 
         private void RenderContent()
         {
-            IItemsViewModel itemsViewModel = ViewModel as IItemsViewModel;
+            ItemsViewModel itemsViewModel = ViewModel as ItemsViewModel;
             if (itemsViewModel != null)
             {
                 ContentControl contentControl = ViewManager.FindViewContent(this);
                 switch (itemsViewModel.DisplayMode)
                 {
                     case Layouts.DisplayMode.Tab:
-                        contentControl.Content = new ViewTabControl() { ViewModel = itemsViewModel };
+                        contentControl.Content = new ViewTabControl() { DataContext = itemsViewModel };
                         break;
                     case Layouts.DisplayMode.Grid:
-                        contentControl.Content = new ViewGridControl() { ViewModel = itemsViewModel };
+                        contentControl.Content = new ViewGridControl() { DataContext = itemsViewModel };
                         break;
                     default:
                         throw new NotSupportedException($"DisplayMode.'{itemsViewModel.DisplayMode}' value is not supported");

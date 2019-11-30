@@ -3,7 +3,7 @@
 namespace Adenium.Sample.ViewModels
 {
     [ViewModel("Adenium.Sample.Tab")]
-    public sealed class SampleTabViewModel : ItemsViewModel
+    public sealed class SampleTabViewModel : LayoutedItemsViewModel
     {
         public SampleTabViewModel()
         {

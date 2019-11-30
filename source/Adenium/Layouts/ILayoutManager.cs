@@ -4,6 +4,7 @@ namespace Adenium.Layouts
 {
     public interface ILayoutManager
     {
-        Layout LoadLayout(IItemsViewModel itemsViewModel);
+        //TODO: replace parameter with string codeName
+        Layout LoadLayout(LayoutedItemsViewModel itemsViewModel);
     }
 }

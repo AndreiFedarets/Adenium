@@ -1,5 +1,4 @@
 ﻿using Adenium.Layouts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,22 +6,29 @@ namespace Adenium.ViewModels
 {
     public abstract class LayoutedItemsViewModel : ItemsViewModel
     {
-        private IDependencyContainer _dependencyContainer;
-        private ILayoutManager _layoutManager;
         private ViewModelItemCollection _viewModelItems;
 
-        public void ActivateItem(string viewModelName)
+        public override bool ActivateItem(string childCodeName)
         {
-            ViewModelItem viewModelItem = _viewModelItems.FindByName(viewModelName);
-            IViewModel viewModel = viewModelItem.GetViewModel();
-            ActivateItemInternal(viewModel);
+            if (base.ActivateItem(childCodeName))
+            {
+                return true;
+            }
+            ViewModelItem viewModelItem = _viewModelItems.FindByName(childCodeName);
+            if (viewModelItem == null)
+            {
+                return false;
+            }
+            ActivateItem(viewModelItem);
+            return true;
         }
 
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            Layout layout = _layoutManager.LoadLayout(this);
-            _viewModelItems = new ViewModelItemCollection(layout, _dependencyContainer);
+            ILayoutManager layoutManager = DependencyContainer.Resolve<ILayoutManager>();
+            Layout layout = layoutManager.LoadLayout(this);
+            _viewModelItems = new ViewModelItemCollection(layout, DependencyContainer);
             ActivateStartupViewModels();
         }
 
@@ -31,32 +37,15 @@ namespace Adenium.ViewModels
             IEnumerable<ViewModelItem> startupViewModelItems = _viewModelItems.Where(x => x.ActivationMode == ActivationMode.OnStartup);
             foreach (ViewModelItem viewModelItem in startupViewModelItems)
             {
-                IViewModel viewModel = viewModelItem.GetViewModel();
-                ActivateItemInternal(viewModel);
+                ActivateItem(viewModelItem);
             }
+            ActiveItem = Items.FirstOrDefault();
         }
 
-        private void ActivateItemInternal(IViewModel viewModel)
+        private void ActivateItem(ViewModelItem viewModelItem)
         {
-            LayoutedItemsViewModel layoutedItemsViewModel = viewModel as LayoutedItemsViewModel;
-            if (layoutedItemsViewModel != null)
-            {
-                IDependencyContainer childDependencyContainer = _dependencyContainer.CreateChildContainer();
-                layoutedItemsViewModel.SetupContainer(childDependencyContainer);
-            }
-            base.ActivateItem(viewModel);
-        }
-
-        internal void SetupContainer(IDependencyContainer dependencyContainer)
-        {
-            ConfigureContainer(dependencyContainer);
-            _layoutManager = dependencyContainer.Resolve<ILayoutManager>();
-            _dependencyContainer = dependencyContainer;
-        }
-
-        protected virtual void ConfigureContainer(IDependencyContainer dependencyContainer)
-        {
-            dependencyContainer.RegisterInstance<IItemsViewModel>(this);
+            IViewModel viewModel = viewModelItem.GetViewModel();
+            ActivateItem(viewModel);
         }
     }
 }

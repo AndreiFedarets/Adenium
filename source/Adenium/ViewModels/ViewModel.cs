@@ -6,7 +6,7 @@ namespace Adenium.ViewModels
     {
         public virtual void Dispose()
         {
-            
+
         }
     }
 }
