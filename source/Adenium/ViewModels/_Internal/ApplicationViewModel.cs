@@ -20,9 +20,16 @@ namespace Adenium.ViewModels
 
         public override void ActivateItem(IViewModel item)
         {
-            item.Deactivated += OnItemDeactivated;
+            bool newItem = !Items.Contains(item);
+            if (newItem)
+            {
+                item.Deactivated += OnItemDeactivated;
+            }
             base.ActivateItem(item);
-            _windowManager.ShowWindow(item);
+            if (newItem)
+            {
+                _windowManager.ShowWindow(item);
+            }
         }
 
         private void OnItemDeactivated(object sender, DeactivationEventArgs e)

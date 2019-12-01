@@ -19,11 +19,10 @@ namespace Adenium.Layouts
             _layoutReader = layoutReader;
         }
 
-        public Layout LoadLayout(LayoutedItemsViewModel itemsViewModel)
+        public Layout LoadLayout(string viewModelCodeName)
         {
-            string codeName = ViewModelManager.GetViewModelCodeName(itemsViewModel);
-            Layout layout = LoadLayout(codeName);
-            List<Attachment> attachments = LoadAttachments(codeName);
+            Layout layout = FindLayout(viewModelCodeName);
+            List<Attachment> attachments = FindAttachments(viewModelCodeName);
             layout = MergeLayout(layout, attachments);
             return layout;
         }
@@ -38,7 +37,7 @@ namespace Adenium.Layouts
             return new Layout(layout.DisplayMode, layoutItems);
         }
 
-        private Layout LoadLayout(string layoutFullName)
+        private Layout FindLayout(string layoutFullName)
         {
             string layoutFileName = layoutFullName + LayoutFileExtension;
             string layoutFile = _environment.FindFile(layoutFileName);
@@ -55,7 +54,7 @@ namespace Adenium.Layouts
             return layout;
         }
 
-        private List<Attachment> LoadAttachments(string layoutFullName)
+        private List<Attachment> FindAttachments(string layoutFullName)
         {
             List<Attachment> attachments = new List<Attachment>();
             string attachmentFileName = layoutFullName + AttachmentFileExtension;

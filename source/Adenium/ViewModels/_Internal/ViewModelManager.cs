@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adenium.ViewModels
+﻿namespace Adenium.ViewModels
 {
     internal class ViewModelManager : IViewModelManager
     {
@@ -9,40 +7,6 @@ namespace Adenium.ViewModels
         public ViewModelManager(ApplicationViewModel applicationViewModel)
         {
             _applicationViewModel = applicationViewModel;
-        }
-
-        //TODO: move to extensions
-        public static string GetViewModelCodeName(IViewModel viewModel)
-        {
-            string codeName;
-            ViewModelAttribute attribute = ViewModelAttribute.GetAttribute(viewModel);
-            if (attribute != null)
-            {
-                codeName = attribute.CodeName;
-            }
-            else
-            {
-                codeName = viewModel.GetType().FullName;
-            }
-            return codeName.ToLowerInvariant();
-        }
-
-        //TODO: move to extensions
-        public static bool AreCodeNameEquals(IViewModel viewModel1, IViewModel viewModel2)
-        {
-            return AreCodeNameEquals(GetViewModelCodeName(viewModel1), GetViewModelCodeName(viewModel2));
-        }
-
-        //TODO: move to extensions
-        public static bool AreCodeNameEquals(IViewModel viewModel, string codeName)
-        {
-            return AreCodeNameEquals(GetViewModelCodeName(viewModel), codeName);
-        }
-
-        //TODO: move to extensions
-        public static bool AreCodeNameEquals(string codeName1, string codeName2)
-        {
-            return string.Equals(codeName1, codeName2, StringComparison.InvariantCulture);
         }
 
         public IViewModel Activate(params string[] codeNames)

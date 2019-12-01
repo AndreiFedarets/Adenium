@@ -1,4 +1,5 @@
 ﻿using Adenium.Contracts;
+using Adenium.Extensions;
 using Adenium.Layouts;
 using Caliburn.Micro;
 using System.Collections;
@@ -12,18 +13,13 @@ namespace Adenium.ViewModels
     {
         private readonly ContractCollection _contracts;
 
-        public ItemsViewModel(DisplayMode displayMode)
+        protected ItemsViewModel()
         {
-            DisplayMode = displayMode;
+            DisplayMode = DisplayMode.Tab;
             _contracts = new ContractCollection(this);
         }
 
-        public ItemsViewModel()
-            : this(DisplayMode.Tab)
-        {
-        }
-
-        public virtual DisplayMode DisplayMode { get; private set; }
+        public virtual DisplayMode DisplayMode { get; protected set; }
 
         protected IDependencyContainer DependencyContainer { get; private set; }
 
@@ -35,7 +31,7 @@ namespace Adenium.ViewModels
 
         public virtual bool ActivateItem(string childCodeName)
         {
-            IViewModel targetViewModel = Items.FirstOrDefault(x => ViewModelManager.AreCodeNameEquals(x, childCodeName));
+            IViewModel targetViewModel = Items.FirstOrDefault(x => x.AreCodeNameEquals(childCodeName));
             if (targetViewModel != null)
             {
                 ActivateItem(targetViewModel);

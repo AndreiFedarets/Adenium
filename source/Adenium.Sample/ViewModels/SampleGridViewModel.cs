@@ -3,7 +3,7 @@
 namespace Adenium.Sample.ViewModels
 {
     [ViewModel("Adenium.Sample.Grid")]
-    public sealed class SampleGridViewModel : ItemsViewModel
+    public sealed class SampleGridViewModel : LayoutedItemsViewModel
     {
         public SampleGridViewModel()
         {

@@ -107,6 +107,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Layouts\Adenium.Sample.Grid.layout">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Layouts\Application.layout">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

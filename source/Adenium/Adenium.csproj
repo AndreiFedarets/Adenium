@@ -80,6 +80,7 @@
     <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
     <Compile Include="Controls\_Specialized\ViewItemsControl.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
+    <Compile Include="Extensions\_Internal\ViewModelExtensions.cs" />
     <Compile Include="ViewModels\_Internal\IRequireDependencyContainer.cs" />
     <Compile Include="_Internal\AssemblyResolver.cs" />
     <Compile Include="_Internal\WindowManager.cs" />
@@ -150,9 +151,7 @@
     <AppDesigner Include="Properties\" />
     <None Include="Properties\StrongName.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\_Internal\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\Close.png" />
   </ItemGroup>

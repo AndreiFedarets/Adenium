@@ -59,6 +59,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Layouts\Adenium.Sample.Grid.attachment">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Layouts\Adenium.Sample.Tab.attachment">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
