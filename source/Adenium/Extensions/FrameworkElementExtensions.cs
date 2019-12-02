@@ -7,32 +7,32 @@ namespace Adenium.Extensions
 {
     public static class FrameworkElementExtensions
     {
-        public static Panel GetItemsControlPanel(this ItemsControl itemsControl)
-        {
-            ItemsPresenter itemsPresenter = GetVisualChild<ItemsPresenter>(itemsControl);
-            Panel itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0) as Panel;
-            return itemsPanel;
-        }
+        //public static Panel GetItemsControlPanel(this ItemsControl itemsControl)
+        //{
+        //    ItemsPresenter itemsPresenter = GetVisualChild<ItemsPresenter>(itemsControl);
+        //    Panel itemsPanel = VisualTreeHelper.GetChild(itemsPresenter, 0) as Panel;
+        //    return itemsPanel;
+        //}
 
-        public static T GetVisualChild<T>(this DependencyObject parent) where T : Visual
-        {
-            T child = default(T);
-            int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < numVisuals; i++)
-            {
-                Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
-                child = v as T;
-                if (child == null)
-                {
-                    child = GetVisualChild<T>(v);
-                }
-                if (child != null)
-                {
-                    break;
-                }
-            }
-            return child;
-        }
+        //public static T GetVisualChild<T>(this DependencyObject parent) where T : Visual
+        //{
+        //    T child = default(T);
+        //    int numVisuals = VisualTreeHelper.GetChildrenCount(parent);
+        //    for (int i = 0; i < numVisuals; i++)
+        //    {
+        //        Visual v = (Visual)VisualTreeHelper.GetChild(parent, i);
+        //        child = v as T;
+        //        if (child == null)
+        //        {
+        //            child = GetVisualChild<T>(v);
+        //        }
+        //        if (child != null)
+        //        {
+        //            break;
+        //        }
+        //    }
+        //    return child;
+        //}
 
         //public static Point GetPosition(this FrameworkElement element, FrameworkElement relativeTo)
         //{

@@ -653,7 +653,7 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <Grid IsItemsHost="True">
+                    <Grid>
 
                     </Grid>
                 </ItemsPanelTemplate>
