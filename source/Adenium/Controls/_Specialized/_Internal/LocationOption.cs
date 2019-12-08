@@ -16,16 +16,16 @@ namespace Adenium.Controls
             AutoAdjustRange = new Range(-0.25f, 0.25f);
         }
 
-        public LocationOption(GridElement first, GridElement second, Orientation orientation)
+        public LocationOption(Element first, Element second, Orientation orientation)
         {
             First = first;
             Second = second;
             Orientation = orientation;
         }
 
-        public GridElement First { get; private set; }
+        public Element First { get; private set; }
 
-        public GridElement Second { get; private set; }
+        public Element Second { get; private set; }
 
         public Orientation Orientation { get; private set; }
 
@@ -70,7 +70,7 @@ namespace Adenium.Controls
             get { return 1 - AspectRatio / SampleAspectRatio; }
         }
 
-        private int GetTouchSideSize(GridElement element)
+        private int GetTouchSideSize(Element element)
         {
             switch (Orientation)
             {
@@ -82,7 +82,7 @@ namespace Adenium.Controls
             return 0;
         }
 
-        private void SetTouchSideSize(GridElement element, int size)
+        private void SetTouchSideSize(Element element, int size)
         {
             switch (Orientation)
             {
@@ -97,8 +97,8 @@ namespace Adenium.Controls
 
         public bool TryAdjustSize()
         {
-            GridElement main = GetMainElement();
-            GridElement additional = GetAdditionalElement();
+            Element main = GetMainElement();
+            Element additional = GetAdditionalElement();
             int absoluteAdjustment = GetTouchSideSize(main) - GetTouchSideSize(additional);
             float relativeAdjustment = absoluteAdjustment / GetTouchSideSize(additional);
             if (AutoAdjustRange.Matches(relativeAdjustment))
@@ -109,12 +109,12 @@ namespace Adenium.Controls
             return false;
         }
 
-        private GridElement GetMainElement()
+        private Element GetMainElement()
         {
             return First.Area >= Second.Area ? First : Second;
         }
 
-        private GridElement GetAdditionalElement()
+        private Element GetAdditionalElement()
         {
             return First.Area < Second.Area ? First : Second;
         }

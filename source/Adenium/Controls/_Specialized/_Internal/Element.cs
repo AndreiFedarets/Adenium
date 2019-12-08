@@ -1,14 +1,14 @@
 ﻿namespace Adenium.Controls
 {
-    internal class GridElement
+    internal class Element
     {
-        public GridElement(int width, int height)
+        public Element(int width, int height)
         {
             Width = width;
             Height = height;
         }
 
-        public GridElement()
+        public Element()
         {
 
         }

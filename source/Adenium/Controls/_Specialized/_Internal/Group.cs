@@ -4,146 +4,79 @@ using System.Windows.Controls;
 
 namespace Adenium.Controls
 {
-    internal sealed class GridGroup : GridElement
+    internal class Group : Element
     {
         public static readonly float SampleAspectRatio;
         public static readonly Range AspectRatioRange;
         public static readonly Range AutoAdjustRange;
 
-        static GridGroup()
-        {
+        static Group()
+        {   
             SampleAspectRatio = 4 / 3;
             AspectRatioRange = new Range(-0.25f, 0.25f);
             AutoAdjustRange = new Range(-0.25f, 0.25f);
         }
 
-        public GridGroup(GridElement first, GridElement second, Orientation orientation)
+        public Group(Element first, Element second)
         {
             First = first;
             Second = second;
-            Orientation = orientation;
         }
 
-        public Orientation Orientation { get; set; }
+        //public Orientation Orientation { get; set; }
 
-        public GridElement First { get; set; }
+        public Element First { get; set; }
 
-        public GridElement Second { get; set; }
-
-        public override int Height
-        { 
-            get
-            {
-                switch (Orientation)
-                {
-                    case Orientation.Horizontal:
-                        return Math.Max(First.Height, Second.Height);
-                    case Orientation.Vertical:
-                        return First.Height + Second.Height;
-                    default:
-                        throw new NotSupportedException();
-                }
-            }
-            set
-            {
-                switch (Orientation)
-                {
-                    case Orientation.Horizontal:
-                        First.Height = value;
-                        Second.Height = value;
-                        break;
-                    case Orientation.Vertical:
-                        float percent = value / Height;
-                        First.Height = (int)(First.Height * percent);
-                        Second.Height = value - First.Height;
-                        break;
-                    default:
-                        throw new NotSupportedException();
-                }
-            }
-        }
-
-        public override int Width
-        {
-            get
-            {
-                switch (Orientation)
-                {
-                    case Orientation.Horizontal:
-                        return First.Width + Second.Width;
-                    case Orientation.Vertical:
-                        return Math.Max(First.Width, Second.Width);
-                    default:
-                        throw new NotSupportedException();
-                }
-            }
-            set
-            {
-                switch (Orientation)
-                {
-                    case Orientation.Horizontal:
-                        float percent = value / Width;
-                        First.Width = (int)(First.Width * percent);
-                        Second.Width = value - First.Width;
-                        break;
-                    case Orientation.Vertical:
-                        First.Width = value;
-                        Second.Width = value;
-                        break;
-                    default:
-                        throw new NotSupportedException();
-                }
-            }
-        }
+        public Element Second { get; set; }
 
         public int WasteArea
         {
             get { return Area - First.Area - Second.Area; }
         }
 
-        private static GridGroup CalculateOptimalGrouping(GridElement first, GridElement second)
+        private static Group CalculateOptimalGrouping(Element first, Element second)
         {
-            GridGroup horizontalGroup = new GridGroup(first, second, Orientation.Horizontal);
-            GridGroup verticalGroup = new GridGroup(first, second, Orientation.Vertical);
+            Group horizontal = new HorizontalGroup(first, second);
+            Group vertical = new VerticalGroup(first, second);
 
             //We make that decicion by:
             //1. calculating change of AspectRatio for each option
-            //2. calculating of 'waste' area for each option and then select option with min 'waste' area
+            //2. calculating of 'waste' area for each option
             
-            float horizontalAspectRatioChange = 1 - horizontalGroup.AspectRatio / SampleAspectRatio;
-            float verticalAspectRatioChange = 1 - verticalGroup.AspectRatio / SampleAspectRatio;
+            float horizontalAspectRatioChange = 1 - horizontal.AspectRatio / SampleAspectRatio;
+            float verticalAspectRatioChange = 1 - vertical.AspectRatio / SampleAspectRatio;
 
             if (AspectRatioRange.Matches(horizontalAspectRatioChange) &&
                 AspectRatioRange.Matches(verticalAspectRatioChange))
             {
-                if (horizontalGroup.WasteArea <= verticalGroup.WasteArea)
+                if (horizontal.WasteArea <= vertical.WasteArea)
                 {
-                    return horizontalGroup;
+                    return horizontal;
                 }
-                return verticalGroup;
+                return vertical;
             }
             else if (AspectRatioRange.Matches(horizontalAspectRatioChange))
             {
-                return horizontalGroup;
+                return horizontal;
             }
             else if (AspectRatioRange.Matches(verticalAspectRatioChange))
             {
-                return verticalGroup;
+                return vertical;
             }
             else if (horizontalAspectRatioChange <= verticalAspectRatioChange)
             {
-                return horizontalGroup;
+                return horizontal;
             }
             else
             {
-                return verticalGroup;
+                return vertical;
             }
         }
 
         private bool TryAdjustSize()
         {
-            GridElement main;
-            GridElement additional;
+            Element main;
+            Element additional;
             if (First.Area >= Second.Area)
             {
                 main = First;
@@ -185,10 +118,10 @@ namespace Adenium.Controls
         }
 
 
-        public static GridGroup GroupElements(GridElement first, GridElement second, List<GridElement> restElements)
+        public static Group GroupElements(Element first, Element second, List<Element> restElements)
         {
             //Step#1: deside orientation of grouping, where to attach 'second' to 'first' - right or bottom.
-            GridGroup group = CalculateOptimalGrouping(first, second);
+            Group group = CalculateOptimalGrouping(first, second);
 
             //Step#2: Adjust elements size depending on gouping orientation. Height for Horizontal, Width for Vertical
             //Size of elements could be different on the touch edge so we need to make them equal.
@@ -198,7 +131,7 @@ namespace Adenium.Controls
             }
 
             //Step#3: If adjustment was not successful, the we need to try to regroup smaller element with something else
-            GridElement smaller;
+            Element smaller;
             Orientation targetOrientation;
             switch (group.Orientation)
             {
@@ -216,12 +149,12 @@ namespace Adenium.Controls
 
         }
 
-        public static GridElement GroupElements(List<GridElement> elements)
+        public static Element GroupElements(List<Element> elements)
         {
-            GridElement main = TakeFirst(elements);
+            Element main = TakeFirst(elements);
             while (elements.Count > 0)
             {
-                GridElement additional = TakeFirst(elements);
+                Element additional = TakeFirst(elements);
                 main = GroupElements(main, additional, elements);
             }
             return main;
