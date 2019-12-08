@@ -10,6 +10,8 @@ namespace Adenium.Controls
 {
     public class ViewGridControl : ItemsControl
     {
+        private const int CellSideLength = 50;
+
         private static readonly DependencyProperty RowsCountProperty;
         private static readonly DependencyProperty ColumnsCountProperty;
 
@@ -23,8 +25,14 @@ namespace Adenium.Controls
 
         public ViewGridControl()
         {
-            //Using Loaded event because only after that ItemsHost is available
+            //Using Loaded event because only after that ItemsHost become available
             Loaded += OnControlLoaded;
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public int RowsCount
