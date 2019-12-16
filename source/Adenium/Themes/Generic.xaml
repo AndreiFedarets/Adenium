@@ -626,6 +626,18 @@
         </Setter>
     </Style>-->
 
+    <!--<Style TargetType="{x:Type controls:AutoPanel}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:AutoPanel}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
 
     <Style TargetType="{x:Type controls:ViewItem}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="Template">
@@ -641,7 +653,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type views:View}">
-                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    <ContentControl Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </ContentControl>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -653,33 +667,17 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <Grid>
-
-                    </Grid>
+                    <controls:AutoPanel />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
-        <!--<Setter Property="ItemTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding DisplayName, Mode=OneWay}" />
-                        <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="DeactivateItem($dataContext, 'true')" caliburn:Bind.ModelWithoutContext="{Binding Parent}" />
-                    </Grid>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="ContentTemplate">
+        <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
                     <controls:ViewItem ViewModel="{Binding}" />
                 </DataTemplate>
             </Setter.Value>
-        </Setter>-->
+        </Setter>
     </Style>
 
     <!--diag:PresentationTraceSources.TraceLevel=High-->
@@ -738,6 +736,7 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>-->
+
 
 </ResourceDictionary>
  

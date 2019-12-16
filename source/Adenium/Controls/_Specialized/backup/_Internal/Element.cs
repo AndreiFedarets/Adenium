@@ -111,7 +111,7 @@ namespace Adenium.Controls
 
         public Element Clone()
         {
-            return new Element(Width, Height, Content) { Top = Top, Right = Right, Bottom = Bottom, Left = Left };
+            return new Element(Width, Height) { Top = Top, Right = Right, Bottom = Bottom, Left = Left };
         }
     }
 }

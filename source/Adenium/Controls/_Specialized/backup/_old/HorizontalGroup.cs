@@ -31,7 +31,5 @@ namespace Adenium.Controls
                 Second.Width = value - First.Width;
             }
         }
-
-
     }
 }

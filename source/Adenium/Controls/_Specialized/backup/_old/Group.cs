@@ -29,11 +29,6 @@ namespace Adenium.Controls
 
         public Element Second { get; set; }
 
-        public int WasteArea
-        {
-            get { return Area - First.Area - Second.Area; }
-        }
-
         private static Group CalculateOptimalGrouping(Element first, Element second)
         {
             Group horizontal = new HorizontalGroup(first, second);
@@ -49,7 +44,9 @@ namespace Adenium.Controls
             if (AspectRatioRange.Matches(horizontalAspectRatioChange) &&
                 AspectRatioRange.Matches(verticalAspectRatioChange))
             {
-                if (horizontal.WasteArea <= vertical.WasteArea)
+                int horizontalWasteArea = horizontal.Area - horizontal.First.Area - horizontal.Second.Area;
+                int verticalWasteArea = vertical.Area - vertical.First.Area - vertical.Second.Area;
+                if (horizontalWasteArea <= verticalWasteArea)
                 {
                     return horizontal;
                 }
