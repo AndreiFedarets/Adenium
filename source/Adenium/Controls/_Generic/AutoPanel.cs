@@ -86,27 +86,41 @@ namespace Adenium.Controls
             SetAreaProperty(element, desiredArea);
         }
 
-        private IEnumerable<Rect> GetPlaceholders(Size availableSize)
+        private List<Rect> GetPlaceholders(Size availableSize)
         {
+            List<Rect> placeholders = new List<Rect>();
             if (_measuredElements.Count == 0)
             {
-                yield return new Rect(new Point(0, 0), availableSize));
+                placeholders.Add(new Rect(new Point(0, 0), availableSize));
+                return placeholders;
             }
-            Size areaSize = default(Size);
+            Rect availableArea = new Rect(new Point(0, 0), availableSize);
             foreach (UIElement element in _measuredElements)
             {
                 Rect elementArea = GetAreaProperty(element);
+                Rect topRight = Rect.Offset(availableArea, elementArea.TopRight.X, elementArea.TopRight.Y);
+                topRight = Rect.Intersect(availableArea, topRight);
 
-                //check top right placeholder
-                Point topRight = elementArea.TopRight;
-                //
-                yield return new Rect(topRight, areaSize);
+                Rect bottomLeft = Rect.Offset(availableArea, elementArea.BottomLeft.X, elementArea.BottomLeft.Y);
+                bottomLeft = Rect.Intersect(availableArea, bottomLeft);
+                foreach (UIElement temp in _measuredElements)
+                {
+                    if (ReferenceEquals(element, temp))
+                    {
+                        continue;
+                    }
+                    Rect tempArea = GetAreaProperty(temp);
+                    if (topRight.IntersectsWith(tempArea))
+                    {
 
-                //check bottom left placeholder
-                Point bottomLeft = elementArea.BottomLeft;
-                //
-                yield return new Rect(bottomLeft, areaSize);
+                    }
+                    if (bottomLeft.IntersectsWith(tempArea))
+                    {
+
+                    }
+                }
             }
+            return placeholders;
         }
 
         private double CalculateFreeArea(Rect candidateArea, Size availableSize)
