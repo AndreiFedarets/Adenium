@@ -77,13 +77,10 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controls\_Generic\AutoPanel.cs" />
+    <Compile Include="Controls\_Generic\_Internal\old\Range.cs" />
     <Compile Include="Controls\_Specialized\ViewItem.cs" />
     <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
-    <Compile Include="Controls\_Specialized\_Internal\Area.cs" />
-    <Compile Include="Controls\_Specialized\_Internal\Element.cs" />
-    <Compile Include="Controls\_Specialized\_Internal\Placehoder.cs" />
-    <Compile Include="Controls\_Specialized\_Internal\Range.cs" />
     <Compile Include="Extensions\_Internal\ViewModelExtensions.cs" />
     <Compile Include="ViewModels\_Internal\IRequireDependencyContainer.cs" />
     <Compile Include="_Internal\AssemblyResolver.cs" />

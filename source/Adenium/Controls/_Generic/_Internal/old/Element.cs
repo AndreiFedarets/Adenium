@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace Adenium.Controls
 {
@@ -11,7 +12,7 @@ namespace Adenium.Controls
             PossibleAdjustment = new Range(0.8f, 1.2f);
         }
 
-        public Element(int width, int height, object content)
+        public Element(double width, double height, object content)
         {
             Width = width;
             Height = height;
@@ -20,24 +21,24 @@ namespace Adenium.Controls
 
         public object Content { get; private set; }
 
-        public int Height { get; private set; }
+        public double Height { get; private set; }
 
-        public int Width { get; private set; }
+        public double Width { get; private set; }
 
-        public int Left { get; private set; }
+        public double Left { get; private set; }
 
-        public int Right { get; private set; }
+        public double Right { get; private set; }
 
-        public int Top { get; private set; }
+        public double Top { get; private set; }
 
-        public int Bottom { get; private set; }
+        public double Bottom { get; private set; }
 
-        public int Area
+        public double Area
         {
             get { return  Width * Height; }
         }
 
-        private bool Fit(Placehoder placeholder)
+        private bool Fit(Rect placeholder)
         {
             if (placeholder.Width < Width)
             {
@@ -58,7 +59,7 @@ namespace Adenium.Controls
             return true;
         }
 
-        public bool Apply(Placehoder placeholder)
+        public bool Apply(Rect placeholder)
         {
             if (!Fit(placeholder))
             {
@@ -73,7 +74,7 @@ namespace Adenium.Controls
             return true;
         }
 
-        private void AdjustWidth(Placehoder placeholder)
+        private void AdjustWidth(Rect placeholder)
         {
             //compact element width to placeholder if needed
             if (Width > placeholder.Width)
@@ -91,7 +92,7 @@ namespace Adenium.Controls
             }
         }
 
-        private void AdjustHeight(Placehoder placeholder)
+        private void AdjustHeight(Rect placeholder)
         {
             //compact element height to placeholder if needed
             if (Height > placeholder.Height)

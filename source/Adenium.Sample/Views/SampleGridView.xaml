@@ -3,5 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:v="clr-namespace:Adenium.Views;assembly=Adenium"
         Height="400" Width="500">
-    <ContentControl x:Name="ViewContent"/>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <ContentControl x:Name="ViewContent"/>
+    </ScrollViewer>
 </v:View>
