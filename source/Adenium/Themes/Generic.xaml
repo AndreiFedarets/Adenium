@@ -13,7 +13,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="TextBlock.FontFamily" Value="{x:Static themes:FontsAndColors.FontFamily}" />
         <Setter Property="TextBlock.FontSize" Value="{x:Static themes:FontsAndColors.ContentFontSize}" />
-        <Setter Property="Margin" Value="3" />
+        <Setter Property="Margin" Value="2" />
         <!--<Setter Property="Control.Padding" Value="3" />-->
         <Setter Property="Focusable" Value="False" />
     </Style>
