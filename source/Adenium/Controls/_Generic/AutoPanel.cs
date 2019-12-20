@@ -9,14 +9,17 @@ namespace Adenium.Controls
     public class AutoPanel : Panel
     {
         //private const int ElementsSpace = 1; // space between elements, must be >= 0
-        private static readonly Range PossibleAdjustment;
+        private static readonly Range PossibleElementAdjustment;
+        private static readonly Range PossibleAspectRationScale;
         public static DependencyProperty AreaProperty;
-
         private readonly List<UIElement> _measuredElements;
+        private double _initialAspectRatio;
+        private Rect _previousDesiredArea;
 
         static AutoPanel()
         {
-            PossibleAdjustment = new Range(0.75f, 1.25f);
+            PossibleElementAdjustment = new Range(0.7f, 1.3f);
+            PossibleAspectRationScale = new Range(0.8f, 1.2f);
             AreaProperty = DependencyProperty.RegisterAttached("Area", typeof(Rect), typeof(AutoPanel), new PropertyMetadata(default(Rect)));
         }
 
@@ -40,27 +43,137 @@ namespace Adenium.Controls
             foreach (UIElement element in InternalChildren)
             {
                 Rect area = GetAreaProperty(element);
-                element.Arrange(new Rect(area.Location, area.Size));
+                element.Arrange(area);
             }
             return finalSize;
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            _measuredElements.Clear();
             Rect availableArea = new Rect(new Point(0, 0), availableSize);
+            Rect measureArea;
+            double aspectRatio = 0;
+            if (double.IsPositiveInfinity(availableSize.Width) && double.IsPositiveInfinity(availableSize.Height))
+            {
+                measureArea = new Rect(new Point(0, 0), availableSize);
+                //TODO: get current screen aspect ratio
+                aspectRatio = 4f / 3f; 
+            }
+            else if (double.IsPositiveInfinity(availableSize.Width) || double.IsPositiveInfinity(availableSize.Height))
+            {
+                measureArea = new Rect(new Point(0, 0), availableSize);
+                aspectRatio = 0;
+            }
+            else
+            {
+                measureArea = new Rect(new Point(0, 0), new Size(double.PositiveInfinity, double.PositiveInfinity));
+                aspectRatio = availableSize.Width / availableSize.Height;
+            }
+            Rect desiredArea = _previousDesiredArea;
+            if (!VerifyAllElementsMeasured() || !VerifyAspectRatioUnchanged())
+            {
+                desiredArea = MeasureElements(measureArea, aspectRatio);
+                AdjustElements(desiredArea);
+                desiredArea = ScaleElements(availableArea, desiredArea);
+                _initialAspectRatio = desiredArea.Width / desiredArea.Height;
+            }
+            else
+            {
+                desiredArea = ScaleElements(availableArea, desiredArea);
+            }
+            _previousDesiredArea = desiredArea;
+            return desiredArea.Size;
+        }
+
+        private bool VerifyAspectRatioUnchanged()
+        {
+            if (_initialAspectRatio == 0 || _previousDesiredArea == default(Rect))
+            {
+                return false;
+            }
+            double currentAspectRatio = _previousDesiredArea.Width / _previousDesiredArea.Height;
+            return currentAspectRatio * PossibleAspectRationScale.Min < _initialAspectRatio &&
+                   currentAspectRatio * PossibleAspectRationScale.Max > _initialAspectRatio;
+        }
+
+        private bool VerifyAllElementsMeasured()
+        {
+            if (_measuredElements.Count != InternalChildren.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < _measuredElements.Count; i++)
+            {
+                if (!ReferenceEquals(_measuredElements[i], InternalChildren[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private Rect ScaleElements(Rect availableArea, Rect desiredArea)
+        {
+            if (double.IsPositiveInfinity(availableArea.Width) || double.IsPositiveInfinity(availableArea.Height))
+            {
+                return desiredArea;
+            }
+            double scaleX = availableArea.Width / desiredArea.Width;
+            double scaleY = availableArea.Height / desiredArea.Height;
+            foreach (UIElement element in InternalChildren)
+            {
+                Rect elementArea = GetAreaProperty(element);
+                elementArea.Scale(scaleX, scaleY);
+                element.Measure(elementArea.Size);
+                SetAreaProperty(element, elementArea);
+            }
+            return availableArea;
+        }
+
+        private Rect MeasureElements(Rect availableArea, double aspectRatio)
+        {
+            Rect desiredArea = new Rect();
+            _measuredElements.Clear();
             foreach (UIElement element in InternalChildren)
             {
                 if (element != null)
                 {
-                    MeasureElement(element, availableArea);
+                    Rect elementArea = MeasureElement(element, availableArea, aspectRatio);
+                    SetAreaProperty(element, elementArea);
+                    _measuredElements.Add(element);
+                    desiredArea.Union(elementArea);
                 }
             }
-            //return availableSize;
-            return new Size(0, 0);
+            return desiredArea;
         }
 
-        private void MeasureElement(UIElement element, Rect availableArea)
+        private void AdjustElements(Rect desiredArea)
+        {
+            List<Rect> placeholders = new List<Rect>();
+            foreach (UIElement element in InternalChildren)
+            {
+                if (element != null)
+                {
+                    Rect elementArea = GetAreaProperty(element);
+
+                    placeholders.Clear();
+                    Point topRightPoint = new Point(elementArea.TopRight.X, elementArea.TopRight.Y);
+                    BuildPlaceholder(topRightPoint, desiredArea, placeholders);
+
+                    Point bottomLeftPoint = new Point(elementArea.BottomLeft.X, elementArea.BottomLeft.Y);
+                    BuildPlaceholder(bottomLeftPoint, desiredArea, placeholders);
+
+                    foreach (Rect placeholder in placeholders)
+                    {
+                        elementArea = Rect.Union(elementArea, placeholder);
+                    }
+                    element.Measure(elementArea.Size);
+                    SetAreaProperty(element, elementArea);
+                }
+            }
+        }
+
+        private Rect MeasureElement(UIElement element, Rect availableArea, double aspectRatio)
         {
             element.Measure(availableArea.Size);
             double minimumFreeArea = double.MaxValue;
@@ -73,7 +186,7 @@ namespace Adenium.Controls
                     continue;
                 }
                 //TODO: handle also best fit to placeholder
-                double freeArea = CalculateFreeArea(elementRect, availableArea.Size);
+                double freeArea = CalculateFreeArea(elementRect, availableArea.Size, aspectRatio);
                 if (freeArea < minimumFreeArea)
                 {
                     minimumFreeArea = freeArea;
@@ -85,8 +198,7 @@ namespace Adenium.Controls
                 throw new InvalidOperationException();
             }
             element.Measure(desiredRect.Size);
-            SetAreaProperty(element, desiredRect);
-            _measuredElements.Add(element);
+            return desiredRect;
         }
 
         private List<Rect> GetPlaceholders(Rect availableArea)
@@ -102,71 +214,92 @@ namespace Adenium.Controls
                 Rect elementArea = GetAreaProperty(element);
 
                 Point topRightPoint = new Point(elementArea.TopRight.X, elementArea.TopRight.Y);
-                Rect topRightPlaceholder = GetPlaceholder(topRightPoint, availableArea);
-                if (topRightPlaceholder != default(Rect))
-                {
-                    bool placeholderExists = false;
-                    Rect placeholderToRemove = default(Rect);
-                    foreach (Rect exisingPlaceholder in placeholders)
-                    {
-                        Rect intersectPlaceholder = Rect.Intersect(exisingPlaceholder, topRightPlaceholder);
-                        if (intersectPlaceholder.Equals(topRightPlaceholder))
-                        {
-                            placeholderExists = true;
-                            break;
-                        }
-                        if (intersectPlaceholder.Equals(exisingPlaceholder))
-                        {
-                            placeholderToRemove = exisingPlaceholder;
-                            break;
-                        }
-                    }
-                    if (!placeholderExists)
-                    {
-                        placeholders.Add(topRightPlaceholder);
-                    }
-                    if (placeholderToRemove != default(Rect))
-                    {
-                        placeholders.Remove(placeholderToRemove);
-                    }
-                }
+                BuildPlaceholder(topRightPoint, availableArea, placeholders);
 
                 Point bottomLeftPoint = new Point(elementArea.BottomLeft.X, elementArea.BottomLeft.Y);
-                Rect bottomLeftPlaceholder = GetPlaceholder(bottomLeftPoint, availableArea);
-                if (bottomLeftPlaceholder != default(Rect))
-                {
-                    bool placeholderExists = false;
-                    Rect placeholderToRemove = default(Rect);
-                    foreach (Rect exisingPlaceholder in placeholders)
-                    {
-                        Rect intersectPlaceholder = Rect.Intersect(exisingPlaceholder, bottomLeftPlaceholder);
-                        if (intersectPlaceholder.Equals(bottomLeftPlaceholder))
-                        {
-                            placeholderExists = true;
-                            break;
-                        }
-                        if (intersectPlaceholder.Equals(exisingPlaceholder))
-                        {
-                            placeholderToRemove = exisingPlaceholder;
-                            break;
-                        }
-                    }
-                    if (!placeholderExists)
-                    {
-                        placeholders.Add(bottomLeftPlaceholder);
-                    }
-                    if (placeholderToRemove != default(Rect))
-                    {
-                        placeholders.Remove(placeholderToRemove);
-                    }
-                }
+                BuildPlaceholder(bottomLeftPoint, availableArea, placeholders);
             }
             return placeholders;
         }
 
+        private void BuildPlaceholder(Point location, Rect availableArea, List<Rect> placeholders)
+        {
+            const double offset = 0.1;
+            Point checkPoint = new Point(location.X + offset, location.Y + offset);
+            //verify if this location is out of available area space
+            if (!availableArea.Contains(checkPoint))
+            {
+                return;
+            }
+            //verify if this location is already used by another element
+            foreach (UIElement element in _measuredElements)
+            {
+                Rect elementArea = GetAreaProperty(element);
+                if (elementArea.Contains(checkPoint))
+                {
+                    return;
+                }
+            }
+            //verify if this location is already included into existing placeholder
+            foreach (Rect placeholder in placeholders)
+            {
+                if (placeholder.Contains(checkPoint))
+                {
+                    return;
+                }
+            }
+            //create raw placeholder
+            Rect newPlaceholder = Rect.Offset(availableArea, location.X, location.Y);
+            newPlaceholder = Rect.Intersect(availableArea, newPlaceholder);
+            // placeholder could became Rect.Empty because it goes outside of availableArea
+            if (newPlaceholder == Rect.Empty)
+            {
+                return;
+            }
+            //calculate placeholder width and height
+            foreach (UIElement element in _measuredElements)
+            {
+                Rect elementArea = GetAreaProperty(element);
+                //of element is out of our placeholder area - skip it
+                if (elementArea.Right <= newPlaceholder.Left || elementArea.Bottom <= newPlaceholder.Top)
+                {
+                    continue;
+                }
+                Point horizontalIntersectionPoint = new Point(elementArea.Left, newPlaceholder.Top + 1);
+                if (elementArea.Contains(horizontalIntersectionPoint))
+                {
+                    double distance = elementArea.Left - newPlaceholder.Left;
+                    if (distance < newPlaceholder.Width)
+                    {
+                        newPlaceholder.Width = distance;
+                    }
+                }
+                Point verticalIntersectionPoint = new Point(newPlaceholder.Left + 1, elementArea.Top);
+                if (elementArea.Contains(verticalIntersectionPoint))
+                {
+                    double distance = elementArea.Top - newPlaceholder.Top;
+                    if (distance < newPlaceholder.Height)
+                    {
+                        newPlaceholder.Height = distance;
+                    }
+                }
+            }
+            //remove placeholders which are included into our placeholder
+            for (int i = 0; i < placeholders.Count; i++)
+            {
+                Rect placeholder = placeholders[i];
+                if (Rect.Intersect(newPlaceholder, placeholder).Equals(placeholder))
+                {
+                    placeholders.RemoveAt(i);
+                    i--;
+                }
+            }
+            placeholders.Add(newPlaceholder);
+        }
+
         private Rect GetPlaceholder(Point location, Rect availableArea)
         {
-            foreach (UIElement element in _measuredElements)
+            foreach (UIElement element in InternalChildren)
             {
                 Rect elementArea = GetAreaProperty(element);
                 if (elementArea.Location.Equals(location))
@@ -220,7 +353,7 @@ namespace Adenium.Controls
             return placeholder;
         }
 
-        private double CalculateFreeArea(Rect candidateArea, Size availableSize)
+        private double CalculateFreeArea(Rect candidateArea, Size availableSize, double aspectRatio)
         {
             //calculate actual width and height of elements and summ of their areas
             double elementsWidth = candidateArea.Right;
@@ -243,17 +376,9 @@ namespace Adenium.Controls
             double areaWidth;
             double areaHeight;
             //should we match aspectReatio or not?
-            if (!double.IsInfinity(availableSize.Width) && !double.IsInfinity(availableSize.Height))
+            if (aspectRatio != 0)
             {
                 //calculate area size pro rata to aspect ratio
-                double aspectRatio = availableSize.Width / availableSize.Height;
-                areaWidth = Math.Max(elementsWidth, aspectRatio * elementsHeight);
-                areaHeight = Math.Max(elementsHeight, elementsWidth / aspectRatio);
-            }
-            else if (double.IsInfinity(availableSize.Width) && double.IsInfinity(availableSize.Height))
-            {
-                //calculate area size pro rata to aspect ratio
-                double aspectRatio = 4f / 3f;
                 areaWidth = Math.Max(elementsWidth, aspectRatio * elementsHeight);
                 areaHeight = Math.Max(elementsHeight, elementsWidth / aspectRatio);
             }
@@ -275,7 +400,7 @@ namespace Adenium.Controls
             //check placeholder width fits element desired width
             if (placeholder.Width < elementSize.Width)
             {
-                double minPossibleWidth = PossibleAdjustment.Min * elementSize.Width;
+                double minPossibleWidth = PossibleElementAdjustment.Min * elementSize.Width;
                 if (placeholder.Width < minPossibleWidth)
                 {
                     return default(Rect);
@@ -284,7 +409,7 @@ namespace Adenium.Controls
             //compact placeholder to element desired width if needed and possible
             else
             {
-                double maxPossibleWidth = PossibleAdjustment.Max * elementSize.Width;
+                double maxPossibleWidth = PossibleElementAdjustment.Max * elementSize.Width;
                 if (placeholder.Width > maxPossibleWidth)
                 {
                     placeholder.Width = elementSize.Width;
@@ -294,7 +419,7 @@ namespace Adenium.Controls
             //check placeholder height fits element desired height
             if (placeholder.Height < elementSize.Height)
             {
-                double minPossibleHeight = PossibleAdjustment.Min * elementSize.Height;
+                double minPossibleHeight = PossibleElementAdjustment.Min * elementSize.Height;
                 if (placeholder.Height < minPossibleHeight)
                 {
                     return default(Rect);
@@ -303,7 +428,7 @@ namespace Adenium.Controls
             //compact placeholder to element desired height if needed and possible
             else
             {
-                double maxPossibleHeight = PossibleAdjustment.Max * elementSize.Height;
+                double maxPossibleHeight = PossibleElementAdjustment.Max * elementSize.Height;
                 if (placeholder.Height > maxPossibleHeight)
                 {
                     placeholder.Height = elementSize.Height;
@@ -312,87 +437,5 @@ namespace Adenium.Controls
 
             return placeholder;
         }
-
-        //private void MeasureElement(UIElement element, List<UIElement> measuredElements, List<Rect> placeholders, double aspectRatio)
-        //{
-        //    int minimumFreeArea = int.MaxValue;
-        //    Rect desiredArea = default(Rect);
-        //    Rect targetPlaceholder = default(Rect);
-        //    foreach (Rect placeholder in placeholders)
-        //    {
-        //        Rect candidateArea = new Rect(new Point(0, 0), element.DesiredSize);
-        //        if (!ApplyAreaToPlaceholder(ref candidateArea, placeholder))
-        //        {
-        //            continue;
-        //        }
-        //        //TODO: handle also best fit to placeholder
-        //        double freeArea = CalculateFreeArea(candidateElement);
-        //        if (freeArea < minimumFreeArea)
-        //        {
-        //            desiredArea = candidateArea;
-        //            targetPlaceholder = placeholder;
-        //        }
-        //    }
-        //    if (desiredArea == default(Rect))
-        //    {
-        //        throw new InvalidOperationException();
-        //    }
-        //    element.Measure(desiredArea.Size);
-        //    SetAreaProperty(element, desiredArea);
-        //}
-
-        //private bool ApplyAreaToPlaceholder(ref Rect elementArea, Rect placeholder)
-        //{
-        //    //compact area width to placeholder if needed and possible
-        //    if (elementArea.Width > placeholder.Width)
-        //    {
-        //        double minAdjustedWidth = PossibleAdjustment.Min * elementArea.Width;
-        //        if (minAdjustedWidth > placeholder.Width)
-        //        {
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            elementArea.Width = placeholder.Width;
-        //        }
-        //    }
-        //    //stretch area width to placeholder if needed and possible
-        //    else
-        //    {
-        //        double maxAdjustedWidth = PossibleAdjustment.Max * elementArea.Width;
-        //        if (maxAdjustedWidth >= placeholder.Width)
-        //        {
-        //            elementArea.Width = placeholder.Width;
-        //        }
-        //    }
-
-        //    //compact area height to placeholder if needed and possible
-        //    if (elementArea.Height > placeholder.Height)
-        //    {
-        //        double minAdjustedHeight = PossibleAdjustment.Min * elementArea.Height;
-        //        if (minAdjustedHeight > placeholder.Height)
-        //        {
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            elementArea.Height = placeholder.Height;
-        //        }
-        //    }
-        //    //stretch area height to placeholder if needed and possible
-        //    else
-        //    {
-        //        double maxAdjustedHeight = PossibleAdjustment.Max * Height;
-        //        if (maxAdjustedHeight >= placeholder.Height)
-        //        {
-        //            elementArea.Height = placeholder.Height;
-        //        }
-        //    }
-
-        //    //set area position
-        //    elementArea.X = placeholder.X;
-        //    elementArea.Y = placeholder.Y;
-        //    return true;
-        //}
     }
 }
