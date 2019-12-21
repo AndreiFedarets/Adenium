@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,8 +8,8 @@ namespace Adenium.Controls
     public class AutoPanel : Panel
     {
         //private const int ElementsSpace = 1; // space between elements, must be >= 0
-        private static readonly Range PossibleElementAdjustment;
-        private static readonly Range PossibleAspectRationScale;
+        private static readonly Point PossibleElementAdjustment;
+        private static readonly Point PossibleAspectRationScale;
         public static DependencyProperty AreaProperty;
         private readonly List<UIElement> _measuredElements;
         private double _initialAspectRatio;
@@ -18,8 +17,8 @@ namespace Adenium.Controls
 
         static AutoPanel()
         {
-            PossibleElementAdjustment = new Range(0.7f, 1.3f);
-            PossibleAspectRationScale = new Range(0.9f, 1.1f);
+            PossibleElementAdjustment = new Point(0.9f, 1.1f);
+            PossibleAspectRationScale = new Point(0.9f, 1.1f);
             AreaProperty = DependencyProperty.RegisterAttached("Area", typeof(Rect), typeof(AutoPanel), new PropertyMetadata(default(Rect)));
         }
 
@@ -92,8 +91,8 @@ namespace Adenium.Controls
                 return false;
             }
             double currentAspectRatio = _previousDesiredArea.Width / _previousDesiredArea.Height;
-            return currentAspectRatio * PossibleAspectRationScale.Min < _initialAspectRatio &&
-                   currentAspectRatio * PossibleAspectRationScale.Max > _initialAspectRatio;
+            return currentAspectRatio * PossibleAspectRationScale.X < _initialAspectRatio &&
+                   currentAspectRatio * PossibleAspectRationScale.Y > _initialAspectRatio;
         }
 
         private bool VerifyAllElementsMeasured()
@@ -411,7 +410,7 @@ namespace Adenium.Controls
             //check placeholder width fits element desired width
             if (placeholder.Width < elementSize.Width)
             {
-                double minPossibleWidth = PossibleElementAdjustment.Min * elementSize.Width;
+                double minPossibleWidth = PossibleElementAdjustment.X * elementSize.Width;
                 if (placeholder.Width < minPossibleWidth)
                 {
                     return default(Rect);
@@ -420,7 +419,7 @@ namespace Adenium.Controls
             //compact placeholder to element desired width if needed and possible
             else
             {
-                double maxPossibleWidth = PossibleElementAdjustment.Max * elementSize.Width;
+                double maxPossibleWidth = PossibleElementAdjustment.Y * elementSize.Width;
                 if (placeholder.Width > maxPossibleWidth)
                 {
                     placeholder.Width = elementSize.Width;
@@ -430,7 +429,7 @@ namespace Adenium.Controls
             //check placeholder height fits element desired height
             if (placeholder.Height < elementSize.Height)
             {
-                double minPossibleHeight = PossibleElementAdjustment.Min * elementSize.Height;
+                double minPossibleHeight = PossibleElementAdjustment.X * elementSize.Height;
                 if (placeholder.Height < minPossibleHeight)
                 {
                     return default(Rect);
@@ -439,7 +438,7 @@ namespace Adenium.Controls
             //compact placeholder to element desired height if needed and possible
             else
             {
-                double maxPossibleHeight = PossibleElementAdjustment.Max * elementSize.Height;
+                double maxPossibleHeight = PossibleElementAdjustment.Y * elementSize.Height;
                 if (placeholder.Height > maxPossibleHeight)
                 {
                     placeholder.Height = elementSize.Height;

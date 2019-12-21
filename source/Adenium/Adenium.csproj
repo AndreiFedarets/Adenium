@@ -77,7 +77,6 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controls\_Generic\AutoPanel.cs" />
-    <Compile Include="Controls\_Generic\_Internal\old\Range.cs" />
     <Compile Include="Controls\_Specialized\ViewItem.cs" />
     <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
