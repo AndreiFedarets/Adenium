@@ -19,7 +19,7 @@ namespace Adenium.Controls
         static AutoPanel()
         {
             PossibleElementAdjustment = new Range(0.7f, 1.3f);
-            PossibleAspectRationScale = new Range(0.8f, 1.2f);
+            PossibleAspectRationScale = new Range(0.9f, 1.1f);
             AreaProperty = DependencyProperty.RegisterAttached("Area", typeof(Rect), typeof(AutoPanel), new PropertyMetadata(default(Rect)));
         }
 
@@ -57,7 +57,7 @@ namespace Adenium.Controls
             {
                 measureArea = new Rect(new Point(0, 0), availableSize);
                 //TODO: get current screen aspect ratio
-                aspectRatio = 4f / 3f; 
+                aspectRatio = System.Windows.SystemParameters.PrimaryScreenWidth / System.Windows.SystemParameters.PrimaryScreenHeight; 
             }
             else if (double.IsPositiveInfinity(availableSize.Width) || double.IsPositiveInfinity(availableSize.Height))
             {
@@ -158,14 +158,17 @@ namespace Adenium.Controls
 
                     placeholders.Clear();
                     Point topRightPoint = new Point(elementArea.TopRight.X, elementArea.TopRight.Y);
-                    BuildPlaceholder(topRightPoint, desiredArea, placeholders);
+                    Rect topRight = BuildPlaceholder(topRightPoint, desiredArea, placeholders);
+                    if (topRight != default(Rect))
+                    {
+                        elementArea.Width = elementArea.Width + topRight.Width;
+                    }
 
                     Point bottomLeftPoint = new Point(elementArea.BottomLeft.X, elementArea.BottomLeft.Y);
-                    BuildPlaceholder(bottomLeftPoint, desiredArea, placeholders);
-
-                    foreach (Rect placeholder in placeholders)
+                    Rect bottomLeft = BuildPlaceholder(bottomLeftPoint, desiredArea, placeholders);
+                    if (bottomLeft != default(Rect))
                     {
-                        elementArea = Rect.Union(elementArea, placeholder);
+                        elementArea.Height = elementArea.Height + bottomLeft.Height;
                     }
                     element.Measure(elementArea.Size);
                     SetAreaProperty(element, elementArea);
@@ -214,22 +217,30 @@ namespace Adenium.Controls
                 Rect elementArea = GetAreaProperty(element);
 
                 Point topRightPoint = new Point(elementArea.TopRight.X, elementArea.TopRight.Y);
-                BuildPlaceholder(topRightPoint, availableArea, placeholders);
+                Rect topRight = BuildPlaceholder(topRightPoint, availableArea, placeholders);
+                if (topRight != default(Rect))
+                {
+                    placeholders.Add(topRight);
+                }
 
                 Point bottomLeftPoint = new Point(elementArea.BottomLeft.X, elementArea.BottomLeft.Y);
-                BuildPlaceholder(bottomLeftPoint, availableArea, placeholders);
+                Rect bottomLeft = BuildPlaceholder(bottomLeftPoint, availableArea, placeholders);
+                if (bottomLeft != default(Rect))
+                {
+                    placeholders.Add(bottomLeft);
+                }
             }
             return placeholders;
         }
 
-        private void BuildPlaceholder(Point location, Rect availableArea, List<Rect> placeholders)
+        private Rect BuildPlaceholder(Point location, Rect availableArea, List<Rect> placeholders)
         {
             const double offset = 0.1;
             Point checkPoint = new Point(location.X + offset, location.Y + offset);
             //verify if this location is out of available area space
             if (!availableArea.Contains(checkPoint))
             {
-                return;
+                return default(Rect);
             }
             //verify if this location is already used by another element
             foreach (UIElement element in _measuredElements)
@@ -237,7 +248,7 @@ namespace Adenium.Controls
                 Rect elementArea = GetAreaProperty(element);
                 if (elementArea.Contains(checkPoint))
                 {
-                    return;
+                    return default(Rect);
                 }
             }
             //verify if this location is already included into existing placeholder
@@ -245,7 +256,7 @@ namespace Adenium.Controls
             {
                 if (placeholder.Contains(checkPoint))
                 {
-                    return;
+                    return default(Rect);
                 }
             }
             //create raw placeholder
@@ -254,7 +265,7 @@ namespace Adenium.Controls
             // placeholder could became Rect.Empty because it goes outside of availableArea
             if (newPlaceholder == Rect.Empty)
             {
-                return;
+                return default(Rect);
             }
             //calculate placeholder width and height
             foreach (UIElement element in _measuredElements)
@@ -294,7 +305,7 @@ namespace Adenium.Controls
                     i--;
                 }
             }
-            placeholders.Add(newPlaceholder);
+            return newPlaceholder;
         }
 
         private Rect GetPlaceholder(Point location, Rect availableArea)
