@@ -1,4 +1,5 @@
-﻿using Adenium.ViewModels;
+﻿using Adenium.Layouts;
+using Adenium.ViewModels;
 using Adenium.Views;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,9 +37,10 @@ namespace Adenium.Controls
             if (viewItem.ViewModel != null)
             {
                 view = ViewManager.LocateViewForViewModel(viewItem.ViewModel);
+                IItemsViewModel parent = viewItem.ViewModel.Parent;
+                viewItem.DisplayPanel = parent != null && parent.DisplayMode == DisplayMode.Grid;
             }
             viewItem.Content = view;
-            viewItem.DisplayPanel = true;
         }
     }
 }

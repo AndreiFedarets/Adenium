@@ -6,7 +6,12 @@ namespace Adenium.ViewModels
     {
         public virtual void Dispose()
         {
+            
+        }
 
+        public new IItemsViewModel Parent
+        {
+            get { return base.Parent as IItemsViewModel; }
         }
     }
 }

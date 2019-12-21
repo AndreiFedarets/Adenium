@@ -1,8 +1,8 @@
 ﻿namespace Adenium.Sample.Views
 {
-    public partial class SampleTabView
+    public partial class SampleItemsView
     {
-        public SampleTabView()
+        public SampleItemsView()
         {
             InitializeComponent();
         }

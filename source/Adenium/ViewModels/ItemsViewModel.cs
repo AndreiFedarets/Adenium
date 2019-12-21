@@ -9,17 +9,31 @@ using System.Linq;
 
 namespace Adenium.ViewModels
 {
-    public abstract class ItemsViewModel : Conductor<IViewModel>.Collection.OneActive, IViewModel, IEnumerable<IViewModel>, IRequireDependencyContainer
+    public abstract class ItemsViewModel : Conductor<IViewModel>.Collection.OneActive, IItemsViewModel, IRequireDependencyContainer
     {
         private readonly ContractCollection _contracts;
+        private DisplayMode _displayMode;
 
         protected ItemsViewModel()
         {
-            DisplayMode = DisplayMode.Tab;
+            _displayMode = DisplayMode.Tab;
             _contracts = new ContractCollection(this);
         }
 
-        public virtual DisplayMode DisplayMode { get; protected set; }
+        public DisplayMode DisplayMode
+        {
+            get { return _displayMode; }
+            set
+            {
+                _displayMode = value;
+                NotifyOfPropertyChange(() => DisplayMode);
+            }
+        }
+
+        public new IItemsViewModel Parent
+        {
+            get { return base.Parent as IItemsViewModel; }
+        }
 
         protected IDependencyContainer DependencyContainer { get; private set; }
 

@@ -15,6 +15,24 @@ namespace Adenium.ViewModels
             _container = container;
         }
 
+        public string CodeName
+        {
+            get
+            {
+                Type viewModelType = _layoutItem.Type;
+                string codeName = string.Empty;
+                if (viewModelType != null)
+                {
+                    ViewModelAttribute attribute = ViewModelAttribute.GetAttribute(viewModelType);
+                    if (attribute != null)
+                    {
+                        codeName = attribute.CodeName;
+                    }
+                }
+                return codeName;
+            }
+        }
+
         public ActivationMode ActivationMode
         {
             get { return _layoutItem.ActivationMode; }

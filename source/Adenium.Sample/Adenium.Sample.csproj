@@ -60,16 +60,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SampleTabViewModel.cs" />
-    <Compile Include="ViewModels\SampleGridViewModel.cs" />
+    <Compile Include="ViewModels\SampleItemsViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SampleTabView.xaml.cs">
-      <DependentUpon>SampleTabView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SampleGridView.xaml.cs">
-      <DependentUpon>SampleGridView.xaml</DependentUpon>
+    <Compile Include="Views\SampleItemsView.xaml.cs">
+      <DependentUpon>SampleItemsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -80,11 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SampleTabView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SampleGridView.xaml">
+    <Page Include="Views\SampleItemsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -107,9 +99,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Layouts\Adenium.Sample.Grid.layout">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Layouts\Application.layout">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -120,7 +109,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Layouts\Adenium.Sample.Tab.layout">
+    <None Include="Layouts\Adenium.Sample.LayoutedItems.layout">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

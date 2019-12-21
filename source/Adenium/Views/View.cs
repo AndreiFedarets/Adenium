@@ -43,10 +43,31 @@ namespace Adenium.Views
             }
         }
 
+        private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            ItemsViewModel itemsViewModel = ViewModel as ItemsViewModel;
+            if (itemsViewModel != null)
+            {
+                if (string.Equals(nameof(itemsViewModel.DisplayMode), e.PropertyName, StringComparison.Ordinal))
+                {
+                    RenderContent();
+                }
+            }
+        }
+
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            View view = (View) sender;
-            view.RenderContent();
+            IViewModel previousViewModel = e.OldValue as IViewModel;
+            if (previousViewModel != null)
+            {
+                previousViewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            }
+            IViewModel newViewModel = e.NewValue as IViewModel;
+            if (newViewModel != null)
+            {
+                newViewModel.PropertyChanged += OnViewModelPropertyChanged;
+            }
+            RenderContent();
         }
     }
 }

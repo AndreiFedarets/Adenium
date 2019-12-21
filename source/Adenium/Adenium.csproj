@@ -81,6 +81,7 @@
     <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
     <Compile Include="Extensions\_Internal\ViewModelExtensions.cs" />
+    <Compile Include="ViewModels\IItemsViewModel.cs" />
     <Compile Include="ViewModels\_Internal\IRequireDependencyContainer.cs" />
     <Compile Include="_Internal\AssemblyResolver.cs" />
     <Compile Include="_Internal\WindowManager.cs" />

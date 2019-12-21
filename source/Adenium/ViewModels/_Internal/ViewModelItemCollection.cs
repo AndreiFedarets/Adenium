@@ -14,7 +14,14 @@ namespace Adenium.ViewModels
 
         public ViewModelItem FindByName(string viewModelName)
         {
-            throw new NotImplementedException();
+            foreach (ViewModelItem item in Items)
+            {
+                if (string.Equals(item.CodeName, viewModelName, StringComparison.Ordinal))
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
         private static List<ViewModelItem> BuildViewModelItems(IEnumerable<LayoutItem> layoutItems, IDependencyContainer container)

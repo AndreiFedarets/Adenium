@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Adenium.ViewModels
 {
@@ -15,8 +14,12 @@ namespace Adenium.ViewModels
         public static ViewModelAttribute GetAttribute(IViewModel viewModel)
         {
             Type viewModelType = viewModel.GetType();
-            object[] attributes = viewModelType.GetCustomAttributes(typeof(ViewModelAttribute), true);
-            ViewModelAttribute attribute = (ViewModelAttribute)attributes.FirstOrDefault();
+            return GetAttribute(viewModelType);
+        }
+
+        public static ViewModelAttribute GetAttribute(Type viewModelType)
+        {
+            ViewModelAttribute attribute = (ViewModelAttribute)GetCustomAttribute(viewModelType, typeof(ViewModelAttribute), true);
             return attribute;
         }
     }

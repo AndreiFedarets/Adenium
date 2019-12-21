@@ -1,26 +1,20 @@
-﻿using System;
-using Adenium.ViewModels;
+﻿using Adenium.ViewModels;
 
 namespace Adenium.Sample.ViewModels
 {
-    public class MainViewModel : LayoutedItemsViewModel
+    public class MainViewModel : ViewModel
     {
         private readonly IViewModelManager _viewModelManager;
 
         public MainViewModel(IViewModelManager viewModelManager)
         {
             _viewModelManager = viewModelManager;
-            DisplayName = "Main View";
-        }
-        
-        public void OpenGridView()
-        {
-            ActivateItem("Adenium.Sample.Grid");
+            DisplayName = "Main";
         }
 
-        public void OpenTabView()
+        public void OpenSampleItemsView()
         {
-            ActivateItem("Adenium.Sample.Tab");
+            _viewModelManager.Activate("Adenium.Sample.LayoutedItems");
         }
     }
 }
