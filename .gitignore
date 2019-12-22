@@ -1,6 +1,6 @@
 /build
-/packages
 /source/.vs
+/source/packages
 /source/Adenium/obj
 /source/Adenium/bin
 /source/Adenium.Sample/obj
