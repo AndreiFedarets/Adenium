@@ -3,7 +3,7 @@ using System;
 
 namespace Adenium.ViewModels
 {
-    public interface IViewModel : INotifyPropertyChangedEx, IDisposable
+    public interface IViewModel : INotifyPropertyChangedEx, IDisposableEx
     {
         IItemsViewModel Parent { get; }
 

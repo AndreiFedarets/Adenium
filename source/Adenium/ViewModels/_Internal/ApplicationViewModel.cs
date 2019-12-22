@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using System;
 
 namespace Adenium.ViewModels
 {
@@ -39,6 +40,8 @@ namespace Adenium.ViewModels
                 IViewModel viewModel = (IViewModel)sender;
                 viewModel.Deactivated -= OnItemDeactivated;
                 Items.Remove(viewModel);
+                IDisposable disposable = viewModel as IDisposable;
+                disposable?.Dispose();
             }
         }
     }

@@ -46,6 +46,7 @@ namespace Adenium.ViewModels
                     if (_viewModel == null)
                     {
                         _viewModel = CreateViewModel();
+                        _viewModel.Disposed += OnSingleViewModelDisposed;
                     }
                     return _viewModel;
                 case InstanceMode.Multiple:
@@ -53,6 +54,12 @@ namespace Adenium.ViewModels
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        private void OnSingleViewModelDisposed(object sender, EventArgs e)
+        {
+            _viewModel.Disposed -= OnSingleViewModelDisposed;
+            _viewModel = null;
         }
 
         private IViewModel CreateViewModel()

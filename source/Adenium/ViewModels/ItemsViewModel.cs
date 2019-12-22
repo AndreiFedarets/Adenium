@@ -2,6 +2,7 @@
 using Adenium.Extensions;
 using Adenium.Layouts;
 using Caliburn.Micro;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -43,6 +44,8 @@ namespace Adenium.ViewModels
             remove { Items.CollectionChanged -= value; }
         }
 
+        public event EventHandler Disposed;
+
         public virtual bool ActivateItem(string childCodeName)
         {
             IViewModel targetViewModel = Items.FirstOrDefault(x => x.AreCodeNameEquals(childCodeName));
@@ -79,6 +82,7 @@ namespace Adenium.ViewModels
         public virtual void Dispose()
         {
             _contracts.Dispose();
+            Disposed?.Invoke(this, EventArgs.Empty);
         }
 
         public IEnumerator<IViewModel> GetEnumerator()

@@ -1,17 +1,21 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 
 namespace Adenium.ViewModels
 {
     public abstract class ViewModel : Screen, IViewModel
     {
-        public virtual void Dispose()
-        {
-            
-        }
-
         public new IItemsViewModel Parent
         {
             get { return base.Parent as IItemsViewModel; }
         }
+
+        public event EventHandler Disposed;
+
+        public virtual void Dispose()
+        {
+            Disposed?.Invoke(this, EventArgs.Empty);
+        }
+
     }
 }
