@@ -10,7 +10,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  sourcesPath: '$(Build.SourcesDirectory)\source'
+  solution: '$(sourcesPath)\Adenuim.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -19,6 +20,7 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
+    nugetConfigPath: '$(sourcesPath)\nuget.config'
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
