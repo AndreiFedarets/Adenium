@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Adenium</id>
+    <version>0.1.0.0</version>
+    <title>Adenium</title>
+    <authors>Andrei Fedarets</authors>
+    <owners>Andrei Fedarets</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>https://github.com/AndreiFedarets/Adenium</projectUrl>
+    <description>Composite UI library for WPF</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>CompositeUI UILayouting Composite UI Layouting Adenuim WPF</tags>
+    <dependencies>
+      <group>
+        <dependency id="Caliburn.Micro" version="3.0.0" />
+        <dependency id="Unity.Container" version="5.0.0" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
