@@ -99,7 +99,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="Layouts\Application.layout">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

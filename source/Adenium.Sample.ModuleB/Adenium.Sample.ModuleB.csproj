@@ -58,7 +58,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Layouts\Adenium.Sample.LayoutedItems.attachment">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
