@@ -34,6 +34,5 @@ namespace Adenium.Extensions
         {
             return string.Equals(codeName1, codeName2, StringComparison.InvariantCulture);
         }
-
     }
 }

@@ -21,6 +21,10 @@ namespace Adenium.ViewModels
 
         public override void ActivateItem(IViewModel item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
             bool newItem = !Items.Contains(item);
             if (newItem)
             {

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{01373792-7E44-4565-9A48-3F8C65C08AC1}</ProjectGuid>
+    <ProjectGuid>{49B00DDD-1A1A-4CAF-890E-F974B97BE028}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Adenium.Sample.ModuleC</RootNamespace>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\ModuleC\</OutputPath>
+    <OutputPath>..\..\..\build\debug\net40\ModuleC\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,14 +25,15 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\build\ModuleC\</OutputPath>
+    <OutputPath>..\..\..\build\release\net40\ModuleC\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.Core.3.2.0\lib\net40\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\..\packages\Caliburn.Micro.Core.3.2.0\lib\net40\Caliburn.Micro.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -43,31 +44,35 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\SampleViewModel.cs" />
-    <Compile Include="Views\SampleView.xaml.cs">
+    <Compile Include="..\..\common\Adenium.Sample.ModuleC\ViewModels\SampleViewModel.cs">
+      <Link>ViewModels\SampleViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Adenium.Sample.ModuleC\Views\SampleView.xaml.cs">
+      <Link>Views\SampleView.xaml.cs</Link>
       <DependentUpon>SampleView.xaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\Adenium\Adenium.csproj">
-      <Project>{8abfd019-e257-4896-a31c-cf180936d329}</Project>
-      <Name>Adenium</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Layouts\Adenium.Sample.LayoutedItems.attachment">
+    <Page Include="..\..\common\Adenium.Sample.ModuleC\Views\SampleView.xaml">
+      <Link>Views\SampleView.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\common\Adenium.Sample.ModuleC\Layouts\Adenium.Sample.LayoutedItems.attachment">
+      <Link>Layouts\Adenium.Sample.LayoutedItems.attachment</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\SampleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <ProjectReference Include="..\Adenium\Adenium.csproj">
+      <Project>{2c5bdbba-8939-4f15-b353-aeca6bf1bc1a}</Project>
+      <Name>Adenium</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

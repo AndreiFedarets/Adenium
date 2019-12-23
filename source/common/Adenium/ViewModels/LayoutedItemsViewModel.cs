@@ -46,7 +46,10 @@ namespace Adenium.ViewModels
             {
                 ActivateItem(viewModelItem);
             }
-            ActiveItem = Items.FirstOrDefault();
+            if (Items.Any())
+            {
+                ActiveItem = Items.First();
+            }
         }
 
         private void ActivateItem(ViewModelItem viewModelItem)
