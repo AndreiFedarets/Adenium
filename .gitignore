@@ -2,8 +2,8 @@
 /build
 /source/.vs
 /source/packages
-/source/net40/Adenium/obj
-/source/net40/Adenium.Sample/obj
-/source/net40/Adenium.Sample.ModuleA/obj
-/source/net40/Adenium.Sample.ModuleB/obj
-/source/net40/Adenium.Sample.ModuleC/obj
+/source/net40/Layex/obj
+/source/net40/Layex.Sample/obj
+/source/net40/Layex.Sample.ModuleA/obj
+/source/net40/Layex.Sample.ModuleB/obj
+/source/net40/Layex.Sample.ModuleC/obj

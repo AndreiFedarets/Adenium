@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2C5BDBBA-8939-4F15-B353-AECA6BF1BC1A}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Layex</RootNamespace>
+    <AssemblyName>Layex</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\build\debug\net40\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\build\release\net40\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Properties\StrongName.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Caliburn.Micro.Core.3.2.0\lib\net40\Caliburn.Micro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net40\Caliburn.Micro.Platform.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Caliburn.Micro.3.2.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="Unity.Abstractions, Version=5.11.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.5.11.2\lib\net40\Unity.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.5.11.2\lib\net40\Unity.Container.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\common\Layex\Bootstrapper.cs">
+      <Link>Bootstrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Contracts\ContractBase.cs">
+      <Link>Contracts\ContractBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Contracts\ContractCollection.cs">
+      <Link>Contracts\ContractCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Contracts\EnableContractAttribute.cs">
+      <Link>Contracts\EnableContractAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Contracts\IContract.cs">
+      <Link>Contracts\IContract.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Contracts\IContractConsumer.cs">
+      <Link>Contracts\IContractConsumer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Contracts\IContractSource.cs">
+      <Link>Contracts\IContractSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Controls\_Generic\AutoPanel.cs">
+      <Link>Controls\_Generic\AutoPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Controls\_Generic\BlurlessImage.cs">
+      <Link>Controls\_Generic\BlurlessImage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Controls\_Generic\ColorImage.cs">
+      <Link>Controls\_Generic\ColorImage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Controls\_Generic\ImageButton.cs">
+      <Link>Controls\_Generic\ImageButton.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Controls\_Generic\TileButton.cs">
+      <Link>Controls\_Generic\TileButton.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Controls\_Specialized\ViewGridControl.cs">
+      <Link>Controls\_Specialized\ViewGridControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Controls\_Specialized\ViewItem.cs">
+      <Link>Controls\_Specialized\ViewItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Controls\_Specialized\ViewTabControl.cs">
+      <Link>Controls\_Specialized\ViewTabControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\DependencyContainer.cs">
+      <Link>DependencyContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Extensions\FrameworkElementExtensions.cs">
+      <Link>Extensions\FrameworkElementExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Extensions\XmlReaderExtension.cs">
+      <Link>Extensions\XmlReaderExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Extensions\_Internal\ViewModelExtensions.cs">
+      <Link>Extensions\_Internal\ViewModelExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\IBootstrapperEnvironment.cs">
+      <Link>IBootstrapperEnvironment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\IDependencyContainer.cs">
+      <Link>IDependencyContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\ActivationMode.cs">
+      <Link>Layouts\ActivationMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\Attachment.cs">
+      <Link>Layouts\Attachment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\DisplayMode.cs">
+      <Link>Layouts\DisplayMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\ILayoutManager.cs">
+      <Link>Layouts\ILayoutManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\InstanceMode.cs">
+      <Link>Layouts\InstanceMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\Layout.cs">
+      <Link>Layouts\Layout.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\LayoutItem.cs">
+      <Link>Layouts\LayoutItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\_Internal\ILayoutReader.cs">
+      <Link>Layouts\_Internal\ILayoutReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\_Internal\JsonLayoutReader.cs">
+      <Link>Layouts\_Internal\JsonLayoutReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\_Internal\LayoutManager.cs">
+      <Link>Layouts\_Internal\LayoutManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\_Internal\SmartLayoutReader.cs">
+      <Link>Layouts\_Internal\SmartLayoutReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\_Internal\XmlLayoutReader.cs">
+      <Link>Layouts\_Internal\XmlLayoutReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Themes\FontsAndColors.cs">
+      <Link>Themes\FontsAndColors.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\IDisposableEx.cs">
+      <Link>ViewModels\IDisposableEx.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\IItemsViewModel.cs">
+      <Link>ViewModels\IItemsViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\ItemsViewModel.cs">
+      <Link>ViewModels\ItemsViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\IViewModel.cs">
+      <Link>ViewModels\IViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\IViewModelManager.cs">
+      <Link>ViewModels\IViewModelManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\LayoutedItemsViewModel.cs">
+      <Link>ViewModels\LayoutedItemsViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\ViewModel.cs">
+      <Link>ViewModels\ViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\ViewModelAttribute.cs">
+      <Link>ViewModels\ViewModelAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\ViewModelEventArgs.cs">
+      <Link>ViewModels\ViewModelEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\ApplicationViewModel.cs">
+      <Link>ViewModels\_Internal\ApplicationViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\IRequireDependencyContainer.cs">
+      <Link>ViewModels\_Internal\IRequireDependencyContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\ViewModelItem.cs">
+      <Link>ViewModels\_Internal\ViewModelItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\ViewModelItemCollection.cs">
+      <Link>ViewModels\_Internal\ViewModelItemCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\ViewModelManager.cs">
+      <Link>ViewModels\_Internal\ViewModelManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Views\View.cs">
+      <Link>Views\View.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Views\_Internal\ViewManager.cs">
+      <Link>Views\_Internal\ViewManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\_Internal\AssemblyResolver.cs">
+      <Link>_Internal\AssemblyResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\_Internal\BootstrapperEnvironment.cs">
+      <Link>_Internal\BootstrapperEnvironment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\_Internal\WindowManager.cs">
+      <Link>_Internal\WindowManager.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Properties\StrongName.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\..\common\Layex\Images\Close.png">
+      <Link>Images\Close.png</Link>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\..\common\Layex\Themes\Generic.xaml">
+      <Link>Themes\Generic.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
