@@ -11,10 +11,10 @@ pool:
 
 variables:
   rootPath: '$(Build.SourcesDirectory)'
-  sourcesPath: '$(rootPath)/source'
-  buildPath: '$(rootPath)/build'
+  sourcesPath: '$(rootPath)\source'
+  buildPath: '$(rootPath)\build'
   destinationPath: '$(Build.ArtifactStagingDirectory)'
-  solutionNet40: '$(sourcesPath)/Layex.net40.sln'
+  solutionNet40: '$(sourcesPath)\Layex.net40.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   majorVersion: '0'
@@ -35,7 +35,7 @@ steps:
 - task: update-assembly-info@2
   displayName: 'Update Version'
   inputs:
-    assemblyInfoFiles: '$(sourcesPath)/net40/**/AssemblyInfo.cs'
+    assemblyInfoFiles: '$(sourcesPath)\net40\**\AssemblyInfo.cs'
     fileVersionMajor: $(majorVersion)
     fileVersionMinor: $(minorVersion)
     fileVersionBuild: $(buildVersion)
@@ -55,7 +55,7 @@ steps:
   displayName: 'Create Package'
   inputs:
     command: 'pack'
-    packagesToPack: '$(rootPath)/nuget.nuspec'
+    packagesToPack: '$(rootPath)\nuget.nuspec'
     configuration: '$(buildConfiguration)'
     versioningScheme: 'off'
     packDestination: '$(destinationPath)'
@@ -69,7 +69,7 @@ steps:
   inputs:
       nuGetServiceConnections: 'Nuget'
 
-- script: nuget push '$(destinationPath)/($nugetPackageName)' -ApiKey $(nuGetApiKey) -Source nuget.org
+- script: nuget push '$(destinationPath)\($nugetPackageName)' -ApiKey $(nuGetApiKey) -Source nuget.org
   displayName: 'Push Package (Nuget.org)'
 
 - task: NuGetCommand@2
