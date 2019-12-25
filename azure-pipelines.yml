@@ -13,6 +13,7 @@ variables:
   rootPath: '$(Build.SourcesDirectory)'
   sourcesPath: '$(rootPath)\source'
   buildPath: '$(rootPath)\build'
+  destinationPath: '$(Build.ArtifactStagingDirectory)'
   solutionNet40: '$(sourcesPath)\Layex.net40.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
@@ -58,13 +59,27 @@ steps:
     versioningScheme: 'off'
     packDestination: '$(buildPath)'
 
+- task: CopyFiles@2
+  displayName: 'Copy Nuget Package'
+  inputs:
+    SourceFolder: '$(buildPath)'
+    Contents: '**/*.nupkg'
+    TargetFolder: '$(destinationPath)'
+
 - task: NuGetCommand@2
   displayName: 'Publish Nuget Package'
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.SourcesDirectory)/build/**/*.nupkg;!$(Build.SourcesDirectory)/build/**/*.symbols.nupkg'
+    packagesToPush: '$(destinationPath)/*.nupkg;!$(destinationPath)/*.symbols.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: '0d52f31e-bc80-4c37-99fe-19802cd11cb0/c5ecfae1-ce0d-450b-b609-b53d998055ba'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
 
 - task: VSTest@2
   displayName: 'Run Tests'
