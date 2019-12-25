@@ -8,9 +8,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Layex")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Andrei Fedarets")]
-[assembly: AssemblyProduct("Layex")]
-[assembly: AssemblyCopyright("Copyright © 2019 Andrei Fedarets")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -34,5 +34,5 @@ using System.Windows;
                                       // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
