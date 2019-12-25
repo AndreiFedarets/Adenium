@@ -62,7 +62,7 @@ steps:
   displayName: 'Publish Nuget Package'
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.SourcesDirectory)/**/*.nupkg;!$(Build.SourcesDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '$(Build.SourcesDirectory)/build/**/*.nupkg;!$(Build.SourcesDirectory)/build/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: '0d52f31e-bc80-4c37-99fe-19802cd11cb0/c5ecfae1-ce0d-450b-b609-b53d998055ba'
 
