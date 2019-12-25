@@ -10,10 +10,16 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  sourcesPath: '$(Build.SourcesDirectory)\source'
+  rootPath: '$(Build.SourcesDirectory)'
+  sourcesPath: '$(rootPath)\source'
+  buildPath: '$(rootPath)\build'
   solutionNet40: '$(sourcesPath)\Layex.net40.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  majorVersion: '0'
+  minorVersion: '1'
+  buildVersion: '0'
+  revisionVersion: '0'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -27,21 +33,38 @@ steps:
 - task: update-assembly-info@2
   displayName: '[net40] Update Solution Version'
   inputs:
-    assemblyInfoFiles: '$(sourcesPath)\net40\SolutionInfo.cs'
-    fileVersionMajor: '0'
-    fileVersionMinor: '1'
-    fileVersionBuild: '1'
-    assemblyVersionMajor: '0'
-    assemblyVersionMinor: '1'
+    assemblyInfoFiles: '$(sourcesPath)\net40\**\AssemblyInfo.cs'
+    fileVersionMajor: $(majorVersion)
+    fileVersionMinor: $(minorVersion)
+    fileVersionBuild: $(buildVersion)
+    assemblyVersionMajor: $(majorVersion)
+    assemblyVersionMinor: '0'
     assemblyVersionBuild: '0'
     assemblyVersionRevision: '0'
 
 - task: VSBuild@1
-  displayName: '[net40] Build Solution'
+  displayName: '[net40] Build Solution Release'
   inputs:
     solution: '$(solutionNet40)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: NuGetCommand@2
+  displayName: 'Create Nuget Package'
+  inputs:
+    command: 'pack'
+    packagesToPack: '$(rootPath)\nuget.nuspec'
+    configuration: '$(buildConfiguration)'
+    versioningScheme: 'off'
+    packDestination: '$(buildPath)'
+
+- task: NuGetCommand@2
+  displayName: 'Publish Nuget Package'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(buildPath)\*.nupkg;!$(buildPath)\*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '0d52f31e-bc80-4c37-99fe-19802cd11cb0/c5ecfae1-ce0d-450b-b609-b53d998055ba'
 
 - task: VSTest@2
   displayName: 'Run Tests'
