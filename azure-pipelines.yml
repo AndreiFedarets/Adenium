@@ -65,6 +65,7 @@ steps:
     patchVersion: '$(buildVersion)'
 
 - task: NuGetAuthenticate@0
+  enabled: false
   inputs:
       nuGetServiceConnections: 'Nuget'
 
