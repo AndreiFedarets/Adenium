@@ -21,6 +21,7 @@ variables:
   minorVersion: '1'
   buildVersion: '0'
   revisionVersion: '0'
+  nugetPackageName: 'Layex.$(majorVersion).$(minorVersion).$(buildVersion).nupkg'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -59,17 +60,16 @@ steps:
     versioningScheme: 'off'
     packDestination: '$(destinationPath)'
     basePath: '$(rootPath)'
+    majorVersion: '$(majorVersion)'
+    minorVersion: '$(minorVersion)'
+    patchVersion: '$(buildVersion)'
 
 - task: NuGetAuthenticate@0
   inputs:
       nuGetServiceConnections: 'Nuget'
 
-- task: NuGetCommand@2
-  displayName: 'Push Nuget Package'
-  inputs:
-    command: 'push'
-    packagesToPush: '$(destinationPath)/*.nupkg;!$(destinationPath)/*.symbols.nupkg'
-    nuGetFeedType: 'external'
+- script: nuget push '$(destinationPath)/($nugetPackageName)' -ApiKey $(nuGetApiKey)
+  displayName: 'Push Nuget Package to Nuget.org'
 
 - task: NuGetCommand@2
   displayName: 'Push Nuget Package'
