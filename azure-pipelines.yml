@@ -11,10 +11,10 @@ pool:
 
 variables:
   rootPath: '$(Build.SourcesDirectory)'
-  sourcesPath: '$(rootPath)\source'
-  buildPath: '$(rootPath)\build'
+  sourcesPath: '$(rootPath)/source'
+  buildPath: '$(rootPath)/build'
   destinationPath: '$(Build.ArtifactStagingDirectory)'
-  solutionNet40: '$(sourcesPath)\Layex.net40.sln'
+  solutionNet40: '$(sourcesPath)/Layex.net40.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   majorVersion: '0'
@@ -34,7 +34,7 @@ steps:
 - task: update-assembly-info@2
   displayName: '[net40] Update Solution Version'
   inputs:
-    assemblyInfoFiles: '$(sourcesPath)\net40\**\AssemblyInfo.cs'
+    assemblyInfoFiles: '$(sourcesPath)/net40/**/AssemblyInfo.cs'
     fileVersionMajor: $(majorVersion)
     fileVersionMinor: $(minorVersion)
     fileVersionBuild: $(buildVersion)
@@ -54,20 +54,14 @@ steps:
   displayName: 'Create Nuget Package'
   inputs:
     command: 'pack'
-    packagesToPack: '$(rootPath)\nuget.nuspec'
+    packagesToPack: '$(rootPath)/nuget.nuspec'
     configuration: '$(buildConfiguration)'
     versioningScheme: 'off'
-    packDestination: '$(buildPath)'
-
-- task: CopyFiles@2
-  displayName: 'Copy Nuget Package'
-  inputs:
-    SourceFolder: '$(buildPath)'
-    Contents: '**/*.nupkg'
-    TargetFolder: '$(destinationPath)'
+    packDestination: '$(destinationPath)'
+    basePath: '$(rootPath)'
 
 - task: NuGetCommand@2
-  displayName: 'Publish Nuget Package'
+  displayName: 'Push Nuget Package'
   inputs:
     command: 'push'
     packagesToPush: '$(destinationPath)/*.nupkg;!$(destinationPath)/*.symbols.nupkg'
@@ -77,7 +71,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(destinationPath)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
