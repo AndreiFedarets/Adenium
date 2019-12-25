@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Layout>
-  <Item Type="Adenium.Sample.ViewModels.MainViewModel, Adenium.Sample" Instance="Single" Activation="OnStartup" Order="10" />
-  <Item Type="Adenium.Sample.ViewModels.SampleItemsViewModel, Adenium.Sample" Instance="Single" Activation="OnDemand" Order="20" />
-</Layout>

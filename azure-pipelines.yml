@@ -11,7 +11,7 @@ pool:
 
 variables:
   sourcesPath: '$(Build.SourcesDirectory)\source'
-  solution: '$(sourcesPath)\Adenium.sln'
+  solutionNet40: '$(sourcesPath)\Layex.net40.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -22,12 +22,12 @@ steps:
 - task: NuGetCommand@2
   displayName: 'Restore Nuget Packages'
   inputs:
-    restoreSolution: '$(solution)'
+    restoreSolution: '$(solutionNet40)'
 
 - task: VSBuild@1
-  displayName: 'Build Solution'
+  displayName: 'Build .NET 4.0 Solution'
   inputs:
-    solution: '$(solution)'
+    solution: '$(solutionNet40)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 

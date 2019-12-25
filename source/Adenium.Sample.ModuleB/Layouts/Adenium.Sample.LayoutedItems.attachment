@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Attachment>
-  <Item Type="Adenium.Sample.ModuleB.ViewModels.SampleViewModel, Adenium.Sample.ModuleB" Instance="Single" Activation="OnStartup" Order="20" />
-</Attachment>

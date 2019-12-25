@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Attachment>
+  <Item Type="Layex.Sample.ModuleA.ViewModels.SampleViewModel, Layex.Sample.ModuleA" Instance="Single" Activation="OnStartup" Order="0" />
+</Attachment>
