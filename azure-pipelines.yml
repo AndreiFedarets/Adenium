@@ -25,7 +25,7 @@ steps:
     restoreSolution: '$(solutionNet40)'
 
 - task: VSBuild@1
-  displayName: 'Build .NET 4.0 Solution'
+  displayName: 'Build NET40 Solution'
   inputs:
     solution: '$(solutionNet40)'
     platform: '$(buildPlatform)'
