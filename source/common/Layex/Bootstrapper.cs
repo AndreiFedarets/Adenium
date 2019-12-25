@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Layex
 {
-    public abstract class Bootstrapper : Caliburn.Micro.B BootstrapperBase
+    public abstract class Bootstrapper : BootstrapperBase
     {
         protected readonly IDependencyContainer Container;
 

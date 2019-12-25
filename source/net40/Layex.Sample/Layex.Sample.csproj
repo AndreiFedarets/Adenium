@@ -62,10 +62,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    <Compile Include="..\..\common\Layex.Sample\App.xaml.cs">
+      <Link>App.xaml.cs</Link>
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="..\..\common\Layex.Sample\Bootstrapper.cs">
       <Link>Bootstrapper.cs</Link>
     </Compile>
@@ -82,10 +82,6 @@
     <Compile Include="..\..\common\Layex.Sample\Views\SampleItemsView.xaml.cs">
       <Link>Views\SampleItemsView.xaml.cs</Link>
       <DependentUpon>SampleItemsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +117,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ApplicationDefinition Include="..\..\common\Layex.Sample\App.xaml">
+      <Link>App.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
     <Page Include="..\..\common\Layex.Sample\Views\MainView.xaml">
       <Link>Views\MainView.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
