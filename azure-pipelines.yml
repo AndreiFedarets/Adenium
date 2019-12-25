@@ -24,8 +24,20 @@ steps:
   inputs:
     restoreSolution: '$(solutionNet40)'
 
+- task: update-assembly-info@2
+  displayName: '[net40] Update Solution Version'
+  inputs:
+    assemblyInfoFiles: '$(sourcesPath)\net40\SolutionInfo.cs'
+    fileVersionMajor: '0'
+    fileVersionMinor: '1'
+    fileVersionBuild: '1'
+    assemblyVersionMajor: '0'
+    assemblyVersionMinor: '1'
+    assemblyVersionBuild: '0'
+    assemblyVersionRevision: '0'
+
 - task: VSBuild@1
-  displayName: 'Build NET40 Solution'
+  displayName: '[net40] Build Solution'
   inputs:
     solution: '$(solutionNet40)'
     platform: '$(buildPlatform)'
