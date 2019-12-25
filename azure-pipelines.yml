@@ -60,8 +60,20 @@ steps:
     packDestination: '$(destinationPath)'
     basePath: '$(rootPath)'
 
+- task: NuGetAuthenticate@0
+  inputs:
+      nuGetServiceConnections: 'Nuget'
+
 - task: NuGetCommand@2
   displayName: 'Push Nuget Package'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(destinationPath)/*.nupkg;!$(destinationPath)/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+
+- task: NuGetCommand@2
+  displayName: 'Push Nuget Package'
+  enabled: false
   inputs:
     command: 'push'
     packagesToPush: '$(destinationPath)/*.nupkg;!$(destinationPath)/*.symbols.nupkg'
