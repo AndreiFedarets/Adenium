@@ -33,7 +33,7 @@ steps:
     restoreSolution: '$(solutionNet40)'
 
 - task: update-assembly-info@2
-  displayName: '[net40] Update Solution Version'
+  displayName: 'Update Version'
   inputs:
     assemblyInfoFiles: '$(sourcesPath)/net40/**/AssemblyInfo.cs'
     fileVersionMajor: $(majorVersion)
@@ -45,14 +45,14 @@ steps:
     assemblyVersionRevision: '0'
 
 - task: VSBuild@1
-  displayName: '[net40] Build Solution Release'
+  displayName: 'Build Solution'
   inputs:
     solution: '$(solutionNet40)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
 - task: NuGetCommand@2
-  displayName: 'Create Nuget Package'
+  displayName: 'Create Package'
   inputs:
     command: 'pack'
     packagesToPack: '$(rootPath)/nuget.nuspec'
@@ -69,11 +69,11 @@ steps:
   inputs:
       nuGetServiceConnections: 'Nuget'
 
-- script: nuget push '$(destinationPath)/($nugetPackageName)' -ApiKey $(nuGetApiKey) -Source 'https://api.nuget.org/v3/index.json'
-  displayName: 'Push Nuget Package to Nuget.org'
+- script: nuget push '$(destinationPath)/($nugetPackageName)' -ApiKey $(nuGetApiKey) -Source nuget.org
+  displayName: 'Push Package (Nuget.org)'
 
 - task: NuGetCommand@2
-  displayName: 'Push Nuget Package'
+  displayName: 'Push Package (AzureDevOps)'
   enabled: false
   inputs:
     command: 'push'
