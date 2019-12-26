@@ -37,5 +37,27 @@
             }
             Children.Invalidate();
         }
+
+        internal override void Initialize(IViewModel ownerViewModel)
+        {
+            base.Initialize(ownerViewModel);
+            foreach (MenuControl control in _collection)
+            {
+                control.Initialize(ownerViewModel);
+            }
+        }
+
+        internal override void Merge(MenuControl control)
+        {
+            base.Merge(control);
+            MenuControlCollection controlCollection = control as MenuControlCollection;
+            if (controlCollection != null)
+            {
+                foreach (MenuControl childControl in controlCollection.Cast<MenuControl>())
+                {
+                    Add(childControl);
+                }
+            }
+        }
     }
 }
