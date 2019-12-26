@@ -14,11 +14,22 @@ namespace Layex.ViewModels
     {
         private readonly ContractCollection _contracts;
         private DisplayMode _displayMode;
+        private bool _isStatic;
 
         protected ItemsViewModel()
         {
             _displayMode = DisplayMode.Tab;
             _contracts = new ContractCollection(this);
+        }
+
+        public bool IsStatic
+        {
+            get { return _isStatic; }
+            set
+            {
+                _isStatic = value;
+                NotifyOfPropertyChange(() => IsStatic);
+            }
         }
 
         public DisplayMode DisplayMode
@@ -74,6 +85,10 @@ namespace Layex.ViewModels
         {
             if (close)
             {
+                if (item.IsStatic)
+                {
+                    return;
+                }
                 _contracts.UnregisterItem(item);
             }
             base.DeactivateItem(item, close);

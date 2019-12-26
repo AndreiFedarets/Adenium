@@ -17,6 +17,7 @@ namespace Layex.Layouts
         private const string ActivationModeAttributeName = "Activation";
         private const string InstanceModeAttributeName = "Instance";
         private const string OrderAttributeName = "Order";
+        private const string IsStaticAttributeName = "IsStatic";
 
         public bool SupportsContentType(string layoutContent)
         {
@@ -134,6 +135,7 @@ namespace Layex.Layouts
             InstanceMode instanceMode = InstanceMode.Multiple;
             ActivationMode activationMode = ActivationMode.OnStartup;
             int order = 0;
+            bool? isStatic = null;
             //Read <Item> attributes
             while (reader.MoveToNextAttribute())
             {
@@ -151,9 +153,13 @@ namespace Layex.Layouts
                     case OrderAttributeName:
                         order = reader.ReadContentAsInt();
                         break;
+                    case IsStaticAttributeName:
+                        string isStaticValue = reader.ReadContentAsString();
+                        isStatic = bool.Parse(isStaticValue);
+                        break;
                 }
             }
-            LayoutItem layoutItem = new LayoutItem(viewModelTypeName, activationMode, instanceMode, order);
+            LayoutItem layoutItem = new LayoutItem(viewModelTypeName, activationMode, instanceMode, order, isStatic);
             return layoutItem;
         }
 

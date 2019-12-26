@@ -8,7 +8,15 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0" HorizontalAlignment="Right" ItemsSource="{Binding AvailableDisplayModes}" SelectedItem="{Binding DisplayMode}" />
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" Content="Reset" x:Name="ResetItems" />
+            <ComboBox Grid.Column="2" ItemsSource="{Binding AvailableDisplayModes}" SelectedItem="{Binding DisplayMode}" />
+        </Grid>
         <ContentControl x:Name="ViewContent" Grid.Row="1" />
     </Grid>
 </v:View>
