@@ -59,6 +59,13 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: FileTransform@2
+  displayName: 'Package Properties Update'
+  inputs:
+    folderPath: '$(sourcesDirectory)'
+    xmlTransformationRules: ''
+    xmlTargetFiles: 'nuget.nuspec'
+
 - task: NuGetCommand@2
   displayName: 'Package Create'
   inputs:
