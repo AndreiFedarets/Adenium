@@ -10,12 +10,16 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  majorVersion: '0'
-  minorVersion: '1'
+  majorVersion: '1'
+  minorVersion: '0'
   buildVersion: '$(Build.BuildId)'
   revisionVersion: '0'
+  suffixVersion: '-alpha'
   companyName: 'Andrei Fedarets'
   productName: 'Layex'
+  productDescription: 'WPF Composite UI library based on Caliburn.Micro'
+  productCopyright: 'Copyright 2019 (C) Andrei Fedarets'
+  productUrl: 'https://github.com/AndreiFedarets/layex'
   solution: '**/*.sln'
   sourcesDirectory: '$(Build.SourcesDirectory)'
   stagingDirectory: '$(Build.ArtifactStagingDirectory)'
@@ -33,11 +37,12 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: update-assembly-info@2
-  displayName: 'Solution Version Update'
+  displayName: 'Solution Properties Update'
   inputs:
     assemblyInfoFiles: '$(sourcesDirectory)\**\AssemblyInfo.cs'
     company: '$(companyName)'
     product: '$(productName)'
+    copyright: '$(productCopyright)'
     fileVersionMajor: '$(majorVersion)'
     fileVersionMinor: '$(minorVersion)'
     fileVersionBuild: '$(buildVersion)'
@@ -46,7 +51,6 @@ steps:
     assemblyVersionMinor: '0'
     assemblyVersionBuild: '0'
     assemblyVersionRevision: '0'
-
 
 - task: VSBuild@1
   displayName: 'Solution Build'
@@ -59,14 +63,10 @@ steps:
   displayName: 'Package Create'
   inputs:
     command: 'pack'
-    packagesToPack: '$(sourcesDirectory)\nuget.nuspec'
+    packagesToPack: '$(sourcesDirectory)\*.nuspec'
     configuration: '$(buildConfiguration)'
     versioningScheme: 'off'
     packDestination: '$(stagingDirectory)'
-    basePath: '$(sourcesDirectory)'
-    majorVersion: '$(majorVersion)'
-    minorVersion: '$(minorVersion)'
-    patchVersion: '$(buildVersion)'
 
 - script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -SkipDuplicate
   displayName: 'Push Package ($(nugetSource))'
