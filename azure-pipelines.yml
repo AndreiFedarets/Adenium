@@ -10,32 +10,34 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  rootPath: '$(Build.SourcesDirectory)'
-  sourcesPath: '$(rootPath)\source'
-  buildPath: '$(rootPath)\build'
-  destinationPath: '$(Build.ArtifactStagingDirectory)'
-  solutionNet40: '$(sourcesPath)\Layex.net40.sln'
+  solution: '**/*.sln'
+  sourcesDirectory: '$(Build.SourcesDirectory)'
+  stagingDirectory: '$(Build.ArtifactStagingDirectory)'
+  nugetSource: 'nuget.org'
+#  sourcesPath: '$(rootPath)\source'
+#  buildPath: '$(rootPath)\build'
+#  destinationPath: '$(Build.ArtifactStagingDirectory)'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   majorVersion: '0'
   minorVersion: '1'
-  buildVersion: '0'
+  buildVersion: '$(Build.BuildID)'
   revisionVersion: '0'
-  nugetPackageName: 'Layex.$(majorVersion).$(minorVersion).$(buildVersion).nupkg'
+#  nugetPackageName: 'Layex.$(majorVersion).$(minorVersion).$(buildVersion).nupkg'
 
 steps:
 - task: NuGetToolInstaller@1
-  displayName: 'Install Nuget'
+  displayName: 'Nuget Install'
 
 - task: NuGetCommand@2
-  displayName: 'Restore Nuget Packages'
+  displayName: 'Solution Nuget Restore'
   inputs:
-    restoreSolution: '$(solutionNet40)'
+    restoreSolution: '$(solution)'
 
 - task: update-assembly-info@2
-  displayName: 'Update Version'
+  displayName: 'Solution Version Update'
   inputs:
-    assemblyInfoFiles: '$(sourcesPath)\net40\**\AssemblyInfo.cs'
+    assemblyInfoFiles: '$(sourcesDirectory)\**\AssemblyInfo.cs'
     fileVersionMajor: $(majorVersion)
     fileVersionMinor: $(minorVersion)
     fileVersionBuild: $(buildVersion)
@@ -45,51 +47,30 @@ steps:
     assemblyVersionRevision: '0'
 
 - task: VSBuild@1
-  displayName: 'Build Solution'
+  displayName: 'Solution Build'
   inputs:
-    solution: '$(solutionNet40)'
+    solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
 - task: NuGetCommand@2
-  displayName: 'Create Package'
+  displayName: 'Package Create'
   inputs:
     command: 'pack'
-    packagesToPack: '$(rootPath)\nuget.nuspec'
+    packagesToPack: '$(sourcesDirectory)\nuget.nuspec'
     configuration: '$(buildConfiguration)'
     versioningScheme: 'off'
-    packDestination: '$(destinationPath)'
-    basePath: '$(rootPath)'
+    packDestination: '$(stagingDirectory)'
+    basePath: '$(sourcesDirectory)'
     majorVersion: '$(majorVersion)'
     minorVersion: '$(minorVersion)'
     patchVersion: '$(buildVersion)'
 
-- task: NuGetAuthenticate@0
-  enabled: false
-  inputs:
-      nuGetServiceConnections: 'Nuget'
-
-- script: nuget push $(destinationPath)\$(nugetPackageName) -ApiKey $(nuGetApiKey) -Source nuget.org -SkipDuplicate
-  displayName: 'Push Package (Nuget.org)'
-
-- task: NuGetCommand@2
-  displayName: 'Push Package (AzureDevOps)'
-  enabled: false
-  inputs:
-    command: 'push'
-    packagesToPush: '$(destinationPath)/*.nupkg;!$(destinationPath)/*.symbols.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: '0d52f31e-bc80-4c37-99fe-19802cd11cb0/c5ecfae1-ce0d-450b-b609-b53d998055ba'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts'
-  inputs:
-    PathtoPublish: '$(destinationPath)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+- script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -SkipDuplicate
+  displayName: 'Push Package ($(nugetSource))'
 
 - task: VSTest@2
-  displayName: 'Run Tests'
+  displayName: 'Tests Run'
   enabled: false
   inputs:
     platform: '$(buildPlatform)'
