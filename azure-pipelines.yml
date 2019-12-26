@@ -73,6 +73,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: 'Package Create'
+  enabled: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
   inputs:
     command: 'pack'
     packagesToPack: '$(sourcesDirectory)\*.nuspec'
@@ -81,6 +82,7 @@ steps:
     packDestination: '$(stagingDirectory)'
 
 - script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -NoSymbols
+  enabled: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
   displayName: 'Package Push ($(nugetSource))'
 
 - task: VSTest@2
