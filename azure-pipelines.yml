@@ -74,7 +74,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: 'Package Create'
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
+  condition: and(succeeded(), eq(variables.pushPackage, 'true'))
   inputs:
     command: 'pack'
     packagesToPack: '$(sourcesDirectory)\*.nuspec'
@@ -84,7 +84,7 @@ steps:
 
 - script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -NoSymbols
   enabled: false
-  condition: and(succeeded(), variables.pushPackage)
+  condition: and(succeeded(), eq(variables.pushPackage, 'true'))
   displayName: 'Package Push ($(nugetSource))'
 
 - task: VSTest@2
