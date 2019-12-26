@@ -80,7 +80,7 @@ steps:
     versioningScheme: 'off'
     packDestination: '$(stagingDirectory)'
 
-- script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -SkipDuplicate
+- script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -NoSymbols
   displayName: 'Push Package ($(nugetSource))'
 
 - task: VSTest@2
