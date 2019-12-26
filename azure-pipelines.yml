@@ -14,16 +14,12 @@ variables:
   sourcesDirectory: '$(Build.SourcesDirectory)'
   stagingDirectory: '$(Build.ArtifactStagingDirectory)'
   nugetSource: 'nuget.org'
-#  sourcesPath: '$(rootPath)\source'
-#  buildPath: '$(rootPath)\build'
-#  destinationPath: '$(Build.ArtifactStagingDirectory)'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   majorVersion: '0'
   minorVersion: '1'
   buildVersion: '$(Build.BuildID)'
   revisionVersion: '0'
-#  nugetPackageName: 'Layex.$(majorVersion).$(minorVersion).$(buildVersion).nupkg'
 
 steps:
 - task: NuGetToolInstaller@1
