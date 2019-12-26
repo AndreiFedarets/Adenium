@@ -60,8 +60,16 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: VSTest@2
+  displayName: 'Tests Run'
+  enabled: false
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
 - task: replacetokens@3
   displayName: 'Package Properties Update'
+  condition: and(succeeded(), eq(variables.pushPackage, 'true'))
   inputs:
     rootDirectory: '$(sourcesDirectory)'
     targetFiles: '*.nuspec'
@@ -85,10 +93,3 @@ steps:
 - script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -NoSymbols
   condition: and(succeeded(), eq(variables.pushPackage, 'true'))
   displayName: 'Package Push ($(nugetSource))'
-
-- task: VSTest@2
-  displayName: 'Tests Run'
-  enabled: false
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
