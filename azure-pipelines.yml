@@ -3,93 +3,91 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
-trigger:
-- master
+#trigger:
+#- master
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
-  rootPath: '$(Build.SourcesDirectory)'
-  sourcesPath: '$(rootPath)\source'
-  buildPath: '$(rootPath)\build'
-  destinationPath: '$(Build.ArtifactStagingDirectory)'
-  solutionNet40: '$(sourcesPath)\Layex.net40.sln'
+  majorVersion: '1'
+  minorVersion: '0'
+  buildVersion: '$(Build.BuildId)'
+  revisionVersion: '0'
+  suffixVersion: '-alpha'
+  companyName: 'Andrei Fedarets'
+  productName: 'Layex'
+  productDescription: 'WPF Composite UI library based on Caliburn.Micro'
+  productCopyright: 'Copyright 2019 (C) Andrei Fedarets'
+  productUrl: 'https://github.com/AndreiFedarets/layex'
+  solution: '**/*.sln'
+  sourcesDirectory: '$(Build.SourcesDirectory)'
+  stagingDirectory: '$(Build.ArtifactStagingDirectory)'
+  nugetSource: 'nuget.org'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  majorVersion: '0'
-  minorVersion: '1'
-  buildVersion: '0'
-  revisionVersion: '0'
-  nugetPackageName: 'Layex.$(majorVersion).$(minorVersion).$(buildVersion).nupkg'
+  pushPackage: $[ startsWith(variables['Build.SourceBranch'], 'refs/heads/release') ]
 
 steps:
 - task: NuGetToolInstaller@1
-  displayName: 'Install Nuget'
+  displayName: 'Nuget Install'
 
 - task: NuGetCommand@2
-  displayName: 'Restore Nuget Packages'
+  displayName: 'Solution Nuget Restore'
   inputs:
-    restoreSolution: '$(solutionNet40)'
+    restoreSolution: '$(solution)'
 
 - task: update-assembly-info@2
-  displayName: 'Update Version'
+  displayName: 'Solution Properties Update'
   inputs:
-    assemblyInfoFiles: '$(sourcesPath)\net40\**\AssemblyInfo.cs'
-    fileVersionMajor: $(majorVersion)
-    fileVersionMinor: $(minorVersion)
-    fileVersionBuild: $(buildVersion)
-    assemblyVersionMajor: $(majorVersion)
+    assemblyInfoFiles: '$(sourcesDirectory)\**\AssemblyInfo.cs'
+    company: '$(companyName)'
+    product: '$(productName)'
+    copyright: '$(productCopyright)'
+    fileVersionMajor: '$(majorVersion)'
+    fileVersionMinor: '$(minorVersion)'
+    fileVersionBuild: '$(buildVersion)'
+    fileVersionRevision: '$(revisionVersion)'
+    assemblyVersionMajor: '$(majorVersion)'
     assemblyVersionMinor: '0'
     assemblyVersionBuild: '0'
     assemblyVersionRevision: '0'
 
 - task: VSBuild@1
-  displayName: 'Build Solution'
+  displayName: 'Solution Build'
   inputs:
-    solution: '$(solutionNet40)'
+    solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: replacetokens@3
+  displayName: 'Package Properties Update'
+  inputs:
+    rootDirectory: '$(sourcesDirectory)'
+    targetFiles: '*.nuspec'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: true
+    tokenPrefix: '$('
+    tokenSuffix: ')'
+
 - task: NuGetCommand@2
-  displayName: 'Create Package'
+  displayName: 'Package Create'
+  condition: and(succeeded(), eq(variables.pushPackage, 'true'))
   inputs:
     command: 'pack'
-    packagesToPack: '$(rootPath)\nuget.nuspec'
+    packagesToPack: '$(sourcesDirectory)\*.nuspec'
     configuration: '$(buildConfiguration)'
     versioningScheme: 'off'
-    packDestination: '$(destinationPath)'
-    basePath: '$(rootPath)'
-    majorVersion: '$(majorVersion)'
-    minorVersion: '$(minorVersion)'
-    patchVersion: '$(buildVersion)'
+    packDestination: '$(stagingDirectory)'
 
-- task: NuGetAuthenticate@0
-  enabled: false
-  inputs:
-      nuGetServiceConnections: 'Nuget'
-
-- script: nuget push $(destinationPath)\$(nugetPackageName) -ApiKey $(nuGetApiKey) -Source nuget.org -SkipDuplicate
-  displayName: 'Push Package (Nuget.org)'
-
-- task: NuGetCommand@2
-  displayName: 'Push Package (AzureDevOps)'
-  enabled: false
-  inputs:
-    command: 'push'
-    packagesToPush: '$(destinationPath)/*.nupkg;!$(destinationPath)/*.symbols.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: '0d52f31e-bc80-4c37-99fe-19802cd11cb0/c5ecfae1-ce0d-450b-b609-b53d998055ba'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts'
-  inputs:
-    PathtoPublish: '$(destinationPath)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+- script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -NoSymbols
+  condition: and(succeeded(), eq(variables.pushPackage, 'true'))
+  displayName: 'Package Push ($(nugetSource))'
 
 - task: VSTest@2
-  displayName: 'Run Tests'
+  displayName: 'Tests Run'
   enabled: false
   inputs:
     platform: '$(buildPlatform)'
