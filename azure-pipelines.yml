@@ -74,7 +74,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: 'Package Create'
-  enabled: $(pushPackage)
+  condition: and(succeeded(), $(pushPackage))
   inputs:
     command: 'pack'
     packagesToPack: '$(sourcesDirectory)\*.nuspec'
@@ -83,7 +83,7 @@ steps:
     packDestination: '$(stagingDirectory)'
 
 - script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -NoSymbols
-  condition: $(pushPackage)
+  condition: and(succeeded(), $(pushPackage))
   displayName: 'Package Push ($(nugetSource))'
 
 - task: VSTest@2
