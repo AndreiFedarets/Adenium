@@ -213,6 +213,42 @@
     <Compile Include="..\..\common\Layex\ViewModels\_Internal\ViewModelManager.cs">
       <Link>ViewModels\_Internal\ViewModelManager.cs</Link>
     </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\_Menu\Menu.cs">
+      <Link>ViewModels\_Internal\_Menu\Menu.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\_Menu\MenuCollection.cs">
+      <Link>ViewModels\_Internal\_Menu\MenuCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\_Menu\MenuControl.cs">
+      <Link>ViewModels\_Internal\_Menu\MenuControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\_Menu\MenuControlCollection.cs">
+      <Link>ViewModels\_Internal\_Menu\MenuControlCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\_Menu\MenuControlHandlerLazy.cs">
+      <Link>ViewModels\_Internal\_Menu\MenuControlHandlerLazy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Internal\_Menu\MenuItem.cs">
+      <Link>ViewModels\_Internal\_Menu\MenuItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Menu\IMenu.cs">
+      <Link>ViewModels\_Menu\IMenu.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Menu\IMenuCollection.cs">
+      <Link>ViewModels\_Menu\IMenuCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Menu\IMenuControl.cs">
+      <Link>ViewModels\_Menu\IMenuControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Menu\IMenuControlCollection.cs">
+      <Link>ViewModels\_Menu\IMenuControlCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Menu\IMenuControlHandler.cs">
+      <Link>ViewModels\_Menu\IMenuControlHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\ViewModels\_Menu\MenuControlHandlerBase.cs">
+      <Link>ViewModels\_Menu\MenuControlHandlerBase.cs</Link>
+    </Compile>
     <Compile Include="..\..\common\Layex\Views\View.cs">
       <Link>Views\View.cs</Link>
     </Compile>
@@ -241,6 +277,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ViewModels\_Internal\_Menu\CompositeMenuControlHandler.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
