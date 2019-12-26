@@ -8,10 +8,10 @@
     <owners>$(companyName)</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <projectUrl>$(projectUrl)</projectUrl>
-    <description>$(projectDescription)</description>
+    <projectUrl>$(productUrl)</projectUrl>
+    <description>$(productDescription)</description>
     <releaseNotes></releaseNotes>
-    <copyright>$(producCopyright)</copyright>
+    <copyright>$(productCopyright)</copyright>
     <tags>Layex WPF Composite UI</tags>
 	<dependencies>
 		<group targetFramework="net40">
