@@ -4,12 +4,13 @@ namespace Layex.Layouts
 {
     public sealed class LayoutItem
     {
-        public LayoutItem(string typeFullName, ActivationMode activationMode, InstanceMode instanceMode, int order)
+        public LayoutItem(string typeFullName, ActivationMode activationMode, InstanceMode instanceMode, int order, bool? isStatic)
         {
             TypeFullName = typeFullName;
             ActivationMode = activationMode;
             InstanceMode = instanceMode;
             Order = order;
+            IsStatic = isStatic;
         }
 
         public string TypeFullName { get; private set; }
@@ -26,6 +27,8 @@ namespace Layex.Layouts
                 return type;
             }
         }
+
+        public bool? IsStatic { get; private set; }
 
         public int Order { get; private set; }
 

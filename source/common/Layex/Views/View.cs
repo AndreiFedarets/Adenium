@@ -20,7 +20,7 @@ namespace Layex.Views
 
         public IViewModel ViewModel
         {
-            get { return (IViewModel)DataContext; }
+            get { return DataContext as IViewModel; }
         }
 
         private void RenderContent()

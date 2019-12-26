@@ -10,7 +10,7 @@ namespace Layex
 {
     public abstract class Bootstrapper : BootstrapperBase
     {
-        protected readonly IDependencyContainer Container;
+        private IDependencyContainer _container;
 
         static Bootstrapper()
         {
@@ -19,50 +19,53 @@ namespace Layex
 
         public Bootstrapper()
         {
-            Container = new DependencyContainer();
             Initialize();
         }
 
         internal static ILayoutManager LayoutManager { get; private set; }
 
+        protected virtual IDependencyContainer CreateDependencyContainer()
+        {
+            return new BuiltinDependencyContainer();
+        }
+
         protected sealed override void Configure()
         {
+            _container = CreateDependencyContainer();
             base.Configure();
-            ConfigureContainer();
+            ConfigureContainer(_container);
             ConfigureAssemblyResolver();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
             base.OnStartup(sender, e);
-            ApplicationViewModel applicationViewModel = Container.Resolve<ApplicationViewModel>();
+            ApplicationViewModel applicationViewModel = _container.Resolve<ApplicationViewModel>();
             applicationViewModel.Initialize();
         }
 
-        protected virtual void ConfigureContainer()
+        protected virtual void ConfigureContainer(IDependencyContainer container)
         {
-            Container.RegisterType<IWindowManager, WindowManager>(true);
-            Container.RegisterType<IViewModelManager, ViewModelManager>(true);
-            Container.RegisterType<IBootstrapperEnvironment, BootstrapperEnvironment>(true);
-            Container.RegisterType<ILayoutReader, SmartLayoutReader>(true);
-            Container.RegisterType<ILayoutManager, LayoutManager>(true);
-
-            //Container.RegisterType<IViewManager, ViewManager>(true);
+            container.RegisterType<IBootstrapperEnvironment, BootstrapperEnvironment>(true);
+            container.RegisterType<IWindowManager, WindowManager>(true);
+            container.RegisterType<IViewModelManager, ViewModelManager>(true);
+            container.RegisterType<ILayoutReader, SmartLayoutReader>(true);
+            container.RegisterType<ILayoutManager, LayoutManager>(true);
         }
 
         protected virtual void ConfigureAssemblyResolver()
         {
-            Container.Resolve<AssemblyResolver>().Initialize();
+            _container.Resolve<AssemblyResolver>().Initialize();
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
         {
-            return Container.ResolveAll(service);
+            return _container.ResolveAll(service);
         }
 
         protected override object GetInstance(Type service, string key)
         {
-            return Container.Resolve(service, key);
+            return _container.Resolve(service, key);
         }
 
         protected override void PrepareApplication()

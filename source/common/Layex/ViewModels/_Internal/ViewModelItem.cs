@@ -40,6 +40,7 @@ namespace Layex.ViewModels
 
         public IViewModel GetViewModel()
         {
+            IViewModel viewModel;
             switch (_layoutItem.InstanceMode)
             {
                 case InstanceMode.Single:
@@ -48,12 +49,19 @@ namespace Layex.ViewModels
                         _viewModel = CreateViewModel();
                         _viewModel.Disposed += OnSingleViewModelDisposed;
                     }
-                    return _viewModel;
+                    viewModel = _viewModel;
+                    break;
                 case InstanceMode.Multiple:
-                    return CreateViewModel();
+                    viewModel = CreateViewModel();
+                    break;
                 default:
                     throw new NotImplementedException();
             }
+            if (viewModel != null && _layoutItem.IsStatic.HasValue)
+            {
+                viewModel.IsStatic = _layoutItem.IsStatic.Value;
+            }
+            return viewModel;
         }
 
         private void OnSingleViewModelDisposed(object sender, EventArgs e)

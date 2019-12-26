@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Attachment>
-  <Item Type="Layex.Sample.ModuleB.ViewModels.SampleViewModel, Layex.Sample.ModuleB" Instance="Single" Activation="OnStartup" Order="20" />
+  <Item Type="Layex.Sample.ModuleB.ViewModels.SampleViewModel, Layex.Sample.ModuleB" Instance="Single" Activation="OnStartup" Order="20" IsStatic="True" />
 </Attachment>

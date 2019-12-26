@@ -4,8 +4,11 @@
                     xmlns:controls="clr-namespace:Layex.Controls"
                     xmlns:views="clr-namespace:Layex.Views"
                     xmlns:themes="clr-namespace:Layex.Themes"
+                    xmlns:converters="clr-namespace:Layex.Converters"
                     xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase">
+
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
     <Style x:Key="BaseStyle" TargetType="{x:Type FrameworkElement}">
         <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
@@ -638,7 +641,17 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Border Grid.Row="0" x:Name="PanelHeaderBorder" BorderThickness="0,0,0,1" BorderBrush="#cccccc" Background="#f8f8f8">
-                                    <TextBlock Text="{Binding DataContext.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="7,3,7,3" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding ViewModel.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="3" />
+                                        <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="DeactivateItem($dataContext, 'true')" 
+                                                              caliburn:Bind.ModelWithoutContext="{Binding ViewModel.Parent, RelativeSource={RelativeSource TemplatedParent}}"
+                                                              Visibility="{Binding ViewModel.IsStatic, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
+                                    </Grid>
+                                    
                                 </Border>
                                 <Border x:Name="ContentBorder" Grid.Row="1" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -706,7 +719,8 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding DisplayName, Mode=OneWay}" />
-                        <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="DeactivateItem($dataContext, 'true')" caliburn:Bind.ModelWithoutContext="{Binding Parent}" />
+                        <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="DeactivateItem($dataContext, 'true')" caliburn:Bind.ModelWithoutContext="{Binding Parent}"
+                                              Visibility="{Binding IsStatic, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
