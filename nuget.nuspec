@@ -2,16 +2,16 @@
 <package >
   <metadata>
     <id>Layex</id>
-    <version>0.1.0.0</version>
-    <title>Layex</title>
-    <authors>Andrei Fedarets</authors>
-    <owners>Andrei Fedarets</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <version>$(majorVersion).$(minorVersion).$(buildVersion).$(revisionVersion)$(suffixVersion)</version>
+    <title>$(productName)</title>
+    <authors>$(companyName)</authors>
+    <owners>$(companyName)</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
-    <projectUrl>https://github.com/AndreiFedarets/layex</projectUrl>
-    <description>WPF Composite UI library based on Caliburn.Micro</description>
+    <projectUrl>$(projectUrl)</projectUrl>
+    <description>$(projectDescription)</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2019 (C) Andrei Fedarets</copyright>
+    <copyright>$(producCopyright)</copyright>
     <tags>Layex WPF Composite UI</tags>
 	<dependencies>
 		<group targetFramework="net40">
