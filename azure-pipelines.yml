@@ -81,7 +81,7 @@ steps:
     packDestination: '$(stagingDirectory)'
 
 - script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -NoSymbols
-  displayName: 'Push Package ($(nugetSource))'
+  displayName: 'Package Push ($(nugetSource))'
 
 - task: VSTest@2
   displayName: 'Tests Run'
