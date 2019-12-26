@@ -59,12 +59,17 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: FileTransform@2
+- task: replacetokens@3
   displayName: 'Package Properties Update'
   inputs:
-    folderPath: '$(sourcesDirectory)'
-    xmlTransformationRules: ''
-    xmlTargetFiles: 'nuget.nuspec'
+    rootDirectory: '$(sourcesDirectory)'
+    targetFiles: '*.nuspec'
+    encoding: 'auto'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: true
+    tokenPrefix: '$('
+    tokenSuffix: ')'
 
 - task: NuGetCommand@2
   displayName: 'Package Create'
