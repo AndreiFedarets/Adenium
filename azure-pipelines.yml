@@ -83,7 +83,6 @@ steps:
     packDestination: '$(stagingDirectory)'
 
 - script: nuget push $(stagingDirectory)\*.nupkg -ApiKey $(nuGetApiKey) -Source $(nugetSource) -NoSymbols
-  enabled: false
   condition: and(succeeded(), eq(variables.pushPackage, 'true'))
   displayName: 'Package Push ($(nugetSource))'
 
