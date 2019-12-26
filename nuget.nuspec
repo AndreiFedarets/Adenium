@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Layex</id>
-    <version>$(majorVersion).$(minorVersion).$(buildVersion).$(revisionVersion)$(suffixVersion)</version>
+    <version>$(majorVersion).$(minorVersion).$(buildVersion)$(suffixVersion)</version>
     <title>$(productName)</title>
     <authors>$(companyName)</authors>
     <owners>$(companyName)</owners>
