@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Layex.Actions
+﻿namespace Layex.Actions
 {
     public interface IActionGroup
     {

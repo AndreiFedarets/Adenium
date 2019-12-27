@@ -67,6 +67,16 @@ namespace Layex.ViewModels
             return targetViewModel != null;
         }
 
+        public virtual bool DeactivateItem(string childCodeName, bool close = false)
+        {
+            IViewModel targetViewModel = Items.FirstOrDefault(x => x.AreCodeNameEquals(childCodeName));
+            if (targetViewModel != null)
+            {
+                DeactivateItem(targetViewModel);
+            }
+            return targetViewModel != null;
+        }
+
         public override void ActivateItem(IViewModel item)
         {
             if (!Items.Contains(item))
@@ -81,7 +91,7 @@ namespace Layex.ViewModels
             base.ActivateItem(item);
         }
 
-        public override void DeactivateItem(IViewModel item, bool close)
+        public override void DeactivateItem(IViewModel item, bool close = false)
         {
             if (close)
             {

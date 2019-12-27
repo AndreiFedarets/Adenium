@@ -51,6 +51,7 @@
       <Link>Views\SampleView.xaml.cs</Link>
       <DependentUpon>SampleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Actions\CloseViewAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
