@@ -135,11 +135,14 @@
     <Compile Include="..\..\common\Layex\Layouts\ActivationMode.cs">
       <Link>Layouts\ActivationMode.cs</Link>
     </Compile>
-    <Compile Include="..\..\common\Layex\Layouts\Attachment.cs">
-      <Link>Layouts\Attachment.cs</Link>
+    <Compile Include="..\..\common\Layex\Layouts\Application.cs">
+      <Link>Layouts\Application.cs</Link>
     </Compile>
-    <Compile Include="..\..\common\Layex\Layouts\DisplayMode.cs">
-      <Link>Layouts\DisplayMode.cs</Link>
+    <Compile Include="..\..\common\Layex\Layouts\FileLayoutLocator.cs">
+      <Link>Layouts\FileLayoutLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\ILayoutLocator.cs">
+      <Link>Layouts\ILayoutLocator.cs</Link>
     </Compile>
     <Compile Include="..\..\common\Layex\Layouts\ILayoutManager.cs">
       <Link>Layouts\ILayoutManager.cs</Link>
@@ -147,26 +150,20 @@
     <Compile Include="..\..\common\Layex\Layouts\InstanceMode.cs">
       <Link>Layouts\InstanceMode.cs</Link>
     </Compile>
+    <Compile Include="..\..\common\Layex\Layouts\Item.cs">
+      <Link>Layouts\Item.cs</Link>
+    </Compile>
     <Compile Include="..\..\common\Layex\Layouts\Layout.cs">
       <Link>Layouts\Layout.cs</Link>
-    </Compile>
-    <Compile Include="..\..\common\Layex\Layouts\LayoutItem.cs">
-      <Link>Layouts\LayoutItem.cs</Link>
     </Compile>
     <Compile Include="..\..\common\Layex\Layouts\_Internal\ILayoutReader.cs">
       <Link>Layouts\_Internal\ILayoutReader.cs</Link>
     </Compile>
-    <Compile Include="..\..\common\Layex\Layouts\_Internal\JsonLayoutReader.cs">
-      <Link>Layouts\_Internal\JsonLayoutReader.cs</Link>
-    </Compile>
     <Compile Include="..\..\common\Layex\Layouts\_Internal\LayoutManager.cs">
       <Link>Layouts\_Internal\LayoutManager.cs</Link>
     </Compile>
-    <Compile Include="..\..\common\Layex\Layouts\_Internal\SmartLayoutReader.cs">
-      <Link>Layouts\_Internal\SmartLayoutReader.cs</Link>
-    </Compile>
-    <Compile Include="..\..\common\Layex\Layouts\_Internal\XmlLayoutReader.cs">
-      <Link>Layouts\_Internal\XmlLayoutReader.cs</Link>
+    <Compile Include="..\..\common\Layex\Layouts\_Internal\XamlLayoutReader.cs">
+      <Link>Layouts\_Internal\XamlLayoutReader.cs</Link>
     </Compile>
     <Compile Include="..\..\common\Layex\Themes\FontsAndColors.cs">
       <Link>Themes\FontsAndColors.cs</Link>
@@ -212,6 +209,9 @@
     </Compile>
     <Compile Include="..\..\common\Layex\ViewModels\_Internal\ViewModelManager.cs">
       <Link>ViewModels\_Internal\ViewModelManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\Layex\Views\DisplayMode.cs">
+      <Link>Views\DisplayMode.cs</Link>
     </Compile>
     <Compile Include="..\..\common\Layex\Views\View.cs">
       <Link>Views\View.cs</Link>

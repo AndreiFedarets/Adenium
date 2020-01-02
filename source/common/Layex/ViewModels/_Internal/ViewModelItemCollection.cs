@@ -1,5 +1,4 @@
-﻿using Layex.Layouts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -7,8 +6,8 @@ namespace Layex.ViewModels
 {
     internal sealed class ViewModelItemCollection : ReadOnlyCollection<ViewModelItem>
     {
-        public ViewModelItemCollection(IEnumerable<LayoutItem> layoutItems, IDependencyContainer container)
-            : base(BuildViewModelItems(layoutItems, container))
+        public ViewModelItemCollection(Layouts.Layout layout, IDependencyContainer container)
+            : base(BuildViewModelItems(layout, container))
         {
         }
 
@@ -24,10 +23,10 @@ namespace Layex.ViewModels
             return null;
         }
 
-        private static List<ViewModelItem> BuildViewModelItems(IEnumerable<LayoutItem> layoutItems, IDependencyContainer container)
+        private static List<ViewModelItem> BuildViewModelItems(Layouts.Layout layout, IDependencyContainer container)
         {
             List<ViewModelItem> viewModelItems = new List<ViewModelItem>();
-            foreach (LayoutItem layoutItem in layoutItems)
+            foreach (Layouts.Item layoutItem in layout.Items)
             {
                 viewModelItems.Add(new ViewModelItem(layoutItem, container));
             }

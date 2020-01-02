@@ -1,15 +1,14 @@
-﻿using Layex.Layouts;
-using System;
+﻿using System;
 
 namespace Layex.ViewModels
 {
     internal class ViewModelItem
     {
         private readonly IDependencyContainer _container;
-        private readonly LayoutItem _layoutItem;
+        private readonly Layouts.Item _layoutItem;
         private IViewModel _viewModel;
 
-        public ViewModelItem(LayoutItem layoutItem, IDependencyContainer container)
+        public ViewModelItem(Layouts.Item layoutItem, IDependencyContainer container)
         {
             _layoutItem = layoutItem;
             _container = container;
@@ -33,7 +32,12 @@ namespace Layex.ViewModels
             }
         }
 
-        public ActivationMode ActivationMode
+        public bool Closable
+        {
+            get { return _layoutItem.Closable; }
+        }
+
+        public Layouts.ActivationMode ActivationMode
         {
             get { return _layoutItem.ActivationMode; }
         }
@@ -43,7 +47,7 @@ namespace Layex.ViewModels
             IViewModel viewModel;
             switch (_layoutItem.InstanceMode)
             {
-                case InstanceMode.Single:
+                case Layouts.InstanceMode.Single:
                     if (_viewModel == null)
                     {
                         _viewModel = CreateViewModel();
@@ -51,16 +55,16 @@ namespace Layex.ViewModels
                     }
                     viewModel = _viewModel;
                     break;
-                case InstanceMode.Multiple:
+                case Layouts.InstanceMode.Multiple:
                     viewModel = CreateViewModel();
                     break;
                 default:
                     throw new NotImplementedException();
             }
-            if (viewModel != null && _layoutItem.IsStatic.HasValue)
-            {
-                viewModel.IsStatic = _layoutItem.IsStatic.Value;
-            }
+            //if (viewModel != null && _layoutItem.IsStatic.HasValue)
+            //{
+            //    viewModel.IsStatic = _layoutItem.IsStatic.Value;
+            //}
             return viewModel;
         }
 

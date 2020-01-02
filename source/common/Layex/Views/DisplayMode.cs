@@ -1,4 +1,4 @@
-﻿namespace Layex.Layouts
+﻿namespace Layex.Views
 {
     public enum DisplayMode
     {

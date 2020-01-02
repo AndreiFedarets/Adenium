@@ -139,28 +139,28 @@ namespace Layex.Extensions
             return null;
         }
 
-        //public static T FindParent<T>(this DependencyObject element) where T : class
-        //{
-        //    if (element == null)
-        //    {
-        //        return default(T);
-        //    }
-        //    DependencyObject childElement = VisualTreeHelper.GetParent(element) ?? LogicalTreeHelper.GetParent(element);
-        //    return childElement.FindParentIntenal<T>();
-        //}
+        public static T FindParent<T>(this DependencyObject element) where T : class
+        {
+            if (element == null)
+            {
+                return default(T);
+            }
+            DependencyObject childElement = VisualTreeHelper.GetParent(element) ?? LogicalTreeHelper.GetParent(element);
+            return childElement.FindParentIntenal<T>();
+        }
 
-        //private static T FindParentIntenal<T>(this DependencyObject element) where T : class
-        //{
-        //    if (element == null)
-        //    {
-        //        return default(T);
-        //    }
-        //    if (element is T)
-        //    {
-        //        return element as T;
-        //    }
-        //    DependencyObject childElement = VisualTreeHelper.GetParent(element) ?? LogicalTreeHelper.GetParent(element);
-        //    return childElement.FindParentIntenal<T>();
-        //}
+        private static T FindParentIntenal<T>(this DependencyObject element) where T : class
+        {
+            if (element == null)
+            {
+                return default(T);
+            }
+            if (element is T)
+            {
+                return element as T;
+            }
+            DependencyObject childElement = VisualTreeHelper.GetParent(element) ?? LogicalTreeHelper.GetParent(element);
+            return childElement.FindParentIntenal<T>();
+        }
     }
 }

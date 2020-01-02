@@ -1,7 +1,6 @@
-﻿using Layex.Contracts;
+﻿using Caliburn.Micro;
+using Layex.Contracts;
 using Layex.Extensions;
-using Layex.Layouts;
-using Caliburn.Micro;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,33 +12,10 @@ namespace Layex.ViewModels
     public abstract class ItemsViewModel : Conductor<IViewModel>.Collection.OneActive, IItemsViewModel, IRequireDependencyContainer
     {
         private readonly ContractCollection _contracts;
-        private DisplayMode _displayMode;
-        private bool _isStatic;
 
         protected ItemsViewModel()
         {
-            _displayMode = DisplayMode.Tab;
             _contracts = new ContractCollection(this);
-        }
-
-        public bool IsStatic
-        {
-            get { return _isStatic; }
-            set
-            {
-                _isStatic = value;
-                NotifyOfPropertyChange(() => IsStatic);
-            }
-        }
-
-        public DisplayMode DisplayMode
-        {
-            get { return _displayMode; }
-            set
-            {
-                _displayMode = value;
-                NotifyOfPropertyChange(() => DisplayMode);
-            }
         }
 
         public new IItemsViewModel Parent
@@ -93,12 +69,12 @@ namespace Layex.ViewModels
 
         public override void DeactivateItem(IViewModel item, bool close = false)
         {
+            if (!Items.Contains(item))
+            {
+                return;
+            }
             if (close)
             {
-                if (item.IsStatic)
-                {
-                    return;
-                }
                 _contracts.UnregisterItem(item);
             }
             base.DeactivateItem(item, close);

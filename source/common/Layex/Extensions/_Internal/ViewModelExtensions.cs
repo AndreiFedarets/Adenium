@@ -17,7 +17,7 @@ namespace Layex.Extensions
             {
                 codeName = viewModel.GetType().FullName;
             }
-            return codeName.ToLowerInvariant();
+            return codeName;
         }
 
         public static bool AreCodeNameEquals(this IViewModel viewModel1, IViewModel viewModel2)
@@ -32,7 +32,7 @@ namespace Layex.Extensions
 
         public static bool AreCodeNameEquals(string codeName1, string codeName2)
         {
-            return string.Equals(codeName1, codeName2, StringComparison.InvariantCulture);
+            return string.Equals(codeName1, codeName2, StringComparison.Ordinal);
         }
     }
 }

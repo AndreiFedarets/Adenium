@@ -19,49 +19,34 @@ namespace Layex.Layouts
         private const string OrderAttributeName = "Order";
         private const string IsStaticAttributeName = "IsStatic";
 
-        public bool SupportsContentType(string layoutContent)
+        public bool SupportsContent(string applicationContent)
         {
             //Dummy check - we just make sure content starts with "<" that's most probably xml
-            return !string.IsNullOrEmpty(layoutContent) && layoutContent.TrimStart().StartsWith("<");
+            return !string.IsNullOrEmpty(applicationContent) && applicationContent.TrimStart().StartsWith("<");
         }
 
-        public Layout ReadLayout(string layoutContent)
+        public Application Read(string applicationContent)
         {
-            using (StringReader stringReader = new StringReader(layoutContent))
+            using (StringReader stringReader = new StringReader(applicationContent))
             {
-                return ReadLayout(stringReader);
+                return Read(stringReader);
             }
         }
 
-        public Attachment ReadAttachment(string attachmentContent)
-        {
-            using (StringReader stringReader = new StringReader(attachmentContent))
-            {
-                return ReadAttachment(stringReader);
-            }
-        }
-
-        private Layout ReadLayout(TextReader reader)
+        private Application Read(TextReader reader)
         {
             using (XmlReader xmlReader = new XmlTextReader(reader))
             {
-                return ReadLayout(xmlReader);
+                return Read(xmlReader);
             }
         }
 
-        private Attachment ReadAttachment(TextReader reader)
-        {
-            using (XmlReader xmlReader = new XmlTextReader(reader))
-            {
-                return ReadAttachment(xmlReader);
-            }
-        }
-
-        private Layout ReadLayout(XmlReader reader)
+        private Application Read(XmlReader reader)
         {
             //Move to <Layout> element
             MoveToElement(reader, LayoutElementName);
             //Define defaults
+            Layout layout = new Layout();
             List<LayoutItem> layoutItems = new List<LayoutItem>();
             DisplayMode displayMode = DisplayMode.Tab;
             //Read <Layout> attributes
@@ -93,7 +78,6 @@ namespace Layex.Layouts
                         break;
                 }
             }
-            Layout layout = new Layout(displayMode, layoutItems);
             return layout;
         }
 

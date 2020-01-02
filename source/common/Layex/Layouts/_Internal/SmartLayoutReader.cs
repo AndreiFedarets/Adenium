@@ -1,5 +1,4 @@
-﻿using Layex.ViewModels;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Layex.Layouts
 {
@@ -12,26 +11,20 @@ namespace Layex.Layouts
             _readers = new ILayoutReader[] { new XmlLayoutReader(), new JsonLayoutReader() };
         }
 
-        public bool SupportsContentType(string layoutContent)
+        public bool SupportsContent(string applicationContent)
         {
-            return FindLayoutReader(layoutContent) != null;
+            return FindLayoutReader(applicationContent) != null;
         }
 
-        public Layout ReadLayout(string layoutContent)
+        public Application Read(string applicationContent)
         {
-            ILayoutReader layoutReader = FindLayoutReader(layoutContent);
-            return layoutReader.ReadLayout(layoutContent);
-        }
-
-        public Attachment ReadAttachment(string attachmentContent)
-        {
-            ILayoutReader layoutReader = FindLayoutReader(attachmentContent);
-            return layoutReader.ReadAttachment(attachmentContent);
+            ILayoutReader layoutReader = FindLayoutReader(applicationContent);
+            return layoutReader.Read(applicationContent);
         }
 
         private ILayoutReader FindLayoutReader(string layoutContent)
         {
-            return _readers.FirstOrDefault(x => x.SupportsContentType(layoutContent));
+            return _readers.FirstOrDefault(x => x.SupportsContent(layoutContent));
         }
     }
 }

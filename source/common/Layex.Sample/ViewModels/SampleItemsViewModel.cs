@@ -1,5 +1,6 @@
 ﻿using Layex.Layouts;
 using Layex.ViewModels;
+using Layex.Views;
 using System.Collections.Generic;
 
 namespace Layex.Sample.ViewModels
@@ -10,9 +11,9 @@ namespace Layex.Sample.ViewModels
         public SampleItemsViewModel()
         {
             DisplayName = "Layouted Items Sample";
-            AvailableDisplayModes = new[] { DisplayMode.Grid, DisplayMode.Tab };
+            DisplayModes = new[] { DisplayMode.Grid, DisplayMode.Tab };
         }
 
-        public IEnumerable<DisplayMode> AvailableDisplayModes { get; }
+        public IEnumerable<DisplayMode> DisplayModes { get; }
     }
 }

@@ -1,0 +1,10 @@
+﻿<Application xmlns="clr-namespace:Layex.Layouts;assembly=Layex" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:v="clr-namespace:Layex.Sample.ViewModels;assembly=Layex.Sample">
+    <Layout>
+        <Layout.Items>
+            <Item Type="{x:Type v:MainViewModel}" InstanceMode="Single" ActivationMode="OnStartup" Order="10" />
+            <Item Type="{x:Type v:SampleItemsViewModel}" InstanceMode="Single" ActivationMode="OnDemand" Order="20" />
+        </Layout.Items>
+    </Layout>
+</Application>

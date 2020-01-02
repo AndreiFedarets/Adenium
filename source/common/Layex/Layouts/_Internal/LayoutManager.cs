@@ -1,71 +1,82 @@
-﻿using Layex.ViewModels;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace Layex.Layouts
 {
     internal sealed class LayoutManager : ILayoutManager
     {
-        private const string LayoutFileExtension = ".layout";
-        private const string AttachmentFileExtension = ".attachment";
-
-        private readonly IBootstrapperEnvironment _environment;
+        private readonly ILayoutLocator _layoutLocator;
         private readonly ILayoutReader _layoutReader;
+        private readonly Dictionary<string, Layout> _layouts;
+        private bool _layoutsLoaded;
 
-        public LayoutManager(IBootstrapperEnvironment environment, ILayoutReader layoutReader)
+        public LayoutManager(ILayoutLocator layoutLocator, ILayoutReader layoutReader)
         {
-            _environment = environment;
+            _layoutLocator = layoutLocator;
             _layoutReader = layoutReader;
+            _layouts = new Dictionary<string, Layout>();
         }
 
-        public Layout LoadLayout(string viewModelCodeName)
+        public Layout GetLayout(string viewModelCode)
         {
-            Layout layout = FindLayout(viewModelCodeName);
-            List<Attachment> attachments = FindAttachments(viewModelCodeName);
-            layout = MergeLayout(layout, attachments);
-            return layout;
-        }
-
-        private Layout MergeLayout(Layout layout, List<Attachment> attachments)
-        {
-            //TODO: handle LayoutItems duplication
-            List<LayoutItem> layoutItems = new List<LayoutItem>();
-            layoutItems.AddRange(layout);
-            layoutItems.AddRange(attachments.SelectMany(x => x));
-            layoutItems.Sort((x, y) => x.Order - y.Order);
-            return new Layout(layout.DisplayMode, layoutItems);
-        }
-
-        private Layout FindLayout(string layoutFullName)
-        {
-            string layoutFileName = layoutFullName + LayoutFileExtension;
-            string layoutFile = _environment.FindFile(layoutFileName);
-            Layout layout = null;
-            if (string.IsNullOrEmpty(layoutFile))
+            LoadLayouts();
+            Layout layout;
+            if (!_layouts.TryGetValue(viewModelCode, out layout))
             {
-                layout = new Layout();
-            }
-            else
-            {
-                string layoutContent = File.ReadAllText(layoutFile);
-                layout = _layoutReader.ReadLayout(layoutContent);
+                //TODO: log warning
+                layout = new Layout() { ViewModelCode = viewModelCode };
             }
             return layout;
         }
 
-        private List<Attachment> FindAttachments(string layoutFullName)
+        private void LoadLayouts()
         {
-            List<Attachment> attachments = new List<Attachment>();
-            string attachmentFileName = layoutFullName + AttachmentFileExtension;
-            IEnumerable<string> attachmentFiles = _environment.FindFiles(attachmentFileName);
-            foreach (string attachmentFile in attachmentFiles)
+            if (_layoutsLoaded)
             {
-                string attachmentContent = File.ReadAllText(attachmentFile);
-                Attachment attachment = _layoutReader.ReadAttachment(attachmentContent);
-                attachments.Add(attachment);
+                return;
             }
-            return attachments;
+            List<Layout> layouts = ReadRawLayouts();
+            LoadLayouts(layouts);
+            _layoutsLoaded = true;
+        }
+
+        private List<Layout> ReadRawLayouts()
+        {
+            IEnumerable<string> layoutContents = _layoutLocator.LocateLayouts();
+            List<Layout> layouts = new List<Layout>();
+            foreach (string layoutContent in layoutContents)
+            {
+                try
+                {
+                    Application application = _layoutReader.Read(layoutContent);
+                    layouts.AddRange(application);
+                }
+                catch (Exception)
+                {
+                    //TODO: log exception
+                    continue;
+                }
+            }
+            return layouts;
+        }
+
+        private void LoadLayouts(IEnumerable<Layout> layouts)
+        {
+            IEnumerable<IGrouping<string, Layout>> groups = layouts.GroupBy(x => x.ViewModelCode);
+            foreach (IGrouping<string, Layout> group in groups)
+            {
+                _layouts[group.Key] = MergeLayouts(group);
+            }
+        }
+
+        private Layout MergeLayouts(IEnumerable<Layout> layouts)
+        {
+            Layout layout = new Layout();
+            IEnumerable<Item> items = layouts.SelectMany(x => x.Items);
+            layout.Items.AddRange(items);
+            layout.Items.Sort((x, y) => x.Order.CompareTo(y.Order));
+            return layout;
         }
     }
 }

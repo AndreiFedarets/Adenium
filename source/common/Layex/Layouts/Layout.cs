@@ -1,21 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Layex.Layouts
 {
-    public class Layout : ReadOnlyCollection<LayoutItem>
+    public class Layout
     {
-        public Layout(DisplayMode displayMode, List<LayoutItem> items)
-            : base(items)
-        {
-            DisplayMode = displayMode;
-        }
-
         public Layout()
-            : this(DisplayMode.Tab, new List<LayoutItem>())
         {
+            ViewModelCode = string.Empty;
+            Items = new List<Item>();
         }
 
-        public DisplayMode DisplayMode { get; set; }
+        public List<Item> Items { get; set; }
+
+        public Type Type { get; set; }
+
+        public string ViewModelCode { get; set; }
     }
 }

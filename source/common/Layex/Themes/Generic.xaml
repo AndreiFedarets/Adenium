@@ -649,7 +649,7 @@
                                         <TextBlock Grid.Column="0" Text="{Binding ViewModel.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="3" />
                                         <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="DeactivateItem($dataContext, 'true')" 
                                                               caliburn:Bind.ModelWithoutContext="{Binding ViewModel.Parent, RelativeSource={RelativeSource TemplatedParent}}"
-                                                              Visibility="{Binding ViewModel.IsStatic, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
+                                                              Visibility="{Binding ViewModel.Closable, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
                                     </Grid>
                                     
                                 </Border>

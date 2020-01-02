@@ -24,6 +24,25 @@ namespace Layex.ViewModels
             return true;
         }
 
+        public override void DeactivateItem(IViewModel item, bool close = false)
+        {
+            if (!Items.Contains(item))
+            {
+                return;
+            }
+            if (close)
+            {
+                string itemCodeName = ViewModel.GetCodeName(item.GetType());
+                ViewModelItem viewModelItem = _viewModelItems.FindByName(itemCodeName);
+                if (viewModelItem != null && !viewModelItem.Closable)
+                {
+                    return;
+                }
+            }
+            base.DeactivateItem(item, close);
+        }
+
+
         public void ResetItems()
         {
             IViewModel activeItem = ActiveItem;
@@ -52,8 +71,7 @@ namespace Layex.ViewModels
         {
             base.Configure();
             ILayoutManager layoutManager = DependencyContainer.Resolve<ILayoutManager>();
-            Layout layout = layoutManager.LoadLayout(this.GetCodeName());
-            DisplayMode = layout.DisplayMode;
+            Layout layout = layoutManager.GetLayout(this.GetCodeName());
             _viewModelItems = new ViewModelItemCollection(layout, DependencyContainer);
         }
 

@@ -1,21 +1,15 @@
-﻿using Layex.ViewModels;
-using System;
+﻿using System;
 
 namespace Layex.Layouts
 {
     internal sealed class JsonLayoutReader : ILayoutReader
     {
-        public bool SupportsContentType(string layoutContent)
+        public bool SupportsContent(string applicationContent)
         {
             return false;
         }
 
-        public Layout ReadLayout(string layoutContent)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Attachment ReadAttachment(string attachmentContent)
+        public Application Read(string applicationContent)
         {
             throw new NotImplementedException();
         }

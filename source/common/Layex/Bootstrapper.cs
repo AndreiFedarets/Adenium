@@ -49,7 +49,8 @@ namespace Layex
             container.RegisterType<IBootstrapperEnvironment, BootstrapperEnvironment>(true);
             container.RegisterType<IWindowManager, WindowManager>(true);
             container.RegisterType<IViewModelManager, ViewModelManager>(true);
-            container.RegisterType<ILayoutReader, SmartLayoutReader>(true);
+            container.RegisterType<ILayoutLocator, FileLayoutLocator>(true);
+            container.RegisterType<ILayoutReader, XamlLayoutReader>(true);
             container.RegisterType<ILayoutManager, LayoutManager>(true);
         }
 

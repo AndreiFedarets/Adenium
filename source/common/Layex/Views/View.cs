@@ -8,14 +8,23 @@ namespace Layex.Views
 {
     public class View : UserControl
     {
+        public static readonly DependencyProperty DisplayModeProperty;
+
         static View()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(typeof(View)));
+            DisplayModeProperty = DependencyProperty.Register("DisplayMode", typeof(DisplayMode), typeof(View), new PropertyMetadata(OnDisplayModePropertyChanged));
         }
 
         public View()
         {
             DataContextChanged += OnDataContextChanged;
+        }
+
+        public DisplayMode DisplayMode
+        {
+            get { return (DisplayMode)GetValue(DisplayModeProperty); }
+            set { SetValue(DisplayModeProperty, value); }
         }
 
         public IViewModel ViewModel
@@ -29,44 +38,28 @@ namespace Layex.Views
             if (itemsViewModel != null)
             {
                 ContentControl contentControl = ViewManager.FindViewContent(this);
-                switch (itemsViewModel.DisplayMode)
+                switch (DisplayMode)
                 {
-                    case Layouts.DisplayMode.Tab:
+                    case DisplayMode.Tab:
                         contentControl.Content = new ViewTabControl() { DataContext = itemsViewModel };
                         break;
-                    case Layouts.DisplayMode.Grid:
+                    case DisplayMode.Grid:
                         contentControl.Content = new ViewGridControl() { DataContext = itemsViewModel };
                         break;
                     default:
-                        throw new NotSupportedException($"DisplayMode.'{itemsViewModel.DisplayMode}' value is not supported");
+                        throw new NotSupportedException($"DisplayMode.'{DisplayMode}' value is not supported");
                 }
             }
         }
 
-        private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private static void OnDisplayModePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs eventArgs)
         {
-            ItemsViewModel itemsViewModel = ViewModel as ItemsViewModel;
-            if (itemsViewModel != null)
-            {
-                if (string.Equals(nameof(itemsViewModel.DisplayMode), e.PropertyName, StringComparison.Ordinal))
-                {
-                    RenderContent();
-                }
-            }
+            View view = (View)sender;
+            view.RenderContent();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            IViewModel previousViewModel = e.OldValue as IViewModel;
-            if (previousViewModel != null)
-            {
-                previousViewModel.PropertyChanged -= OnViewModelPropertyChanged;
-            }
-            IViewModel newViewModel = e.NewValue as IViewModel;
-            if (newViewModel != null)
-            {
-                newViewModel.PropertyChanged += OnViewModelPropertyChanged;
-            }
             RenderContent();
         }
     }
