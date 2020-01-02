@@ -1,4 +1,5 @@
 ﻿using Layex.Actions;
+using Layex.Extensions;
 using Layex.ViewModels;
 
 namespace Layex.Sample.ModuleA.Actions
@@ -22,7 +23,7 @@ namespace Layex.Sample.ModuleA.Actions
             IItemsViewModel itemsViewModel = Context as IItemsViewModel;
             if (itemsViewModel != null)
             {
-                string codeName = ViewModel.GetCodeName<ViewModels.SampleViewModel>();
+                string codeName = ViewModelExtensions.GetCodeName<ViewModels.SampleViewModel>();
                 itemsViewModel.DeactivateItem(codeName, true);
             }
         }

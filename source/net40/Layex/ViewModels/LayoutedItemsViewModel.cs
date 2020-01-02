@@ -32,7 +32,7 @@ namespace Layex.ViewModels
             }
             if (close)
             {
-                string itemCodeName = ViewModel.GetCodeName(item.GetType());
+                string itemCodeName = item.GetCodeName();
                 ViewModelItem viewModelItem = _viewModelItems.FindByName(itemCodeName);
                 if (viewModelItem != null && !viewModelItem.Closable)
                 {

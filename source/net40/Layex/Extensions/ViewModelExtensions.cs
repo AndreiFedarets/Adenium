@@ -3,19 +3,32 @@ using System;
 
 namespace Layex.Extensions
 {
-    internal static class ViewModelExtensions
+    public static class ViewModelExtensions
     {
         public static string GetCodeName(this IViewModel viewModel)
         {
-            string codeName;
-            ViewModelAttribute attribute = ViewModelAttribute.GetAttribute(viewModel);
-            if (attribute != null)
+            return GetCodeName(viewModel.GetType());
+        }
+
+        public static string GetCodeName<T>() where T : IViewModel
+        {
+            return GetCodeName(typeof(T));
+        }
+
+        public static string GetCodeName(Type type)
+        {
+            string codeName = string.Empty;
+            if (type != null)
             {
-                codeName = attribute.CodeName;
-            }
-            else
-            {
-                codeName = viewModel.GetType().FullName;
+                ViewModelAttribute attribute = ViewModelAttribute.GetAttribute(type);
+                if (attribute != null)
+                {
+                    codeName = attribute.CodeName;
+                }
+                else
+                {
+                    codeName = type.FullName;
+                }
             }
             return codeName;
         }
