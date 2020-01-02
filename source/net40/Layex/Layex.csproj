@@ -66,9 +66,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\ActionItem.cs" />
-    <Compile Include="Actions\IAction.cs" />
-    <Compile Include="Actions\IActionGroup.cs" />
+    <Compile Include="Actions\ActionCommandBase.cs" />
+    <Compile Include="Actions\ActionBase.cs" />
+    <Compile Include="Actions\ActionCollectionBase.cs" />
+    <Compile Include="Actions\DefaultActionCollection.cs" />
+    <Compile Include="Actions\RootActionCollection.cs" />
+    <Compile Include="Actions\_Commands\CloseViewModelAction.cs" />
+    <Compile Include="Actions\_Commands\ActivateViewModelAction.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="BuiltinDependencyContainer.cs" />
     <Compile Include="Contracts\ContractBase.cs" />
@@ -94,13 +98,15 @@
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="IBootstrapperEnvironment.cs" />
     <Compile Include="IDependencyContainer.cs" />
-    <Compile Include="Layouts\ActivationMode.cs" />
+    <Compile Include="Layouts\ActionCommand.cs" />
+    <Compile Include="Layouts\Action.cs" />
+    <Compile Include="Layouts\ActionCollection.cs" />
     <Compile Include="Layouts\Application.cs" />
+    <Compile Include="Layouts\Contract.cs" />
     <Compile Include="Layouts\FileLayoutLocator.cs" />
     <Compile Include="Layouts\ILayoutLocator.cs" />
     <Compile Include="Layouts\ILayoutManager.cs" />
-    <Compile Include="Layouts\InstanceMode.cs" />
-    <Compile Include="Layouts\Item.cs" />
+    <Compile Include="Layouts\ViewModel.cs" />
     <Compile Include="Layouts\Layout.cs" />
     <Compile Include="Layouts\_Internal\ILayoutReader.cs" />
     <Compile Include="Layouts\_Internal\LayoutManager.cs" />
@@ -124,14 +130,11 @@
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\IViewModelManager.cs" />
-    <Compile Include="ViewModels\LayoutedItemsViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\ViewModelAttribute.cs" />
     <Compile Include="ViewModels\ViewModelEventArgs.cs" />
     <Compile Include="ViewModels\_Internal\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\_Internal\IRequireDependencyContainer.cs" />
-    <Compile Include="ViewModels\_Internal\ViewModelItem.cs" />
-    <Compile Include="ViewModels\_Internal\ViewModelItemCollection.cs" />
     <Compile Include="ViewModels\_Internal\ViewModelManager.cs" />
     <Compile Include="Views\DisplayMode.cs" />
     <Compile Include="Views\View.cs" />
@@ -151,9 +154,7 @@
     <AppDesigner Include="Properties\" />
     <None Include="Properties\StrongName.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Actions\_Internal\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\Close.png" />
   </ItemGroup>

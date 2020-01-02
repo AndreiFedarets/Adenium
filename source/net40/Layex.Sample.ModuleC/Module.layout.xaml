@@ -1,9 +1,9 @@
 ﻿<Application xmlns="clr-namespace:Layex.Layouts;assembly=Layex" 
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:v="clr-namespace:Layex.Sample.ModuleC.ViewModels;assembly=Layex.Sample.ModuleC">
-    <Layout ViewModelCode="Layex.Sample.LayoutedItems">
-        <Layout.Items>
-            <Item Type="{x:Type v:SampleViewModel}" InstanceMode="Single" ActivationMode="OnStartup" Order="30" />
-        </Layout.Items>
+    <Layout ViewModelName="Layex.Sample.LayoutedItems">
+        <Layout.ViewModels>
+            <ViewModel Type="{x:Type v:SampleViewModel}" Singleton="true" AutoActivate="true" Order="30" />
+        </Layout.ViewModels>
     </Layout>
 </Application>

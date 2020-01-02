@@ -2,6 +2,6 @@
 {
     public interface ILayoutManager
     {
-        Layout GetLayout(string viewModelCode);
+        Layout GetLayout(string viewModelName);
     }
 }

@@ -3,18 +3,24 @@ using System.Collections.Generic;
 
 namespace Layex.Layouts
 {
-    public class Layout
+    public sealed class Layout
     {
         public Layout()
         {
-            ViewModelCode = string.Empty;
-            Items = new List<Item>();
+            ViewModelName = string.Empty;
+            ViewModels = new List<ViewModel>();
+            Actions = new List<Action>();
+            Contracts = new List<Contract>();
         }
 
-        public List<Item> Items { get; set; }
+        public List<ViewModel> ViewModels { get; set; }
+
+        public List<Action> Actions { get; set; }
+
+        public List<Contract> Contracts { get; set; }
 
         public Type Type { get; set; }
 
-        public string ViewModelCode { get; set; }
+        public string ViewModelName { get; set; }
     }
 }

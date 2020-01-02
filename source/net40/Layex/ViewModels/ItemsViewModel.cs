@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using Layex.Contracts;
 using Layex.Extensions;
 using System;
 using System.Collections;
@@ -11,12 +10,7 @@ namespace Layex.ViewModels
 {
     public abstract class ItemsViewModel : Conductor<IViewModel>.Collection.OneActive, IItemsViewModel, IRequireDependencyContainer
     {
-        private readonly ContractCollection _contracts;
-
-        protected ItemsViewModel()
-        {
-            _contracts = new ContractCollection(this);
-        }
+        public Actions.RootActionCollection Actions { get; private set; }
 
         public new IItemsViewModel Parent
         {
@@ -24,6 +18,14 @@ namespace Layex.ViewModels
         }
 
         protected IDependencyContainer DependencyContainer { get; private set; }
+
+        protected Layouts.Layout Layout { get; private set; }
+
+        protected Contracts.ContractCollection Contracts { get; private set; }
+
+        public bool Locked { get; set; }
+
+        public int Order { get; set; }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged
         {
@@ -33,22 +35,33 @@ namespace Layex.ViewModels
 
         public event EventHandler Disposed;
 
-        public virtual bool ActivateItem(string childCodeName)
+        public event EventHandler ItemActivated;
+
+        public event EventHandler ItemDeactivated;
+
+        public virtual bool ActivateItem(string viewModelName)
         {
-            IViewModel targetViewModel = Items.FirstOrDefault(x => x.AreCodeNameEquals(childCodeName));
+            IViewModel targetViewModel = Items.FirstOrDefault(x => string.Equals(x.GetViewModelName(), viewModelName, StringComparison.Ordinal));
             if (targetViewModel != null)
             {
                 ActivateItem(targetViewModel);
+                return true;
             }
-            return targetViewModel != null;
+            Layouts.ViewModel viewModelItem = Layout.ViewModels.FirstOrDefault(x => string.Equals(x.ViewModelName, viewModelName, StringComparison.Ordinal));
+            if (viewModelItem != null)
+            {
+                ActivateItem(viewModelItem);
+                return true;
+            }
+            return false;
         }
 
-        public virtual bool DeactivateItem(string childCodeName, bool close = false)
+        public virtual bool DeactivateItem(string viewModelName, bool close = false)
         {
-            IViewModel targetViewModel = Items.FirstOrDefault(x => x.AreCodeNameEquals(childCodeName));
+            IViewModel targetViewModel = Items.FirstOrDefault(x => string.Equals(x.GetViewModelName(), viewModelName, StringComparison.Ordinal));
             if (targetViewModel != null)
             {
-                DeactivateItem(targetViewModel);
+                DeactivateItem(targetViewModel, close);
             }
             return targetViewModel != null;
         }
@@ -62,9 +75,10 @@ namespace Layex.ViewModels
                     IDependencyContainer childDependencyContainer = DependencyContainer.CreateChildContainer();
                     requireDependencyContainer.Configure(childDependencyContainer);
                 }
-                _contracts.RegisterItem(item);
+                Contracts.RegisterItem(item);
             }
             base.ActivateItem(item);
+            ItemActivated?.Invoke(this, EventArgs.Empty);
         }
 
         public override void DeactivateItem(IViewModel item, bool close = false)
@@ -75,14 +89,60 @@ namespace Layex.ViewModels
             }
             if (close)
             {
-                _contracts.UnregisterItem(item);
+                ViewModel viewModel = item as ViewModel;
+                if (viewModel.Locked)
+                {
+                    return;
+                }
+                Contracts.UnregisterItem(item);
             }
             base.DeactivateItem(item, close);
+            ItemDeactivated?.Invoke(this, EventArgs.Empty);
+        }
+
+        public bool ContainsItem(string viewModelName)
+        {
+            return Items.Any(x => string.Equals(x.GetViewModelName(), viewModelName, StringComparison.Ordinal));
+        }
+
+        public void ResetItems()
+        {
+            IViewModel activeItem = ActiveItem;
+            IEnumerable<Layouts.ViewModel> startupViewModelItems = Layout.ViewModels.Where(x => x.AutoActivate);
+            foreach (Layouts.ViewModel viewModelItem in startupViewModelItems)
+            {
+                ActivateItem(viewModelItem);
+            }
+            if (activeItem == null && Items.Any())
+            {
+                activeItem = Items.First();
+            }
+            if (activeItem != null)
+            {
+                ActiveItem = activeItem;
+            }
+        }
+
+        public void Activate()
+        {
+            if (Parent != null)
+            {
+                Parent.ActivateItem(this);
+            }
+        }
+
+        public void Close()
+        {
+            if (Parent != null)
+            {
+                Parent.DeactivateItem(this, true);
+            }
         }
 
         public virtual void Dispose()
         {
-            _contracts.Dispose();
+            Contracts.Dispose();
+            Actions.Dispose();
             Disposed?.Invoke(this, EventArgs.Empty);
         }
 
@@ -91,15 +151,75 @@ namespace Layex.ViewModels
             return Items.GetEnumerator();
         }
 
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
+            Layout = LoadLayout();
+            Actions = new Actions.RootActionCollection();
+            Contracts = new Contracts.ContractCollection();
+            InitializeActions();
+            InitializeContracts();
+            InitializeChildren();
+        }
+
+        protected virtual Layouts.Layout LoadLayout()
+        {
+            Layouts.ILayoutManager layoutManager = DependencyContainer.Resolve<Layouts.ILayoutManager>();
+            return layoutManager.GetLayout(this.GetViewModelName());
+        }
+
+        protected virtual void InitializeContracts()
+        {
+            Contracts.Initialize(this);
+        }
+
+        protected virtual void InitializeChildren()
+        {
+            ResetItems();
+        }
+
+        protected virtual void InitializeActions()
+        {
+            IEnumerable<Layouts.ActionCollection> collections = Layout.Actions.OfType<Layouts.ActionCollection>();
+            collections = collections.OrderBy(x => x.CollectionName.Length);
+            foreach (Layouts.ActionCollection collection in collections)
+            {
+                Actions.ActionCollectionBase targetCollection = (Actions.ActionCollectionBase)Actions[collection.CollectionName];
+                if (targetCollection == null)
+                {
+                    //TODO: log warning
+                    continue;
+                }
+                Actions.ActionCollectionBase currentCollection = (Actions.ActionCollectionBase)collection.GetAction(DependencyContainer, this);
+                targetCollection.Add(currentCollection);
+            }
+            foreach (Layouts.ActionCommand command in Layout.Actions.OfType<Layouts.ActionCommand>())
+            {
+                Actions.ActionCollectionBase targetCollection = (Actions.ActionCollectionBase)Actions[command.CollectionName];
+                if (targetCollection == null)
+                {
+                    //TODO: log warning
+                    continue;
+                }
+                Actions.ActionCommandBase currentCommand = (Actions.ActionCommandBase)command.GetAction(DependencyContainer, this);
+                targetCollection.Add(currentCommand);
+            }
+        }
+
+        protected virtual void ConfigureContainer()
+        {
+        }
+
+        private void ActivateItem(Layouts.ViewModel viewModelItem)
+        {
+            IViewModel viewModel = viewModelItem.GetViewModel(DependencyContainer);
+            ActivateItem(viewModel);
+        }
+
         void IRequireDependencyContainer.Configure(IDependencyContainer dependencyContainer)
         {
             DependencyContainer = dependencyContainer;
-            Configure();
-        }
-
-        protected virtual void Configure()
-        {
-
+            ConfigureContainer();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

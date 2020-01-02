@@ -6,7 +6,8 @@ using System.Collections.Generic;
 namespace Layex.Sample.ViewModels
 {
     [ViewModel("Layex.Sample.LayoutedItems")]
-    public sealed class SampleItemsViewModel : LayoutedItemsViewModel
+    [Contracts.EnableContract(typeof(Contracts.DialogContract))]
+    public sealed class SampleItemsViewModel : ItemsViewModel, Contracts.IDialogContractConsumer
     {
         public SampleItemsViewModel()
         {
@@ -15,5 +16,13 @@ namespace Layex.Sample.ViewModels
         }
 
         public IEnumerable<DisplayMode> DisplayModes { get; }
+
+        public bool DialogReady { get; private set; }
+
+        public void OnReadyChanged(bool ready)
+        {
+            DialogReady = ready;
+            NotifyOfPropertyChange(() => DialogReady);
+        }
     }
 }

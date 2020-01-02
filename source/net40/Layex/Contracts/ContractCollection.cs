@@ -3,24 +3,29 @@ using System.Collections.Generic;
 
 namespace Layex.Contracts
 {
-    public class ContractCollection : IDisposable
+    public sealed class ContractCollection : IDisposable
     {
         private readonly List<IContract> _contracts;
+        private readonly List<object> _items;
 
-        public ContractCollection(object contractOwner)
+        public ContractCollection()
         {
             _contracts = new List<IContract>();
-            RegisterOwnerContracts(contractOwner);
-            RegisterItem(contractOwner);
+            _items = new List<object>();
         }
 
         public void RegisterContract(IContract contract)
         {
             _contracts.Add(contract);
+            foreach (object item in _items)
+            {
+                contract.Register(item);
+            }
         }
 
         public void RegisterItem(object item)
         {
+            _items.Add(item);
             foreach (IContract contract in _contracts)
             {
                 contract.Register(item);
@@ -33,14 +38,17 @@ namespace Layex.Contracts
             {
                 contract.Unregister(item);
             }
+            _items.Remove(item);
         }
 
-        private void RegisterOwnerContracts(object contractOwner)
+        public void Initialize(object contractOwner)
         {
             if (contractOwner == null)
             {
                 return;
             }
+            _contracts.Clear();
+            _items.Clear();
             Type contractOwnerType = contractOwner.GetType();
             IEnumerable<EnableContractAttribute> attributes = EnableContractAttribute.GetContractAttributes(contractOwnerType);
             foreach (EnableContractAttribute attribute in attributes)
@@ -50,6 +58,7 @@ namespace Layex.Contracts
                 IContract contract = (IContract)contractObject;
                 RegisterContract(contract);
             }
+            RegisterItem(contractOwner);
         }
 
         public void Dispose()

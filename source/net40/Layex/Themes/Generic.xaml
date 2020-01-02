@@ -473,7 +473,7 @@
     </Style>-->
 
     <!-- MenuUserControlStyle =================================================================================================== -->
-    <Style x:Key="MenuUserControlStyle" TargetType="{x:Type UserControl}" BasedOn="{StaticResource BaseStyle}">
+    <!--<Style x:Key="MenuUserControlStyle" TargetType="{x:Type UserControl}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -484,7 +484,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type UserControl}">
-                    <Border Background="{TemplateBinding Background}">
+                    <Border Background="{TemplateBinding Background}">-->
                         <!--<Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -502,11 +502,11 @@
                                 <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                             </Border>
                         </Grid>-->
-                    </Border>
+                    <!--</Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
     <!-- PanelUserControl =================================================================================================== -->
     <!--<Style x:Key="PanelUserControl" TargetType="{x:Type UserControl}" BasedOn="{StaticResource BaseStyle}">
@@ -647,9 +647,9 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{Binding ViewModel.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="3" />
-                                        <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="DeactivateItem($dataContext, 'true')" 
-                                                              caliburn:Bind.ModelWithoutContext="{Binding ViewModel.Parent, RelativeSource={RelativeSource TemplatedParent}}"
-                                                              Visibility="{Binding ViewModel.Closable, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
+                                        <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="Close()" 
+                                                              caliburn:Bind.ModelWithoutContext="{Binding ViewModel, RelativeSource={RelativeSource TemplatedParent}}"
+                                                              Visibility="{Binding ViewModel.Locked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
                                     </Grid>
                                     
                                 </Border>

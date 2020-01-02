@@ -18,14 +18,14 @@ namespace Layex.Layouts
             _layouts = new Dictionary<string, Layout>();
         }
 
-        public Layout GetLayout(string viewModelCode)
+        public Layout GetLayout(string viewModelName)
         {
             LoadLayouts();
             Layout layout;
-            if (!_layouts.TryGetValue(viewModelCode, out layout))
+            if (!_layouts.TryGetValue(viewModelName, out layout))
             {
                 //TODO: log warning
-                layout = new Layout() { ViewModelCode = viewModelCode };
+                layout = new Layout() { ViewModelName = viewModelName };
             }
             return layout;
         }
@@ -63,7 +63,7 @@ namespace Layex.Layouts
 
         private void LoadLayouts(IEnumerable<Layout> layouts)
         {
-            IEnumerable<IGrouping<string, Layout>> groups = layouts.GroupBy(x => x.ViewModelCode);
+            IEnumerable<IGrouping<string, Layout>> groups = layouts.GroupBy(x => x.ViewModelName);
             foreach (IGrouping<string, Layout> group in groups)
             {
                 _layouts[group.Key] = MergeLayouts(group);
@@ -73,9 +73,17 @@ namespace Layex.Layouts
         private Layout MergeLayouts(IEnumerable<Layout> layouts)
         {
             Layout layout = new Layout();
-            IEnumerable<Item> items = layouts.SelectMany(x => x.Items);
-            layout.Items.AddRange(items);
-            layout.Items.Sort((x, y) => x.Order.CompareTo(y.Order));
+            //merge ViewModels
+            IEnumerable<ViewModel> viewModels = layouts.SelectMany(x => x.ViewModels);
+            layout.ViewModels.AddRange(viewModels);
+            layout.ViewModels.Sort((x, y) => x.Order.CompareTo(y.Order));
+            //merge Actions
+            IEnumerable<Action> actions = layouts.SelectMany(x => x.Actions);
+            layout.Actions.AddRange(actions);
+            layout.Actions.Sort((x, y) => x.Order.CompareTo(y.Order));
+            //merge Contracts
+            IEnumerable<Contract> contracts = layouts.SelectMany(x => x.Contracts);
+            layout.Contracts.AddRange(contracts);
             return layout;
         }
     }

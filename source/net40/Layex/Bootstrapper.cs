@@ -46,6 +46,7 @@ namespace Layex
 
         protected virtual void ConfigureContainer(IDependencyContainer container)
         {
+            container.RegisterType<ApplicationViewModel, ApplicationViewModel>(true);
             container.RegisterType<IBootstrapperEnvironment, BootstrapperEnvironment>(true);
             container.RegisterType<IWindowManager, WindowManager>(true);
             container.RegisterType<IViewModelManager, ViewModelManager>(true);

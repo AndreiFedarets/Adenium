@@ -5,17 +5,17 @@ namespace Layex.Extensions
 {
     public static class ViewModelExtensions
     {
-        public static string GetCodeName(this IViewModel viewModel)
+        public static string GetViewModelName(this IViewModel viewModel)
         {
-            return GetCodeName(viewModel.GetType());
+            return GetViewModelName(viewModel.GetType());
         }
 
-        public static string GetCodeName<T>() where T : IViewModel
+        public static string GetViewModelName<T>() where T : IViewModel
         {
-            return GetCodeName(typeof(T));
+            return GetViewModelName(typeof(T));
         }
 
-        public static string GetCodeName(Type type)
+        public static string GetViewModelName(Type type)
         {
             string codeName = string.Empty;
             if (type != null)
@@ -35,12 +35,12 @@ namespace Layex.Extensions
 
         public static bool AreCodeNameEquals(this IViewModel viewModel1, IViewModel viewModel2)
         {
-            return AreCodeNameEquals(viewModel1.GetCodeName(), viewModel2.GetCodeName());
+            return AreCodeNameEquals(viewModel1.GetViewModelName(), viewModel2.GetViewModelName());
         }
 
         public static bool AreCodeNameEquals(this IViewModel viewModel, string codeName)
         {
-            return AreCodeNameEquals(viewModel.GetCodeName(), codeName);
+            return AreCodeNameEquals(viewModel.GetViewModelName(), codeName);
         }
 
         public static bool AreCodeNameEquals(string codeName1, string codeName2)

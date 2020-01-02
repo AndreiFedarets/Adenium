@@ -4,7 +4,7 @@ using System;
 namespace Layex.ViewModels
 {
     [ViewModel("")]
-    internal sealed class ApplicationViewModel : LayoutedItemsViewModel
+    internal sealed class ApplicationViewModel : ItemsViewModel
     {
         private readonly IWindowManager _windowManager;
 

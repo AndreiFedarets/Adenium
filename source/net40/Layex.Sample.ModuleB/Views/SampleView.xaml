@@ -3,5 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:v="clr-namespace:Layex.Views;assembly=Layex"
         Height="50" Width="150">
-    <TextBlock Text="{Binding DisplayName, StringFormat='Hello! I am Static {0}'}" />
+    <StackPanel>
+        <TextBlock Text="{Binding DisplayName, StringFormat='Hello! I am locked {0}'}" />
+        <CheckBox IsChecked="{Binding DialogReady}" Content="I am ready" />
+    </StackPanel>
 </v:View>

@@ -1,17 +1,17 @@
 ﻿using Layex.Actions;
 
-namespace Layex.Sample.ModuleA.Actions
+namespace Layex.Sample.Actions
 {
     internal sealed class CloseViewAction : CloseViewModelAction
     {
         public CloseViewAction()
-            : base(typeof(ViewModels.SampleViewModel))
+            : base(typeof(ViewModels.SampleItemsViewModel))
         {
         }
 
         public override string DisplayName
         {
-            get { return "Close View A"; }
+            get { return "Close Items View"; }
         }
     }
 }

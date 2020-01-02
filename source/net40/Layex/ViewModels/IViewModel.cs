@@ -10,5 +10,9 @@ namespace Layex.ViewModels
         event EventHandler<ActivationEventArgs> Activated;
 
         event EventHandler<DeactivationEventArgs> Deactivated;
+
+        void Activate();
+
+        void Close();
     }
 }
