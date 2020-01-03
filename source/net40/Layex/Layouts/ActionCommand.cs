@@ -1,9 +1,7 @@
-﻿using System.Windows.Data;
-
-namespace Layex.Layouts
+﻿namespace Layex.Layouts
 {
-    public sealed class ActionCommand : Action
+    public sealed class ActionCommand : ActionItem
     {
-        public Binding ParameterBinding { get; set; }
+        
     }
 }

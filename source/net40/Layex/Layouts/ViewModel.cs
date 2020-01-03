@@ -3,7 +3,7 @@ using System;
 
 namespace Layex.Layouts
 {
-    public sealed class ViewModel
+    public sealed class ViewModel : IOrderedtem
     {
         private ViewModels.IViewModel _viewModel;
         

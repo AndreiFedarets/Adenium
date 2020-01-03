@@ -2,6 +2,7 @@
 {
     public enum DisplayMode
     {
+        Content,
         Tab,
         Grid
     }

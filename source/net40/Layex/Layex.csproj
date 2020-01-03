@@ -66,11 +66,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\ActionCommandBase.cs" />
-    <Compile Include="Actions\ActionBase.cs" />
-    <Compile Include="Actions\ActionCollectionBase.cs" />
-    <Compile Include="Actions\DefaultActionCollection.cs" />
-    <Compile Include="Actions\RootActionCollection.cs" />
+    <Compile Include="Actions\ActionCommand.cs" />
+    <Compile Include="Actions\ActionItem.cs" />
+    <Compile Include="Actions\ActionGroup.cs" />
+    <Compile Include="Actions\RootActionGroup.cs" />
     <Compile Include="Actions\_Commands\CloseViewModelAction.cs" />
     <Compile Include="Actions\_Commands\ActivateViewModelAction.cs" />
     <Compile Include="Bootstrapper.cs" />
@@ -99,15 +98,20 @@
     <Compile Include="IBootstrapperEnvironment.cs" />
     <Compile Include="IDependencyContainer.cs" />
     <Compile Include="Layouts\ActionCommand.cs" />
-    <Compile Include="Layouts\Action.cs" />
-    <Compile Include="Layouts\ActionCollection.cs" />
+    <Compile Include="Layouts\ActionGroup.cs" />
+    <Compile Include="Layouts\ActionItemCollection.cs" />
     <Compile Include="Layouts\Application.cs" />
     <Compile Include="Layouts\Contract.cs" />
     <Compile Include="Layouts\FileLayoutLocator.cs" />
+    <Compile Include="Layouts\ActionItem.cs" />
+    <Compile Include="Layouts\IOrderedtem.cs" />
     <Compile Include="Layouts\ILayoutLocator.cs" />
     <Compile Include="Layouts\ILayoutManager.cs" />
+    <Compile Include="Layouts\ItemCollection.cs" />
     <Compile Include="Layouts\ViewModel.cs" />
     <Compile Include="Layouts\Layout.cs" />
+    <Compile Include="Layouts\ActionGroupCollection.cs" />
+    <Compile Include="Layouts\ViewModelCollection.cs" />
     <Compile Include="Layouts\_Internal\ILayoutReader.cs" />
     <Compile Include="Layouts\_Internal\LayoutManager.cs" />
     <Compile Include="Layouts\_Internal\XamlLayoutReader.cs" />

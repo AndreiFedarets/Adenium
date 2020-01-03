@@ -9,24 +9,24 @@
             _applicationViewModel = applicationViewModel;
         }
 
-        public IViewModel Activate(params string[] codeNames)
+        public IViewModel Activate(params string[] names)
         {
             IViewModel currentViewModel = _applicationViewModel;
-            foreach (string codeName in codeNames)
+            foreach (string viewModelName in names)
             {
                 ItemsViewModel itemsViewModel = currentViewModel as ItemsViewModel;
                 if (itemsViewModel == null)
                 {
                     return null;
                 }
-                currentViewModel = TryActivate(itemsViewModel, codeName);
+                currentViewModel = TryActivate(itemsViewModel, viewModelName);
             }
             return currentViewModel;
         }
 
-        private IViewModel TryActivate(ItemsViewModel itemsViewModel, string childCodeName)
+        private IViewModel TryActivate(ItemsViewModel itemsViewModel, string viewModelName)
         {
-            if (itemsViewModel.ActivateItem(childCodeName))
+            if (itemsViewModel.ActivateItem(viewModelName))
             {
                 return itemsViewModel.ActiveItem;
             }

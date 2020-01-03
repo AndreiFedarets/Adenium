@@ -4,12 +4,12 @@ namespace Layex.ViewModels
 {
     public sealed class ViewModelAttribute : Attribute
     {
-        public ViewModelAttribute(string codeName)
+        public ViewModelAttribute(string viewModelName)
         {
-            CodeName = codeName;
+            ViewModelName = viewModelName;
         }
 
-        public string CodeName { get; private set; }
+        public string ViewModelName { get; private set; }
 
         public static ViewModelAttribute GetAttribute(IViewModel viewModel)
         {

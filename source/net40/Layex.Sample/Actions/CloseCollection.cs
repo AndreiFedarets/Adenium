@@ -2,7 +2,7 @@
 
 namespace Layex.Sample.Actions
 {
-    public sealed class CloseGroup : ActionCollectionBase
+    public sealed class CloseGroup : ActionGroup
     {
         public override string DisplayName
         {

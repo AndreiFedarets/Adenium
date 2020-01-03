@@ -3,7 +3,7 @@ using Layex.ViewModels;
 
 namespace Layex.Sample.Actions
 {
-    public sealed class ResetItemsAction : ActionCommandBase
+    public sealed class ResetItemsAction : ActionCommand
     {
         public override string DisplayName
         {

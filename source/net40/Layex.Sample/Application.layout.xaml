@@ -9,11 +9,16 @@
         </Layout.ViewModels>
     </Layout>
     <Layout ViewModelName="Layex.Sample.LayoutedItems">
-        <Layout.Actions>
-            <ActionCollection Name="Main" />
-            <ActionCommand CollectionName="Main" Name="ResetItems" Order="10" Type="{x:Type a:ResetItemsAction}" />
-            <ActionCollection CollectionName="Main" Name="Close" Order="20" Type="{x:Type a:CloseGroup}" />
-            <ActionCommand CollectionName="Main.Close" Name="CloseItemsView" Order="10" Type="{x:Type a:CloseViewAction}" />
-        </Layout.Actions>
+        <Layout.ActionGroups>
+            <ActionGroup Name="Main">
+                <ActionGroup Name="Close" Order="10" Type="{x:Type a:CloseGroup}">
+                    <ActionCommand Name="CloseItemsView" Order="10" Type="{x:Type a:CloseViewAction}" />
+                </ActionGroup>
+                <ActionCommand Name="ResetItems" Order="20" Type="{x:Type a:ResetItemsAction}" />
+            </ActionGroup>
+            <ActionGroup Name="ItemContext">
+                
+            </ActionGroup>
+        </Layout.ActionGroups>
     </Layout>
 </Application>

@@ -10,5 +10,13 @@ namespace Layex.ViewModels
         }
 
         public IViewModel ViewModel { get; private set; }
+
+        internal static void RaiseEvent(EventHandler<ViewModelEventArgs> handler, object sender, IViewModel viewModel)
+        { 
+            if (handler != null)
+            {
+                handler(sender, new ViewModelEventArgs(viewModel));
+            }
+        }
     }
 }

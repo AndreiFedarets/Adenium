@@ -13,7 +13,7 @@ namespace Layex.Views
         static View()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(typeof(View)));
-            DisplayModeProperty = DependencyProperty.Register("DisplayMode", typeof(DisplayMode), typeof(View), new PropertyMetadata(OnDisplayModePropertyChanged));
+            DisplayModeProperty = DependencyProperty.Register("DisplayMode", typeof(DisplayMode), typeof(View), new PropertyMetadata(DisplayMode.Content, OnDisplayModePropertyChanged));
         }
 
         public View()
@@ -27,28 +27,23 @@ namespace Layex.Views
             set { SetValue(DisplayModeProperty, value); }
         }
 
-        public IViewModel ViewModel
-        {
-            get { return DataContext as IViewModel; }
-        }
-
         private void RenderContent()
         {
-            ItemsViewModel itemsViewModel = ViewModel as ItemsViewModel;
-            if (itemsViewModel != null)
+            if (DisplayMode == DisplayMode.Content)
             {
-                ContentControl contentControl = ViewManager.FindViewContent(this);
-                switch (DisplayMode)
-                {
-                    case DisplayMode.Tab:
-                        contentControl.Content = new ViewTabControl() { DataContext = itemsViewModel };
-                        break;
-                    case DisplayMode.Grid:
-                        contentControl.Content = new ViewGridControl() { DataContext = itemsViewModel };
-                        break;
-                    default:
-                        throw new NotSupportedException($"DisplayMode.'{DisplayMode}' value is not supported");
-                }
+                return;
+            }
+            ContentControl contentControl = ViewManager.FindViewContent(this);
+            switch (DisplayMode)
+            {
+                case DisplayMode.Tab:
+                    contentControl.Content = new ViewTabControl() { DataContext = DataContext };
+                    break;
+                case DisplayMode.Grid:
+                    contentControl.Content = new ViewGridControl() { DataContext = DataContext };
+                    break;
+                default:
+                    throw new NotSupportedException($"DisplayMode.'{DisplayMode}' value is not supported");
             }
         }
 

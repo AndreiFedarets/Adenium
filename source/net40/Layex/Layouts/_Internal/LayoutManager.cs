@@ -63,28 +63,16 @@ namespace Layex.Layouts
 
         private void LoadLayouts(IEnumerable<Layout> layouts)
         {
-            IEnumerable<IGrouping<string, Layout>> groups = layouts.GroupBy(x => x.ViewModelName);
-            foreach (IGrouping<string, Layout> group in groups)
+            IEnumerable<IGrouping<string, Layout>> layoutGroups = layouts.GroupBy(x => x.ViewModelName);
+            foreach (IGrouping<string, Layout> layoutsGroup in layoutGroups)
             {
-                _layouts[group.Key] = MergeLayouts(group);
+                Layout mergedLayout = new Layout();
+                foreach (Layout layout in layoutsGroup)
+                {
+                    mergedLayout.Append(layout);
+                }
+                _layouts[layoutsGroup.Key] = mergedLayout;
             }
-        }
-
-        private Layout MergeLayouts(IEnumerable<Layout> layouts)
-        {
-            Layout layout = new Layout();
-            //merge ViewModels
-            IEnumerable<ViewModel> viewModels = layouts.SelectMany(x => x.ViewModels);
-            layout.ViewModels.AddRange(viewModels);
-            layout.ViewModels.Sort((x, y) => x.Order.CompareTo(y.Order));
-            //merge Actions
-            IEnumerable<Action> actions = layouts.SelectMany(x => x.Actions);
-            layout.Actions.AddRange(actions);
-            layout.Actions.Sort((x, y) => x.Order.CompareTo(y.Order));
-            //merge Contracts
-            IEnumerable<Contract> contracts = layouts.SelectMany(x => x.Contracts);
-            layout.Contracts.AddRange(contracts);
-            return layout;
         }
     }
 }

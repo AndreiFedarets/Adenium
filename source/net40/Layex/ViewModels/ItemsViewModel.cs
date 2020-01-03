@@ -10,7 +10,7 @@ namespace Layex.ViewModels
 {
     public abstract class ItemsViewModel : Conductor<IViewModel>.Collection.OneActive, IItemsViewModel, IRequireDependencyContainer
     {
-        public Actions.RootActionCollection Actions { get; private set; }
+        public Actions.RootActionGroup Actions { get; private set; }
 
         public new IItemsViewModel Parent
         {
@@ -35,9 +35,9 @@ namespace Layex.ViewModels
 
         public event EventHandler Disposed;
 
-        public event EventHandler ItemActivated;
+        public event EventHandler<ViewModelEventArgs> ItemActivated;
 
-        public event EventHandler ItemDeactivated;
+        public event EventHandler<ViewModelEventArgs> ItemDeactivated;
 
         public virtual bool ActivateItem(string viewModelName)
         {
@@ -78,7 +78,7 @@ namespace Layex.ViewModels
                 Contracts.RegisterItem(item);
             }
             base.ActivateItem(item);
-            ItemActivated?.Invoke(this, EventArgs.Empty);
+            ViewModelEventArgs.RaiseEvent(ItemActivated, this, item);
         }
 
         public override void DeactivateItem(IViewModel item, bool close = false)
@@ -89,15 +89,14 @@ namespace Layex.ViewModels
             }
             if (close)
             {
-                ViewModel viewModel = item as ViewModel;
-                if (viewModel.Locked)
+                if (item.Locked)
                 {
                     return;
                 }
                 Contracts.UnregisterItem(item);
             }
             base.DeactivateItem(item, close);
-            ItemDeactivated?.Invoke(this, EventArgs.Empty);
+            ViewModelEventArgs.RaiseEvent(ItemDeactivated, this, item);
         }
 
         public bool ContainsItem(string viewModelName)
@@ -143,6 +142,11 @@ namespace Layex.ViewModels
         {
             Contracts.Dispose();
             Actions.Dispose();
+            foreach (IViewModel item in Items)
+            {
+                item.Dispose();
+            }
+            Items.Clear();
             Disposed?.Invoke(this, EventArgs.Empty);
         }
 
@@ -155,9 +159,10 @@ namespace Layex.ViewModels
         {
             base.OnInitialize();
             Layout = LoadLayout();
-            Actions = new Actions.RootActionCollection();
             Contracts = new Contracts.ContractCollection();
+            Actions = new Actions.RootActionGroup();
             InitializeActions();
+            Actions.AssignContext(this);
             InitializeContracts();
             InitializeChildren();
         }
@@ -180,29 +185,10 @@ namespace Layex.ViewModels
 
         protected virtual void InitializeActions()
         {
-            IEnumerable<Layouts.ActionCollection> collections = Layout.Actions.OfType<Layouts.ActionCollection>();
-            collections = collections.OrderBy(x => x.CollectionName.Length);
-            foreach (Layouts.ActionCollection collection in collections)
+            foreach (Layouts.ActionItem actionItem in Layout.ActionGroups)
             {
-                Actions.ActionCollectionBase targetCollection = (Actions.ActionCollectionBase)Actions[collection.CollectionName];
-                if (targetCollection == null)
-                {
-                    //TODO: log warning
-                    continue;
-                }
-                Actions.ActionCollectionBase currentCollection = (Actions.ActionCollectionBase)collection.GetAction(DependencyContainer, this);
-                targetCollection.Add(currentCollection);
-            }
-            foreach (Layouts.ActionCommand command in Layout.Actions.OfType<Layouts.ActionCommand>())
-            {
-                Actions.ActionCollectionBase targetCollection = (Actions.ActionCollectionBase)Actions[command.CollectionName];
-                if (targetCollection == null)
-                {
-                    //TODO: log warning
-                    continue;
-                }
-                Actions.ActionCommandBase currentCommand = (Actions.ActionCommandBase)command.GetAction(DependencyContainer, this);
-                targetCollection.Add(currentCommand);
+                Actions.ActionItem item = actionItem.GetAction(DependencyContainer);
+                Actions.Add(item);
             }
         }
 

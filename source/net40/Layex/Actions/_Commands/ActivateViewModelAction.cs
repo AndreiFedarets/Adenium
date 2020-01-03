@@ -2,7 +2,7 @@
 
 namespace Layex.Actions
 {
-    public abstract class ActivateViewModelAction : ActionCommandBase
+    public abstract class ActivateViewModelAction : ActionCommand
     {
         private readonly string _viewModelName;
 

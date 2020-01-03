@@ -4,7 +4,7 @@ using System;
 
 namespace Layex.Actions
 {
-    public abstract class CloseViewModelAction : ActionCommandBase
+    public abstract class CloseViewModelAction : ActionCommand
     {
         private readonly string _viewModelName;
         private readonly bool _close;

@@ -17,35 +17,20 @@ namespace Layex.Extensions
 
         public static string GetViewModelName(Type type)
         {
-            string codeName = string.Empty;
+            string viewModelName = string.Empty;
             if (type != null)
             {
                 ViewModelAttribute attribute = ViewModelAttribute.GetAttribute(type);
                 if (attribute != null)
                 {
-                    codeName = attribute.CodeName;
+                    viewModelName = attribute.ViewModelName;
                 }
                 else
                 {
-                    codeName = type.FullName;
+                    viewModelName = type.FullName;
                 }
             }
-            return codeName;
-        }
-
-        public static bool AreCodeNameEquals(this IViewModel viewModel1, IViewModel viewModel2)
-        {
-            return AreCodeNameEquals(viewModel1.GetViewModelName(), viewModel2.GetViewModelName());
-        }
-
-        public static bool AreCodeNameEquals(this IViewModel viewModel, string codeName)
-        {
-            return AreCodeNameEquals(viewModel.GetViewModelName(), codeName);
-        }
-
-        public static bool AreCodeNameEquals(string codeName1, string codeName2)
-        {
-            return string.Equals(codeName1, codeName2, StringComparison.Ordinal);
+            return viewModelName;
         }
     }
 }

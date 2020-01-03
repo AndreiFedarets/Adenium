@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Layex.ViewModels
+﻿namespace Layex.ViewModels
 {
     public interface IViewModelManager
     {
-        IViewModel Activate(params string[] codeNames);
+        IViewModel Activate(params string[] names);
 
         //void ShowWindow(IViewModel viewModel);
 

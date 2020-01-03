@@ -5,9 +5,9 @@ namespace Layex.ViewModels
 {
     public interface IItemsViewModel : IViewModel, IEnumerable<IViewModel>
     {
-        event EventHandler ItemActivated;
+        event EventHandler<ViewModelEventArgs> ItemActivated;
 
-        event EventHandler ItemDeactivated;
+        event EventHandler<ViewModelEventArgs> ItemDeactivated;
 
         bool ActivateItem(string viewModelName);
 

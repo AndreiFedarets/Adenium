@@ -5,6 +5,8 @@ namespace Layex.ViewModels
 {
     public interface IViewModel : INotifyPropertyChangedEx, IDisposableEx
     {
+        bool Locked { get; set; }
+
         IItemsViewModel Parent { get; }
 
         event EventHandler<ActivationEventArgs> Activated;

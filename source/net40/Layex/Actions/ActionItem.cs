@@ -2,14 +2,19 @@
 
 namespace Layex.Actions
 {
-    public abstract class ActionBase : Caliburn.Micro.PropertyChangedBase, IDisposable
+    public abstract class ActionItem : Caliburn.Micro.PropertyChangedBase, IDisposable
     {
         private bool _available;
+        private string _name;
 
-        protected ActionBase()
+        protected ActionItem()
         {
             _available = true;
         }
+
+        public string Name { get; internal protected set; }
+
+        public int Order { get; internal protected set; }
 
         public virtual string DisplayName
         {
@@ -28,18 +33,12 @@ namespace Layex.Actions
 
         public ViewModels.IViewModel Context { get; private set; }
 
-        internal string Name { get; set; }
-
-        internal string CollectionName { get; set; }
-
-        internal int Order { get; set; }
-
         public virtual void Dispose()
         {
 
         }
 
-        internal void AssignContext(ViewModels.IViewModel context)
+        public virtual void AssignContext(ViewModels.IViewModel context)
         {
             Context = context;
             OnContextAssigned();

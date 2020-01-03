@@ -6,8 +6,12 @@
         <Layout.ViewModels>
             <ViewModel Type="{x:Type v:SampleViewModel}" Singleton="true" AutoActivate="true" Order="10" />
         </Layout.ViewModels>
-        <Layout.Actions>
-            <ActionCommand CollectionName="Main.Close" Name="CloseSampleA" Order="20" Type="{x:Type a:CloseViewAction}" />
-        </Layout.Actions>
+        <Layout.ActionGroups>
+            <ActionGroup Name="Main">
+                <ActionGroup Name="Close">
+                    <ActionCommand Name="CloseSampleA" Order="20" Type="{x:Type a:CloseViewAction}" />
+                </ActionGroup>
+            </ActionGroup>
+        </Layout.ActionGroups>
     </Layout>
 </Application>
