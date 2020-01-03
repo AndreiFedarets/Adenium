@@ -3,9 +3,9 @@ using System;
 
 namespace Layex.Layouts
 {
-    public sealed class ViewModel : IOrderedtem
+    public sealed class ViewModel : ILayoutedItem
     {
-        private ViewModels.IViewModel _viewModel;
+        private string _name;
         
         public Type Type { get; set; }
 
@@ -17,46 +17,17 @@ namespace Layex.Layouts
 
         public bool Locked { get; set; }
 
-        public string ViewModelName
+        public string Name
         {
-            get { return ViewModelExtensions.GetViewModelName(Type); }
-        }
-
-        internal ViewModels.IViewModel GetViewModel(IDependencyContainer container)
-        {
-            ViewModels.IViewModel viewModel;
-            if (Singleton)
+            get
             {
-                if (_viewModel == null)
+                if (string.IsNullOrEmpty(_name))
                 {
-                    _viewModel = CreateViewModel(container);
-                    _viewModel.Disposed += OnViewModelDisposed;
+                    return ViewModelExtensions.GetViewModelDefaultName(Type);
                 }
-                viewModel = _viewModel;
+                return _name;
             }
-            else
-            {
-                viewModel = CreateViewModel(container);
-            }
-            return viewModel;
-        }
-
-        private void OnViewModelDisposed(object sender, EventArgs e)
-        {
-            _viewModel.Disposed -= OnViewModelDisposed;
-            _viewModel = null;
-        }
-
-        private ViewModels.IViewModel CreateViewModel(IDependencyContainer container)
-        {
-            ViewModels.IViewModel viewModel = (ViewModels.IViewModel)container.Resolve(Type);
-            ViewModels.ViewModel viewModelItem = viewModel as ViewModels.ViewModel;
-            if (viewModelItem != null)
-            {
-                viewModelItem.Order = Order;
-                viewModelItem.Locked = Locked;
-            }
-            return viewModel;
+            set { _name = value; }
         }
     }
 }

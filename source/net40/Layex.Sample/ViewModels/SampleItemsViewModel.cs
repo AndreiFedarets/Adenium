@@ -1,11 +1,9 @@
-﻿using Layex.Layouts;
-using Layex.ViewModels;
+﻿using Layex.ViewModels;
 using Layex.Views;
 using System.Collections.Generic;
 
 namespace Layex.Sample.ViewModels
 {
-    [ViewModel("Layex.Sample.LayoutedItems")]
     [Contracts.EnableContract(typeof(Contracts.DialogContract))]
     public sealed class SampleItemsViewModel : ItemsViewModel, Contracts.IDialogContractConsumer
     {

@@ -7,17 +7,15 @@ namespace Layex.Actions
     public abstract class CloseViewModelAction : ActionCommand
     {
         private readonly string _viewModelName;
-        private readonly bool _close;
 
-        protected CloseViewModelAction(Type viewModelType, bool close = true)
-            : this(ViewModelExtensions.GetViewModelName(viewModelType), close)
+        protected CloseViewModelAction(Type viewModelType)
+            : this(ViewModelExtensions.GetViewModelDefaultName(viewModelType))
         {
         }
 
-        protected CloseViewModelAction(string viewModelName, bool close = true)
+        protected CloseViewModelAction(string viewModelName)
         {
             _viewModelName = viewModelName;
-            _close = close;
         }
 
         public override bool CanExecute(object parameter)
@@ -35,7 +33,7 @@ namespace Layex.Actions
             IItemsViewModel itemsViewModel = Context as IItemsViewModel;
             if (itemsViewModel != null)
             {
-                itemsViewModel.DeactivateItem(_viewModelName, _close);
+                itemsViewModel.DeactivateItem(_viewModelName, true);
             }
         }
 

@@ -2,9 +2,9 @@
 
 namespace Layex.Layouts
 {
-    public abstract class ActionItem : IOrderedtem
+    public abstract class ActionItem : ILayoutedItem
     {
-        public ActionItem()
+        protected ActionItem()
         {
             Order = -1;
         }
@@ -14,13 +14,5 @@ namespace Layex.Layouts
         public int Order { get; set; }
 
         public Type Type { get; set; }
-
-        public virtual Actions.ActionItem GetAction(IDependencyContainer dependencyContainer)
-        {
-            Actions.ActionItem item = (Actions.ActionItem)dependencyContainer.Resolve(Type);
-            item.Name = Name;
-            item.Order = Order;
-            return item;
-        }
     }
 }

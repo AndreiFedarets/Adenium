@@ -6,23 +6,23 @@ namespace Layex.Layouts
     {
         public Layout()
         {
-            ViewModelName = string.Empty;
-            ActionGroups = new  ActionGroupCollection();
+            Name = string.Empty;
+            ActionItems = new ActionItemCollection();
             ViewModels = new ViewModelCollection();
         }
 
         public Type Type { get; set; }
 
-        public string ViewModelName { get; set; }
+        public string Name { get; set; }
 
         public ViewModelCollection ViewModels { get; set; }
 
-        public ActionGroupCollection ActionGroups { get; set; }
+        public ActionItemCollection ActionItems { get; set; }
         
         public void Append(Layout layout)
         {
             ViewModels.Add(layout.ViewModels);
-            ActionGroups.Add(layout.ActionGroups);
+            ActionItems.Add(layout.ActionItems);
         }
     }
 }

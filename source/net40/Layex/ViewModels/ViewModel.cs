@@ -1,14 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Layex.Extensions;
+using System;
 
 namespace Layex.ViewModels
 {
-    public abstract class ViewModel : Screen, IViewModel, IRequireDependencyContainer
+    public abstract class ViewModel : Screen, IViewModel, IRequireDependencyContainer, ILayoutedItem
     {
-        public Actions.RootActionGroup Actions { get; private set; }
+        private bool _locked;
+        private string _name;
+
+        public string Name
+        {
+            get { return ((ILayoutedItem)this).Name; }
+        }
+
+        public Actions.ActionGroup Actions { get; private set; }
 
         public new IItemsViewModel Parent
         {
@@ -17,11 +23,30 @@ namespace Layex.ViewModels
 
         protected IDependencyContainer DependencyContainer { get; private set; }
 
-        protected Layouts.Layout Layout { get; private set; }
+        public bool Locked
+        {
+            get { return _locked; }
+            set
+            {
+                _locked = value;
+                NotifyOfPropertyChange(() => Locked);
+            }
+        }
 
-        public bool Locked { get; set; }
+        int ILayoutedItem.Order { get; set; }
 
-        public int Order { get; set; }
+        string ILayoutedItem.Name
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_name))
+                {
+                    return ViewModelExtensions.GetViewModelDefaultName(GetType());
+                }
+                return _name;
+            }
+            set { _name = value; }
+        }
 
         public event EventHandler Disposed;
 
@@ -50,24 +75,24 @@ namespace Layex.ViewModels
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            Layout = LoadLayout();
-            Actions = new Actions.RootActionGroup();
-            InitializeActions();
+            Layouts.Layout layout = LoadLayout();
+            Actions = new Actions.ActionGroup();
+            InitializeActions(layout.ActionItems);
             Actions.AssignContext(this);
         }
 
         protected virtual Layouts.Layout LoadLayout()
         {
             Layouts.ILayoutManager layoutManager = DependencyContainer.Resolve<Layouts.ILayoutManager>();
-            return layoutManager.GetLayout(this.GetViewModelName());
+            return layoutManager.GetLayout(((ILayoutedItem)this).Name);
         }
 
-        protected virtual void InitializeActions()
+        protected virtual void InitializeActions(Layouts.ActionItemCollection layoutItems)
         {
-            foreach (Layouts.ActionItem actionItem in Layout.ActionGroups)
+            foreach (Layouts.ActionItem layoutItem in layoutItems)
             {
-                Actions.ActionItem item = actionItem.GetAction(DependencyContainer);
-                Actions.Add(item);
+                Actions.ActionItem actionItem = Layouts.LayoutActivator.Activate(DependencyContainer, layoutItem);
+                Actions.Add(actionItem);
             }
         }
 

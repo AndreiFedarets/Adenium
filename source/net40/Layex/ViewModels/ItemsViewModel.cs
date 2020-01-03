@@ -8,24 +8,57 @@ using System.Linq;
 
 namespace Layex.ViewModels
 {
-    public abstract class ItemsViewModel : Conductor<IViewModel>.Collection.OneActive, IItemsViewModel, IRequireDependencyContainer
+    public abstract class ItemsViewModel : Conductor<IViewModel>.Collection.OneActive, IItemsViewModel, IRequireDependencyContainer, ILayoutedItem
     {
-        public Actions.RootActionGroup Actions { get; private set; }
+        private readonly Dictionary<string, IViewModelFactory> _viewModelFactories;
+        private string _name;
+        private bool _locked;
+
+        public ItemsViewModel()
+        {
+            _viewModelFactories = new Dictionary<string, IViewModelFactory>();
+        }
+
+        public string Name
+        {
+            get { return ((ILayoutedItem)this).Name; }
+        }
+
+        public bool Locked
+        {
+            get { return _locked; }
+            set
+            {
+                _locked = value;
+                NotifyOfPropertyChange(() => Locked);
+            }
+        }
 
         public new IItemsViewModel Parent
         {
             get { return base.Parent as IItemsViewModel; }
         }
 
-        protected IDependencyContainer DependencyContainer { get; private set; }
+        public Actions.ActionGroup Actions { get; private set; }
 
-        protected Layouts.Layout Layout { get; private set; }
+        protected IDependencyContainer DependencyContainer { get; private set; }
 
         protected Contracts.ContractCollection Contracts { get; private set; }
 
-        public bool Locked { get; set; }
+        int ILayoutedItem.Order { get; set; }
 
-        public int Order { get; set; }
+        string ILayoutedItem.Name
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_name))
+                {
+                    return ViewModelExtensions.GetViewModelDefaultName(GetType());
+                }
+                return _name;
+            }
+            set { _name = value; }
+        }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged
         {
@@ -41,16 +74,16 @@ namespace Layex.ViewModels
 
         public virtual bool ActivateItem(string viewModelName)
         {
-            IViewModel targetViewModel = Items.FirstOrDefault(x => string.Equals(x.GetViewModelName(), viewModelName, StringComparison.Ordinal));
+            IViewModel targetViewModel = GetLocalItem(viewModelName);
             if (targetViewModel != null)
             {
                 ActivateItem(targetViewModel);
                 return true;
             }
-            Layouts.ViewModel viewModelItem = Layout.ViewModels.FirstOrDefault(x => string.Equals(x.ViewModelName, viewModelName, StringComparison.Ordinal));
-            if (viewModelItem != null)
+            IViewModelFactory viewModelFactory;
+            if (_viewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
-                ActivateItem(viewModelItem);
+                ActivateItem(viewModelFactory);
                 return true;
             }
             return false;
@@ -58,7 +91,7 @@ namespace Layex.ViewModels
 
         public virtual bool DeactivateItem(string viewModelName, bool close = false)
         {
-            IViewModel targetViewModel = Items.FirstOrDefault(x => string.Equals(x.GetViewModelName(), viewModelName, StringComparison.Ordinal));
+            IViewModel targetViewModel = GetLocalItem(viewModelName);
             if (targetViewModel != null)
             {
                 DeactivateItem(targetViewModel, close);
@@ -101,16 +134,16 @@ namespace Layex.ViewModels
 
         public bool ContainsItem(string viewModelName)
         {
-            return Items.Any(x => string.Equals(x.GetViewModelName(), viewModelName, StringComparison.Ordinal));
+            return GetLocalItem(viewModelName) != null;
         }
 
         public void ResetItems()
         {
             IViewModel activeItem = ActiveItem;
-            IEnumerable<Layouts.ViewModel> startupViewModelItems = Layout.ViewModels.Where(x => x.AutoActivate);
-            foreach (Layouts.ViewModel viewModelItem in startupViewModelItems)
+            IEnumerable<IViewModelFactory> startupItems = _viewModelFactories.Values.Where(x => x.AutoActivate);
+            foreach (IViewModelFactory viewModelFactory in startupItems)
             {
-                ActivateItem(viewModelItem);
+                ActivateItem(viewModelFactory);
             }
             if (activeItem == null && Items.Any())
             {
@@ -158,19 +191,19 @@ namespace Layex.ViewModels
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            Layout = LoadLayout();
+            Layouts.Layout layout = LoadLayout();
             Contracts = new Contracts.ContractCollection();
-            Actions = new Actions.RootActionGroup();
-            InitializeActions();
+            Actions = new Actions.ActionGroup();
+            InitializeActions(layout.ActionItems);
             Actions.AssignContext(this);
             InitializeContracts();
-            InitializeChildren();
+            InitializeChildren(layout.ViewModels);
         }
 
         protected virtual Layouts.Layout LoadLayout()
         {
             Layouts.ILayoutManager layoutManager = DependencyContainer.Resolve<Layouts.ILayoutManager>();
-            return layoutManager.GetLayout(this.GetViewModelName());
+            return layoutManager.GetLayout(((ILayoutedItem)this).Name);
         }
 
         protected virtual void InitializeContracts()
@@ -178,17 +211,21 @@ namespace Layex.ViewModels
             Contracts.Initialize(this);
         }
 
-        protected virtual void InitializeChildren()
+        protected virtual void InitializeChildren(Layouts.ViewModelCollection layoutItems)
         {
+            foreach (Layouts.ViewModel layoutItem in layoutItems)
+            {
+                _viewModelFactories[layoutItem.Name] = ViewModelFactoryBase.CreateFactory(DependencyContainer, layoutItem);
+            }
             ResetItems();
         }
 
-        protected virtual void InitializeActions()
+        protected virtual void InitializeActions(Layouts.ActionItemCollection layoutItems)
         {
-            foreach (Layouts.ActionItem actionItem in Layout.ActionGroups)
+            foreach (Layouts.ActionItem layoutItem in layoutItems)
             {
-                Actions.ActionItem item = actionItem.GetAction(DependencyContainer);
-                Actions.Add(item);
+                Actions.ActionItem actionItem = Layouts.LayoutActivator.Activate(DependencyContainer, layoutItem);
+                Actions.Add(actionItem);
             }
         }
 
@@ -196,10 +233,15 @@ namespace Layex.ViewModels
         {
         }
 
-        private void ActivateItem(Layouts.ViewModel viewModelItem)
+        private void ActivateItem(IViewModelFactory viewModelFactory)
         {
-            IViewModel viewModel = viewModelItem.GetViewModel(DependencyContainer);
+            IViewModel viewModel = viewModelFactory.Create();
             ActivateItem(viewModel);
+        }
+
+        private IViewModel GetLocalItem(string viewModelName)
+        {
+            return Items.FirstOrDefault(x => string.Equals(x.Name, viewModelName, StringComparison.Ordinal));
         }
 
         void IRequireDependencyContainer.Configure(IDependencyContainer dependencyContainer)

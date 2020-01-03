@@ -5,20 +5,26 @@
     <Layout>
         <Layout.ViewModels>
             <ViewModel Type="{x:Type v:MainViewModel}" Singleton="true" AutoActivate="true" />
-            <ViewModel Type="{x:Type v:SampleItemsViewModel}" Singleton="true" AutoActivate="false" />
+            <ViewModel Name="Layex.Sample.LayoutedItems.Full" Type="{x:Type v:SampleItemsViewModel}" Singleton="true" AutoActivate="false" />
+            <ViewModel Name="Layex.Sample.LayoutedItems.Mini" Type="{x:Type v:SampleItemsViewModel}" Singleton="true" AutoActivate="false" />
         </Layout.ViewModels>
     </Layout>
-    <Layout ViewModelName="Layex.Sample.LayoutedItems">
-        <Layout.ActionGroups>
+    <Layout Name="Layex.Sample.LayoutedItems.Full">
+        <Layout.ActionItems>
             <ActionGroup Name="Main">
-                <ActionGroup Name="Close" Order="10" Type="{x:Type a:CloseGroup}">
-                    <ActionCommand Name="CloseItemsView" Order="10" Type="{x:Type a:CloseViewAction}" />
-                </ActionGroup>
-                <ActionCommand Name="ResetItems" Order="20" Type="{x:Type a:ResetItemsAction}" />
+                <ActionGroup Name="Open" Order="10" Type="{x:Type a:OpenGroup}" />
+                <ActionGroup Name="Close" Order="20" Type="{x:Type a:CloseGroup}" />
+                <ActionCommand Name="ResetItems" Order="30" Type="{x:Type a:ResetItemsAction}" />
             </ActionGroup>
-            <ActionGroup Name="ItemContext">
-                
+        </Layout.ActionItems>
+    </Layout>
+    <Layout Name="Layex.Sample.LayoutedItems.Mini">
+        <Layout.ActionItems>
+            <ActionGroup Name="Main">
+                <ActionGroup Name="Open" Order="10" Type="{x:Type a:OpenGroup}" />
+                <ActionGroup Name="Close" Order="20" Type="{x:Type a:CloseGroup}" />
+                <ActionCommand Name="ResetItems" Order="30" Type="{x:Type a:ResetItemsAction}" />
             </ActionGroup>
-        </Layout.ActionGroups>
+        </Layout.ActionItems>
     </Layout>
 </Application>

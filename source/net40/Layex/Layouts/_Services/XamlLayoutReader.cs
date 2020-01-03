@@ -2,7 +2,7 @@
 
 namespace Layex.Layouts
 {
-    internal sealed class XamlLayoutReader : ILayoutReader
+    public sealed class XamlLayoutReader : ILayoutReader
     {
         public Application Read(string applicationContent)
         {

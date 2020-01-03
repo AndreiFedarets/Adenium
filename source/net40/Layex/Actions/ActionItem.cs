@@ -2,19 +2,18 @@
 
 namespace Layex.Actions
 {
-    public abstract class ActionItem : Caliburn.Micro.PropertyChangedBase, IDisposable
+    public abstract class ActionItem : Caliburn.Micro.PropertyChangedBase, IDisposable, ILayoutedItem
     {
         private bool _available;
-        private string _name;
 
         protected ActionItem()
         {
             _available = true;
         }
 
-        public string Name { get; internal protected set; }
+        public string Name { get; set; }
 
-        public int Order { get; internal protected set; }
+        public int Order { get; set; }
 
         public virtual string DisplayName
         {

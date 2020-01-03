@@ -59,8 +59,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\CloseCollection.cs" />
-    <Compile Include="Actions\CloseViewAction.cs" />
+    <Compile Include="Actions\OpenGroup.cs" />
+    <Compile Include="Actions\CloseGroup.cs" />
     <Compile Include="Actions\ResetItemsAction.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

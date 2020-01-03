@@ -2,16 +2,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:v="clr-namespace:Layex.Sample.ModuleA.ViewModels;assembly=Layex.Sample.ModuleA"
              xmlns:a="clr-namespace:Layex.Sample.ModuleA.Actions;assembly=Layex.Sample.ModuleA">
-    <Layout ViewModelName="Layex.Sample.LayoutedItems">
+    <Layout Name="Layex.Sample.LayoutedItems.Full">
         <Layout.ViewModels>
-            <ViewModel Type="{x:Type v:SampleViewModel}" Singleton="true" AutoActivate="true" Order="10" />
+            <ViewModel Type="{x:Type v:SampleViewModel}" Singleton="True" AutoActivate="True" Order="10" />
         </Layout.ViewModels>
-        <Layout.ActionGroups>
+        <Layout.ActionItems>
             <ActionGroup Name="Main">
+                <ActionGroup Name="Open">
+                    <ActionCommand Name="OpenSampleA" Order="10" Type="{x:Type a:OpenViewAction}" />
+                </ActionGroup>
                 <ActionGroup Name="Close">
-                    <ActionCommand Name="CloseSampleA" Order="20" Type="{x:Type a:CloseViewAction}" />
+                    <ActionCommand Name="CloseSampleA" Order="10" Type="{x:Type a:CloseViewAction}" />
                 </ActionGroup>
             </ActionGroup>
-        </Layout.ActionGroups>
+        </Layout.ActionItems>
+    </Layout>
+    <Layout Name="Layex.Sample.LayoutedItems.Mini">
+        <Layout.ViewModels>
+            <ViewModel Type="{x:Type v:SampleViewModel}" Singleton="True" AutoActivate="False" Order="10" />
+        </Layout.ViewModels>
+        <Layout.ActionItems>
+            <ActionGroup Name="Main">
+                <ActionGroup Name="Open">
+                    <ActionCommand Name="OpenSampleA" Order="10" Type="{x:Type a:OpenViewAction}" />
+                </ActionGroup>
+                <ActionGroup Name="Close">
+                    <ActionCommand Name="CloseSampleA" Order="10" Type="{x:Type a:CloseViewAction}" />
+                </ActionGroup>
+            </ActionGroup>
+        </Layout.ActionItems>
     </Layout>
 </Application>

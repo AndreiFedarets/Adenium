@@ -69,7 +69,6 @@
     <Compile Include="Actions\ActionCommand.cs" />
     <Compile Include="Actions\ActionItem.cs" />
     <Compile Include="Actions\ActionGroup.cs" />
-    <Compile Include="Actions\RootActionGroup.cs" />
     <Compile Include="Actions\_Commands\CloseViewModelAction.cs" />
     <Compile Include="Actions\_Commands\ActivateViewModelAction.cs" />
     <Compile Include="Bootstrapper.cs" />
@@ -102,19 +101,18 @@
     <Compile Include="Layouts\ActionItemCollection.cs" />
     <Compile Include="Layouts\Application.cs" />
     <Compile Include="Layouts\Contract.cs" />
-    <Compile Include="Layouts\FileLayoutLocator.cs" />
+    <Compile Include="Layouts\_Services\FileLayoutLocator.cs" />
     <Compile Include="Layouts\ActionItem.cs" />
-    <Compile Include="Layouts\IOrderedtem.cs" />
-    <Compile Include="Layouts\ILayoutLocator.cs" />
-    <Compile Include="Layouts\ILayoutManager.cs" />
+    <Compile Include="Layouts\_Services\ILayoutLocator.cs" />
+    <Compile Include="Layouts\_Services\ILayoutManager.cs" />
     <Compile Include="Layouts\ItemCollection.cs" />
     <Compile Include="Layouts\ViewModel.cs" />
     <Compile Include="Layouts\Layout.cs" />
-    <Compile Include="Layouts\ActionGroupCollection.cs" />
     <Compile Include="Layouts\ViewModelCollection.cs" />
-    <Compile Include="Layouts\_Internal\ILayoutReader.cs" />
-    <Compile Include="Layouts\_Internal\LayoutManager.cs" />
-    <Compile Include="Layouts\_Internal\XamlLayoutReader.cs" />
+    <Compile Include="Layouts\_Services\ILayoutReader.cs" />
+    <Compile Include="Layouts\_Services\LayoutActivator.cs" />
+    <Compile Include="Layouts\_Services\LayoutManager.cs" />
+    <Compile Include="Layouts\_Services\XamlLayoutReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -131,6 +129,7 @@
     <Compile Include="Themes\FontsAndColors.cs" />
     <Compile Include="ViewModels\IDisposableEx.cs" />
     <Compile Include="ViewModels\IItemsViewModel.cs" />
+    <Compile Include="ILayoutedItem.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\IViewModelManager.cs" />
@@ -138,7 +137,11 @@
     <Compile Include="ViewModels\ViewModelAttribute.cs" />
     <Compile Include="ViewModels\ViewModelEventArgs.cs" />
     <Compile Include="ViewModels\_Internal\ApplicationViewModel.cs" />
-    <Compile Include="ViewModels\_Internal\IRequireDependencyContainer.cs" />
+    <Compile Include="ViewModels\IRequireDependencyContainer.cs" />
+    <Compile Include="ViewModels\_Internal\IViewModelFactory.cs" />
+    <Compile Include="ViewModels\_Internal\MultiViewModelFactory.cs" />
+    <Compile Include="ViewModels\_Internal\SingleViewModelFactory.cs" />
+    <Compile Include="ViewModels\_Internal\ViewModelFactoryBase.cs" />
     <Compile Include="ViewModels\_Internal\ViewModelManager.cs" />
     <Compile Include="Views\DisplayMode.cs" />
     <Compile Include="Views\View.cs" />

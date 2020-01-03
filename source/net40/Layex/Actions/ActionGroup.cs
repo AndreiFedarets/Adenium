@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Layex.ViewModels;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using Layex.ViewModels;
 
 namespace Layex.Actions
 {
-    public abstract class ActionGroup : ActionItem, IEnumerable<ActionItem>, INotifyCollectionChanged
+    public class ActionGroup : ActionItem, IEnumerable<ActionItem>, INotifyCollectionChanged
     {
         private readonly ObservableCollection<ActionItem> _actionItems;
 

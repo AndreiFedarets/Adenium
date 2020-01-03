@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Layex.Layouts
 {
-    internal sealed class LayoutManager : ILayoutManager
+    public sealed class LayoutManager : ILayoutManager
     {
         private readonly ILayoutLocator _layoutLocator;
         private readonly ILayoutReader _layoutReader;
@@ -25,7 +25,7 @@ namespace Layex.Layouts
             if (!_layouts.TryGetValue(viewModelName, out layout))
             {
                 //TODO: log warning
-                layout = new Layout() { ViewModelName = viewModelName };
+                layout = new Layout() { Name = viewModelName };
             }
             return layout;
         }
@@ -63,7 +63,7 @@ namespace Layex.Layouts
 
         private void LoadLayouts(IEnumerable<Layout> layouts)
         {
-            IEnumerable<IGrouping<string, Layout>> layoutGroups = layouts.GroupBy(x => x.ViewModelName);
+            IEnumerable<IGrouping<string, Layout>> layoutGroups = layouts.GroupBy(x => x.Name);
             foreach (IGrouping<string, Layout> layoutsGroup in layoutGroups)
             {
                 Layout mergedLayout = new Layout();

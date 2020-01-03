@@ -1,6 +1,6 @@
 ﻿namespace Layex.ViewModels
 {
-    internal interface IRequireDependencyContainer
+    public interface IRequireDependencyContainer
     {
         void Configure(IDependencyContainer dependencyContainer);
     }

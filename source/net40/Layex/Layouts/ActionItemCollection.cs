@@ -2,13 +2,8 @@
 
 namespace Layex.Layouts
 {
-    public sealed class ActionItemCollection : ItemCollection<string, ActionItem>
+    public sealed class ActionItemCollection : ItemCollection<ActionItem>
     {
-        protected override string GetItemKey(ActionItem item)
-        {
-            return item.Name;
-        }
-
         protected override bool HandleAddExisting(ActionItem existingItem, ActionItem newItem)
         {
             if (existingItem.GetType() != newItem.GetType() || existingItem is ActionCommand)

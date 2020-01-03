@@ -1,6 +1,6 @@
 ﻿namespace Layex.Layouts
 {
-    internal interface ILayoutReader
+    public interface ILayoutReader
     {
         Application Read(string applicationContent);
     }

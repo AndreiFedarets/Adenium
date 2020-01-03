@@ -15,20 +15,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" ItemsSource="{Binding Actions[Main]}">
-            <!--<Menu.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type a:ActionCollectionBase}" ItemsSource="{Binding}">
-                    <MenuItem Header="{Binding DisplayName}" />
-                </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type a:ActionCommandBase}">
-                    <MenuItem Header="{Binding DisplayName}" Command="{Binding}" />
-                </DataTemplate>
-            </Menu.Resources>-->
             <Menu.ItemContainerStyle>
                 <Style TargetType="{x:Type MenuItem}">
                     <Setter Property="Header" Value="{Binding DisplayName}" />
                     <Setter Property="Command" Value="{Binding}"/>
-                    <Setter Property="Visibility" Value="{Binding Available, Converter={StaticResource BoolToVisibilityConverter}}" />
-                    <!--<Setter Property="CommandParameter" Value="123"/>-->
                     <Setter Property="ItemsSource" Value="{Binding}" />
                 </Style>
             </Menu.ItemContainerStyle>
@@ -39,7 +29,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Content="Reset" x:Name="ResetItems" />
+            <TextBlock Grid.Column="1" Text="Display Mode:" />
             <ComboBox Grid.Column="2" ItemsSource="{Binding DisplayModes}" SelectedItem="{Binding DisplayMode, ElementName=View}" />
         </Grid>
         <ContentControl x:Name="ViewContent" Grid.Row="2" />
