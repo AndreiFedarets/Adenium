@@ -147,8 +147,8 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Width" Value="19" />
-        <Setter Property="Height" Value="19" />
+        <!--<Setter Property="Width" Value="19" />
+        <Setter Property="Height" Value="19" />-->
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Focusable" Value="True" />
         <Setter Property="Template">
@@ -532,14 +532,15 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Grid>
+                    <Grid Name="PanelHeader">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding DisplayName, Mode=OneWay}" />
                         <Button Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="Close()" caliburn:Bind.ModelWithoutContext="{Binding}"
-                                Visibility="{Binding Locked, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
+                                Visibility="{Binding Locked, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"
+                                Height="19" Width="19"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>

@@ -102,7 +102,15 @@ namespace Layex.ViewModels
 
         public override void ActivateItem(IViewModel item)
         {
-            InsertItem(item);
+            if (!Items.Contains(item))
+            {
+                if (item is IRequireDependencyContainer requireDependencyContainer)
+                {
+                    IDependencyContainer childDependencyContainer = DependencyContainer.CreateChildContainer();
+                    requireDependencyContainer.Configure(childDependencyContainer);
+                }
+                Contracts.RegisterItem(item);
+            }
             base.ActivateItem(item);
             ViewModelEventArgs.RaiseEvent(ItemActivated, this, item);
         }
@@ -129,21 +137,7 @@ namespace Layex.ViewModels
         {
             return GetLocalItem(viewModelName) != null;
         }
-
-        public void InsertItem(IViewModel item)
-        {
-            if (!Items.Contains(item))
-            {
-                if (item is IRequireDependencyContainer requireDependencyContainer)
-                {
-                    IDependencyContainer childDependencyContainer = DependencyContainer.CreateChildContainer();
-                    requireDependencyContainer.Configure(childDependencyContainer);
-                }
-                Contracts.RegisterItem(item);
-                Items.Add(item);
-            }
-        }
-
+        
         public void ResetItems()
         {
             IViewModel activeItem = ActiveItem;
