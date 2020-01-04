@@ -1,0 +1,30 @@
+﻿<Application xmlns="clr-namespace:Layex.Layouts;assembly=Layex" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:v="clr-namespace:Layex.Sample.ViewModels;assembly=Layex.Sample"
+             xmlns:a="clr-namespace:Layex.Sample.Actions;assembly=Layex.Sample">
+    <Layout>
+        <Layout.ViewModels>
+            <ViewModel Type="{x:Type v:MainViewModel}" Singleton="true" AutoActivate="true" />
+            <ViewModel Name="Layex.Sample.LayoutedItems.Full" Type="{x:Type v:SampleItemsViewModel}" Singleton="true" AutoActivate="false" />
+            <ViewModel Name="Layex.Sample.LayoutedItems.Mini" Type="{x:Type v:SampleItemsViewModel}" Singleton="true" AutoActivate="false" />
+        </Layout.ViewModels>
+    </Layout>
+    <Layout Name="Layex.Sample.LayoutedItems.Full">
+        <Layout.ActionItems>
+            <ActionGroup Name="Main">
+                <ActionGroup Name="Open" Order="10" Type="{x:Type a:OpenGroup}" />
+                <ActionGroup Name="Close" Order="20" Type="{x:Type a:CloseGroup}" />
+                <ActionCommand Name="ResetItems" Order="30" Type="{x:Type a:ResetItemsAction}" />
+            </ActionGroup>
+        </Layout.ActionItems>
+    </Layout>
+    <Layout Name="Layex.Sample.LayoutedItems.Mini">
+        <Layout.ActionItems>
+            <ActionGroup Name="Main">
+                <ActionGroup Name="Open" Order="10" Type="{x:Type a:OpenGroup}" />
+                <ActionGroup Name="Close" Order="20" Type="{x:Type a:CloseGroup}" />
+                <ActionCommand Name="ResetItems" Order="30" Type="{x:Type a:ResetItemsAction}" />
+            </ActionGroup>
+        </Layout.ActionItems>
+    </Layout>
+</Application>

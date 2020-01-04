@@ -1,0 +1,35 @@
+﻿<Application xmlns="clr-namespace:Layex.Layouts;assembly=Layex" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:v="clr-namespace:Layex.Sample.ModuleC.ViewModels;assembly=Layex.Sample.ModuleC"
+             xmlns:a="clr-namespace:Layex.Sample.ModuleC.Actions;assembly=Layex.Sample.ModuleC">
+    <Layout Name="Layex.Sample.LayoutedItems.Full">
+        <Layout.ViewModels>
+            <ViewModel Type="{x:Type v:SampleViewModel}" Singleton="True" AutoActivate="True" Order="30" />
+        </Layout.ViewModels>
+        <Layout.ActionItems>
+            <ActionGroup Name="Main">
+                <ActionGroup Name="Open">
+                    <ActionCommand Name="OpenSampleC" Order="30" Type="{x:Type a:OpenViewAction}" />
+                </ActionGroup>
+                <ActionGroup Name="Close">
+                    <ActionCommand Name="CloseSampleC" Order="30" Type="{x:Type a:CloseViewAction}" />
+                </ActionGroup>
+            </ActionGroup>
+        </Layout.ActionItems>
+    </Layout>
+    <Layout Name="Layex.Sample.LayoutedItems.Mini">
+        <Layout.ViewModels>
+            <ViewModel Type="{x:Type v:SampleViewModel}" Singleton="True" AutoActivate="False" Order="30" />
+        </Layout.ViewModels>
+        <Layout.ActionItems>
+            <ActionGroup Name="Main">
+                <ActionGroup Name="Open">
+                    <ActionCommand Name="OpenSampleC" Order="30" Type="{x:Type a:OpenViewAction}" />
+                </ActionGroup>
+                <ActionGroup Name="Close">
+                    <ActionCommand Name="CloseSampleC" Order="30" Type="{x:Type a:CloseViewAction}" />
+                </ActionGroup>
+            </ActionGroup>
+        </Layout.ActionItems>
+    </Layout>
+</Application>
