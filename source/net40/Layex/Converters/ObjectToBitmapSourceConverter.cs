@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace Layex.Converters
 {
-    public class BitmapToBitmapSourceConverter : IValueConverter
+    public class ObjectToBitmapSourceConverter : IValueConverter
     {
         [DllImport("gdi32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
