@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Layex.Contracts
 {
@@ -14,13 +15,23 @@ namespace Layex.Contracts
             _items = new List<object>();
         }
 
-        public void RegisterContract(IContract contract)
+        public bool ContractRegistered(Type contractType)
         {
+            return _contracts.Any(x => x.GetType() == contractType);
+        }
+
+        public bool RegisterContract(IContract contract)
+        {
+            if (ContractRegistered(contract.GetType()))
+            {
+                return false;
+            }
             _contracts.Add(contract);
             foreach (object item in _items)
             {
                 contract.Register(item);
             }
+            return true;
         }
 
         public void RegisterItem(object item)
@@ -40,27 +51,7 @@ namespace Layex.Contracts
             }
             _items.Remove(item);
         }
-
-        public void Initialize(object contractOwner)
-        {
-            if (contractOwner == null)
-            {
-                return;
-            }
-            _contracts.Clear();
-            _items.Clear();
-            Type contractOwnerType = contractOwner.GetType();
-            IEnumerable<EnableContractAttribute> attributes = EnableContractAttribute.GetContractAttributes(contractOwnerType);
-            foreach (EnableContractAttribute attribute in attributes)
-            {
-                Type contractType = attribute.ContractType;
-                object contractObject = Activator.CreateInstance(contractType);
-                IContract contract = (IContract)contractObject;
-                RegisterContract(contract);
-            }
-            RegisterItem(contractOwner);
-        }
-
+        
         public void Dispose()
         {
             foreach (IContract contract in _contracts)

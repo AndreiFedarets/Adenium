@@ -2,14 +2,14 @@
 {
     internal sealed class MultiViewModelFactory : ViewModelFactoryBase
     {
-        public MultiViewModelFactory(IDependencyContainer container, Layouts.ViewModel layoutItem)
-            : base(container, layoutItem)
+        public MultiViewModelFactory(Layouts.ViewModel layoutItem, IDependencyContainer container)
+            : base(layoutItem, container)
         {
         }
 
         public override IViewModel Create()
         {
-            return Layouts.LayoutActivator.Activate(Container, LayoutItem);
+            return Layouts.LayoutActivator.Activate(LayoutItem, Container);
         }
     }
 }

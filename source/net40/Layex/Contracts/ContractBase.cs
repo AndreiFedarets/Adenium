@@ -18,26 +18,29 @@ namespace Layex.Contracts
 
         public void Register(object item)
         {
-            if (item is TSource)
-            {
-                RegisterSource((TSource)item);
-            }
+            //we do not allow item to be Source and Consumer at the same time!
             if (item is TConsumer)
             {
                 RegisterConsumer((TConsumer)item);
             }
+            else if (item is TSource)
+            {
+                RegisterSource((TSource)item);
+            }
+            OnContractSourceChanged();
         }
 
         public void Unregister(object item)
         {
-            if (item is TSource)
-            {
-                UnregisterSource((TSource)item);
-            }
             if (item is TConsumer)
             {
                 UnregisterConsumer((TConsumer)item);
             }
+            else if (item is TSource)
+            {
+                UnregisterSource((TSource)item);
+            }
+            OnContractSourceChanged();
         }
 
         public void Dispose()

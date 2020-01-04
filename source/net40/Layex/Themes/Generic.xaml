@@ -69,40 +69,6 @@
 
     <!-- TextBlock ============================================================================================================== -->
 
-
-    <!-- TileButton ============================================================================================================= -->
-    <Style TargetType="{x:Type controls:TileButton}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="Height" Value="120" />
-        <Setter Property="Width" Value="140" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Focusable" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:TileButton}">
-                    <Border Name="Border" Background="{TemplateBinding Background}" >
-                        <Border Background="{TemplateBinding Background}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <controls:BlurlessImage Grid.Row="0" Source="{TemplateBinding Icon}" Height="64" Width="64" Margin="0,10,0,5" />
-                                <TextBlock Grid.Row="1" Text="{TemplateBinding Text}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"
-                                           Foreground="{TemplateBinding Foreground}" TextTrimming="WordEllipsis" TextWrapping="Wrap" />
-                            </Grid>
-                        </Border>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="0.7" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
     <!-- CheckBox =============================================================================================================== -->
     <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -175,7 +141,92 @@
         </Setter>
     </Style>
 
-    <!-- ComnoBox =============================================================================================================== -->
+
+    <!-- CloseButton ========================================================================================================= -->
+    <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Width" Value="19" />
+        <Setter Property="Height" Value="19" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Name="Content" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="0.6">
+                        <Border Name="BackgroundBorder" Background="Black" Opacity="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <Line X1="0" Y1="0" X2="11" Y2="11" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Line X1="0" Y1="11" X2="11" Y2="0" Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="BackgroundBorder" Property="Opacity" Value="0.1" />
+                            <Setter TargetName="Content" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!-- ImageButton ========================================================================================================= -->
+    <Style TargetType="{x:Type controls:ImageButton}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ImageButton}">
+                    <Grid Name="Content" Opacity="0.5">
+                        <Border Background="#000000" Opacity="0.01" />
+                        <controls:BlurlessImage Source="{TemplateBinding Source}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Content" Property="Opacity" Value="0.7" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- TileButton ============================================================================================================= -->
+    <Style TargetType="{x:Type controls:TileButton}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Height" Value="120" />
+        <Setter Property="Width" Value="140" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:TileButton}">
+                    <Border Name="Border" Background="{TemplateBinding Background}" >
+                        <Border Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <controls:BlurlessImage Grid.Row="0" Source="{TemplateBinding Icon}" Height="64" Width="64" Margin="0,10,0,5" />
+                                <TextBlock Grid.Row="1" Text="{TemplateBinding Text}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"
+                                           Foreground="{TemplateBinding Foreground}" TextTrimming="WordEllipsis" TextWrapping="Wrap" />
+                            </Grid>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.7" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- ComboBox =============================================================================================================== -->
     <Style x:Key="ComboBoxToggleButtonStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Background" Value="{x:Static themes:FontsAndColors.NormalMainBrush}" />
         <Setter Property="Focusable" Value="True" />
@@ -396,239 +447,7 @@
         <Setter Property="Background" Value="#eeeeee" />
     </Style>
 
-    <!-- ImageButton ========================================================================================================= -->
-    <Style TargetType="{x:Type controls:ImageButton}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Focusable" Value="True" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:ImageButton}">
-                    <Grid Name="Content" Opacity="0.5">
-                        <Border Background="#000000" Opacity="0.01" />
-                        <controls:BlurlessImage Source="{TemplateBinding Source}" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Content" Property="Opacity" Value="0.7" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
-    <!-- CloseButton ========================================================================================================= -->
-    <Style x:Key="CloseButtonStyle" TargetType="{x:Type controls:ImageButton}" BasedOn="{StaticResource {x:Type controls:ImageButton}}">
-        <Setter Property="Height" Value="20" />
-        <Setter Property="Width" Value="20" />
-        <Setter Property="Source" Value="pack://application:,,,/Layex;component/Images/Close.png" />
-    </Style>
-
-    <!-- PanelContentControl ================================================================================================= -->
-    <!--<Style x:Key="PanelContentControlStyle" TargetType="{x:Type ContentControl}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ContentControl}">
-                    <Border BorderThickness="1" BorderBrush="#cccccc" Background="#ffffff" 
-                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="#cccccc" Background="#f8f8f8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding DataContext.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" 
-                                               Foreground="#000000" Margin="7,3,3,3" Grid.Column="0"
-                                               FontSize="{x:Static themes:FontsAndColors.TitleFontSize}"
-                                               FontFamily="{x:Static themes:FontsAndColors.FontFamily}"
-                                               FontWeight="{x:Static themes:FontsAndColors.TitleFontWeight}"/>
-                                </Grid>
-                            </Border>
-                            <Border Grid.Row="1" Padding="{TemplateBinding Padding}">
-                                <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                            </Border>
-                        </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
-
-    <!-- TabItemViewStyle ======================================================================================================= -->
-    <!--<Style TargetType="{x:Type views:TabItemView}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-    </Style>-->
-
-    <!-- MenuUserControlStyle =================================================================================================== -->
-    <!--<Style x:Key="MenuUserControlStyle" TargetType="{x:Type UserControl}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="Height" Value="30" />
-        <Setter Property="Margin" Value="0" />
-        <Setter Property="Background" Value="{x:Static themes:FontsAndColors.NormalMainBrush}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type UserControl}">
-                    <Border Background="{TemplateBinding Background}">-->
-                        <!--<Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="#cccccc" Background="#f8f8f8">
-                                <TextBlock Text="{Binding DataContext.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Foreground="#000000" Margin="7,3,3,3"
-                                           FontSize="{x:Static themes:FontsAndColors.TitleFontSize}"
-                                           FontFamily="{x:Static themes:FontsAndColors.FontFamily}"
-                                           FontWeight="{x:Static themes:FontsAndColors.TitleFontWeight}"
-                                           TextOptions.TextFormattingMode="Display"
-                                           TextOptions.TextRenderingMode="ClearType"/>
-                            </Border>
-                            <Border Grid.Row="1" Padding="{TemplateBinding Padding}" >
-                                <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                            </Border>
-                        </Grid>-->
-                    <!--</Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
-    <!-- PanelUserControl =================================================================================================== -->
-    <!--<Style x:Key="PanelUserControl" TargetType="{x:Type UserControl}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type UserControl}">
-                    <Border BorderThickness="1" BorderBrush="#cccccc" Background="#ffffff" 
-                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="#cccccc" Background="#f8f8f8">
-                                <TextBlock Text="{Binding DataContext.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Foreground="#000000" Margin="7,3,3,3"
-                                           FontSize="{x:Static themes:FontsAndColors.TitleFontSize}"
-                                           FontFamily="{x:Static themes:FontsAndColors.FontFamily}"
-                                           FontWeight="{x:Static themes:FontsAndColors.TitleFontWeight}"
-                                           TextOptions.TextFormattingMode="Display"
-                                           TextOptions.TextRenderingMode="ClearType"/>
-                            </Border>
-                            <Border Grid.Row="1" Padding="{TemplateBinding Padding}" >
-                                <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                            </Border>
-                        </Grid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
-    <!-- PanelContentControl =================================================================================================== -->
-    <!--<Style x:Key="PanelContentControl" TargetType="{x:Type ContentControl}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ContentControl}">
-                    <Border BorderThickness="1" BorderBrush="#cccccc" Background="#ffffff" Padding="{TemplateBinding Padding}"
-                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
-                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
-    <!-- views:View ======================================================================================================== -->
-    
-    
-    <!--<Style TargetType="{x:Type views:View}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type views:View}">
-                    <Grid>
-                        <Border x:Name="AdornerBorder" BorderThickness="1" BorderBrush="#cccccc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Border Grid.Row="0" x:Name="PanelHeaderBorder" BorderThickness="0,0,0,1" BorderBrush="#cccccc" Background="#f8f8f8">
-                                    <TextBlock Text="{Binding DataContext.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="7,3,7,3" />
-                                </Border>
-                                <Border x:Name="ContentBorder" Grid.Row="1" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                                </Border>
-                            </Grid>
-                        </Border>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="DisplayPanel" Value="True">
-                            <Setter TargetName="PanelHeaderBorder" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="AdornerBorder" Property="BorderThickness" Value="1" />
-                            <Setter TargetName="ContentBorder" Property="Background" Value="#ffffff" />
-                        </Trigger>
-                        <Trigger Property="DisplayPanel" Value="False">
-                            <Setter TargetName="PanelHeaderBorder" Property="Visibility" Value="Collapsed" />
-                            <Setter TargetName="AdornerBorder" Property="BorderThickness" Value="0" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-    <!--<Style TargetType="{x:Type views:View}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Focusable" Value="False" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type views:View}">
-                    <ContentControl x:Name="PanelContentControl">
-                        <ContentPresenter />
-                    </ContentControl>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="DisplayPanel" Value="True">
-                            <Setter TargetName="PanelContentControl" Property="Style" Value="{StaticResource PanelContentControlStyle}" />
-                        </Trigger>
-                        <Trigger Property="DisplayPanel" Value="False">
-                            <Setter TargetName="PanelContentControl" Property="Style" Value="{x:Null}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
+    <!-- ViewItem ================================================================================================================= -->
     <Style TargetType="{x:Type controls:ViewItem}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="Template">
             <Setter.Value>
@@ -644,12 +463,12 @@
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="{Binding ElementName=PanelHeaderBorder, Path=ActualHeight}" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{Binding ViewModel.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="3" />
-                                        <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="Close()" 
-                                                              caliburn:Bind.ModelWithoutContext="{Binding ViewModel, RelativeSource={RelativeSource TemplatedParent}}"
-                                                              Visibility="{Binding ViewModel.Locked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
+                                        <Button Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="Close()" 
+                                                caliburn:Bind.ModelWithoutContext="{Binding ViewModel, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Visibility="{Binding ViewModel.Locked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
                                     </Grid>
                                     
                                 </Border>
@@ -719,8 +538,8 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding DisplayName, Mode=OneWay}" />
-                        <controls:ImageButton Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="DeactivateItem($dataContext, 'true')" caliburn:Bind.ModelWithoutContext="{Binding Parent}"
-                                              Visibility="{Binding IsStatic, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
+                        <Button Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="Close()" caliburn:Bind.ModelWithoutContext="{Binding}"
+                                Visibility="{Binding Locked, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
@@ -733,37 +552,5 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <!--<Style x:Key="{x:Type controls:ViewTabControl}" TargetType="{x:Type controls:ViewTabControl}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:ViewTabControl}">
-                    <TabControl ItemsSource="{TemplateBinding Items}" SelectedItem="{TemplateBinding ActiveItem}" >
-                        <TabControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid DataContext="{Binding}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding DisplayName, Mode=OneWay}" />
-                                    <controls:ImageButton Grid.Column="1" Command="{Binding Path=CloseItemCommand}" Style="{StaticResource CloseButtonStyle}" />
-                                </Grid>
-                            </DataTemplate>
-                        </TabControl.ItemTemplate>
-                    </TabControl>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>-->
-        
-        <!--<Setter Property="ContentTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <ContentControl caliburn:View.Model="{Binding}" />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>-->
-
-
 </ResourceDictionary>
  

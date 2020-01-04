@@ -5,10 +5,10 @@
         protected readonly Layouts.ViewModel LayoutItem;
         protected readonly IDependencyContainer Container;
 
-        protected ViewModelFactoryBase(IDependencyContainer container, Layouts.ViewModel layoutItem)
+        protected ViewModelFactoryBase(Layouts.ViewModel layoutItem, IDependencyContainer container)
         {
-            Container = container;
             LayoutItem = layoutItem;
+            Container = container;
         }
 
         public bool AutoActivate
@@ -23,13 +23,13 @@
 
         public abstract IViewModel Create();
 
-        public static IViewModelFactory CreateFactory(IDependencyContainer container, Layouts.ViewModel layoutItem)
+        public static IViewModelFactory CreateFactory(Layouts.ViewModel layoutItem, IDependencyContainer container)
         {
             if (layoutItem.Singleton)
             {
-                return new SingleViewModelFactory(container, layoutItem);
+                return new SingleViewModelFactory(layoutItem, container);
             }
-            return new MultiViewModelFactory(container, layoutItem);
+            return new MultiViewModelFactory(layoutItem, container);
         }
     }
 }

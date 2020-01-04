@@ -6,8 +6,8 @@ namespace Layex.ViewModels
     {
         private IViewModel _viewModel;
 
-        public SingleViewModelFactory(IDependencyContainer container, Layouts.ViewModel layoutItem)
-            : base(container, layoutItem)
+        public SingleViewModelFactory(Layouts.ViewModel layoutItem, IDependencyContainer container)
+            : base(layoutItem, container)
         {
         }
 
@@ -15,7 +15,7 @@ namespace Layex.ViewModels
         {
             if (_viewModel == null)
             {
-                _viewModel = Layouts.LayoutActivator.Activate(Container, LayoutItem);
+                _viewModel = Layouts.LayoutActivator.Activate(LayoutItem, Container);
                 _viewModel.Disposed += OnViewModelDisposed;
             }
             return _viewModel;

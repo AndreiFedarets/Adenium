@@ -43,9 +43,10 @@ namespace Layex.Layouts
             TItem existingItem;
             if (Items.TryGetValue(item.Name, out existingItem))
             {
+                //but give chance to handle conflict
                 if (!HandleAddExisting(existingItem, item))
                 {
-                    throw new InvalidOperationException();
+                    //TODO: log error
                 }
             }
             else

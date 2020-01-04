@@ -4,20 +4,20 @@ namespace Layex.Layouts
 {
     public static class LayoutActivator
     {
-        public static Actions.ActionItem Activate(IDependencyContainer container, ActionItem item)
+        public static Actions.ActionItem Activate(ActionItem item, IDependencyContainer container)
         {
             if (item is ActionCommand)
             {
-                return Activate(container, (ActionCommand)item);
+                return Activate((ActionCommand)item, container);
             }
             if (item is ActionGroup)
             {
-                return Activate(container, (ActionGroup)item);
+                return Activate((ActionGroup)item, container);
             }
             throw new NotSupportedException();
         }
 
-        public static Actions.ActionCommand Activate(IDependencyContainer container, ActionCommand item)
+        public static Actions.ActionCommand Activate(ActionCommand item, IDependencyContainer container)
         {
             Actions.ActionCommand command = (Actions.ActionCommand)container.Resolve(item.Type);
             command.Name = item.Name;
@@ -25,7 +25,7 @@ namespace Layex.Layouts
             return command;
         }
 
-        public static Actions.ActionGroup Activate(IDependencyContainer container, ActionGroup item)
+        public static Actions.ActionGroup Activate(ActionGroup item, IDependencyContainer container)
         {
             Type type = item.Type;
             Actions.ActionGroup group;
@@ -41,13 +41,13 @@ namespace Layex.Layouts
             group.Order = item.Order;
             foreach (ActionItem childItem in item.Items)
             {
-                Actions.ActionItem actionItem = Activate(container, childItem);
+                Actions.ActionItem actionItem = Activate(childItem, container);
                 group.Add(actionItem);
             }
             return group;
         }
 
-        public static ViewModels.IViewModel Activate(IDependencyContainer container, ViewModel item)
+        public static ViewModels.IViewModel Activate(ViewModel item, IDependencyContainer container)
         {
             ViewModels.IViewModel viewModel = (ViewModels.IViewModel)container.Resolve(item.Type);
             viewModel.Locked = item.Locked;
@@ -58,6 +58,12 @@ namespace Layex.Layouts
                 layoutedItem.Name = item.Name;
             }
             return viewModel;
+        }
+
+        public static Contracts.IContract Activate(Contract item, IDependencyContainer container)
+        {
+            Contracts.IContract contract = (Contracts.IContract)container.Resolve(item.Type);
+            return contract;
         }
     }
 }

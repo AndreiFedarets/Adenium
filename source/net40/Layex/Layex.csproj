@@ -75,6 +75,7 @@
     <Compile Include="BuiltinDependencyContainer.cs" />
     <Compile Include="Contracts\ContractBase.cs" />
     <Compile Include="Contracts\ContractCollection.cs" />
+    <Compile Include="Contracts\ContractLocator.cs" />
     <Compile Include="Contracts\EnableContractAttribute.cs" />
     <Compile Include="Contracts\IContract.cs" />
     <Compile Include="Contracts\IContractConsumer.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Layouts\ActionItemCollection.cs" />
     <Compile Include="Layouts\Application.cs" />
     <Compile Include="Layouts\Contract.cs" />
+    <Compile Include="Layouts\ContractCollection.cs" />
     <Compile Include="Layouts\_Services\FileLayoutLocator.cs" />
     <Compile Include="Layouts\ActionItem.cs" />
     <Compile Include="Layouts\_Services\ILayoutLocator.cs" />

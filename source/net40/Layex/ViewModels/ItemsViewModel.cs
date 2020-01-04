@@ -83,7 +83,8 @@ namespace Layex.ViewModels
             IViewModelFactory viewModelFactory;
             if (_viewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
-                ActivateItem(viewModelFactory);
+                IViewModel viewModel = viewModelFactory.Create();
+                ActivateItem(viewModel);
                 return true;
             }
             return false;
@@ -101,15 +102,7 @@ namespace Layex.ViewModels
 
         public override void ActivateItem(IViewModel item)
         {
-            if (!Items.Contains(item))
-            {
-                if (item is IRequireDependencyContainer requireDependencyContainer)
-                {
-                    IDependencyContainer childDependencyContainer = DependencyContainer.CreateChildContainer();
-                    requireDependencyContainer.Configure(childDependencyContainer);
-                }
-                Contracts.RegisterItem(item);
-            }
+            InsertItem(item);
             base.ActivateItem(item);
             ViewModelEventArgs.RaiseEvent(ItemActivated, this, item);
         }
@@ -137,13 +130,28 @@ namespace Layex.ViewModels
             return GetLocalItem(viewModelName) != null;
         }
 
+        public void InsertItem(IViewModel item)
+        {
+            if (!Items.Contains(item))
+            {
+                if (item is IRequireDependencyContainer requireDependencyContainer)
+                {
+                    IDependencyContainer childDependencyContainer = DependencyContainer.CreateChildContainer();
+                    requireDependencyContainer.Configure(childDependencyContainer);
+                }
+                Contracts.RegisterItem(item);
+                Items.Add(item);
+            }
+        }
+
         public void ResetItems()
         {
             IViewModel activeItem = ActiveItem;
             IEnumerable<IViewModelFactory> startupItems = _viewModelFactories.Values.Where(x => x.AutoActivate);
             foreach (IViewModelFactory viewModelFactory in startupItems)
             {
-                ActivateItem(viewModelFactory);
+                IViewModel viewModel = viewModelFactory.Create();
+                ActivateItem(viewModel);
             }
             if (activeItem == null && Items.Any())
             {
@@ -151,7 +159,8 @@ namespace Layex.ViewModels
             }
             if (activeItem != null)
             {
-                ActiveItem = activeItem;
+                ActivateItem(activeItem);
+                //ActiveItem = activeItem;
             }
         }
 
@@ -195,9 +204,9 @@ namespace Layex.ViewModels
             Contracts = new Contracts.ContractCollection();
             Actions = new Actions.ActionGroup();
             InitializeActions(layout.ActionItems);
-            Actions.AssignContext(this);
-            InitializeContracts();
+            InitializeContracts(layout.Contracts);
             InitializeChildren(layout.ViewModels);
+            Actions.AssignContext(this);
         }
 
         protected virtual Layouts.Layout LoadLayout()
@@ -206,16 +215,25 @@ namespace Layex.ViewModels
             return layoutManager.GetLayout(((ILayoutedItem)this).Name);
         }
 
-        protected virtual void InitializeContracts()
+        protected virtual void InitializeContracts(Layouts.ContractCollection layoutItems)
         {
-            Contracts.Initialize(this);
+            foreach (Contracts.IContract contract in Layex.Contracts.ContractLocator.CreateFromOwnerType(GetType(), DependencyContainer))
+            {
+                Contracts.RegisterContract(contract);
+            }
+            foreach (Layouts.Contract layoutItem in layoutItems)
+            {
+                Contracts.IContract contract = Layouts.LayoutActivator.Activate(layoutItem, DependencyContainer);
+                Contracts.RegisterContract(contract);
+            }
+            Contracts.RegisterItem(this);
         }
 
         protected virtual void InitializeChildren(Layouts.ViewModelCollection layoutItems)
         {
             foreach (Layouts.ViewModel layoutItem in layoutItems)
             {
-                _viewModelFactories[layoutItem.Name] = ViewModelFactoryBase.CreateFactory(DependencyContainer, layoutItem);
+                _viewModelFactories[layoutItem.Name] = ViewModelFactoryBase.CreateFactory(layoutItem, DependencyContainer);
             }
             ResetItems();
         }
@@ -224,19 +242,13 @@ namespace Layex.ViewModels
         {
             foreach (Layouts.ActionItem layoutItem in layoutItems)
             {
-                Actions.ActionItem actionItem = Layouts.LayoutActivator.Activate(DependencyContainer, layoutItem);
+                Actions.ActionItem actionItem = Layouts.LayoutActivator.Activate(layoutItem, DependencyContainer);
                 Actions.Add(actionItem);
             }
         }
 
         protected virtual void ConfigureContainer()
         {
-        }
-
-        private void ActivateItem(IViewModelFactory viewModelFactory)
-        {
-            IViewModel viewModel = viewModelFactory.Create();
-            ActivateItem(viewModel);
         }
 
         private IViewModel GetLocalItem(string viewModelName)

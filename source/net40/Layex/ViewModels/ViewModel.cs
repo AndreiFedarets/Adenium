@@ -91,7 +91,7 @@ namespace Layex.ViewModels
         {
             foreach (Layouts.ActionItem layoutItem in layoutItems)
             {
-                Actions.ActionItem actionItem = Layouts.LayoutActivator.Activate(DependencyContainer, layoutItem);
+                Actions.ActionItem actionItem = Layouts.LayoutActivator.Activate(layoutItem, DependencyContainer);
                 Actions.Add(actionItem);
             }
         }

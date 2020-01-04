@@ -8,6 +8,7 @@ namespace Layex.Layouts
         {
             Name = string.Empty;
             ActionItems = new ActionItemCollection();
+            Contracts = new ContractCollection();
             ViewModels = new ViewModelCollection();
         }
 
@@ -15,14 +16,17 @@ namespace Layex.Layouts
 
         public string Name { get; set; }
 
+        public ActionItemCollection ActionItems { get; set; }
+
+        public ContractCollection Contracts { get; set; }
+
         public ViewModelCollection ViewModels { get; set; }
 
-        public ActionItemCollection ActionItems { get; set; }
-        
         public void Append(Layout layout)
         {
             ViewModels.Add(layout.ViewModels);
             ActionItems.Add(layout.ActionItems);
+            Contracts.Add(layout.Contracts);
         }
     }
 }
