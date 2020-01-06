@@ -1,6 +1,6 @@
 ﻿namespace Layex.ViewModels
 {
-    internal class ViewModelManager : IViewModelManager
+    public class ViewModelManager : IViewModelManager
     {
         private readonly ApplicationViewModel _applicationViewModel;
 
@@ -22,6 +22,42 @@
                 currentViewModel = TryActivate(itemsViewModel, viewModelName);
             }
             return currentViewModel;
+        }
+
+        public IViewModel Activate(string viewModelName)
+        {
+            if (_applicationViewModel.ActivateItem(viewModelName))
+            {
+                return _applicationViewModel.ActiveItem;
+            }
+            return null;
+        }
+
+        public IViewModel Activate<T>(string viewModelName, T param)
+        {
+            if (_applicationViewModel.ActivateItem<T>(viewModelName, param))
+            {
+                return _applicationViewModel.ActiveItem;
+            }
+            return null;
+        }
+
+        public IViewModel Activate<T1, T2>(string viewModelName, T1 param1, T2 param2)
+        {
+            if (_applicationViewModel.ActivateItem<T1, T2>(viewModelName, param1, param2))
+            {
+                return _applicationViewModel.ActiveItem;
+            }
+            return null;
+        }
+
+        public IViewModel Activate<T1, T2, T3>(string viewModelName, T1 param1, T2 param2, T3 param3)
+        {
+            if (_applicationViewModel.ActivateItem<T1, T2, T3>(viewModelName, param1, param2, param3))
+            {
+                return _applicationViewModel.ActiveItem;
+            }
+            return null;
         }
 
         private IViewModel TryActivate(ItemsViewModel itemsViewModel, string viewModelName)

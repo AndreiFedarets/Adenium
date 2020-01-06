@@ -10,18 +10,30 @@ namespace Layex.ViewModels
 {
     public abstract class ItemsViewModel : Conductor<IViewModel>.Collection.OneActive, IItemsViewModel, IRequireDependencyContainer, ILayoutedItem
     {
-        private readonly Dictionary<string, IViewModelFactory> _viewModelFactories;
+        protected readonly Dictionary<string, IViewModelFactory> ViewModelFactories;
         private string _name;
         private bool _locked;
+        private bool _available;
 
         public ItemsViewModel()
         {
-            _viewModelFactories = new Dictionary<string, IViewModelFactory>();
+            ViewModelFactories = new Dictionary<string, IViewModelFactory>();
+            _available = true;
         }
 
         public string Name
         {
             get { return ((ILayoutedItem)this).Name; }
+        }
+
+        public bool Available
+        {
+            get { return _available; }
+            set
+            {
+                _available = value;
+                NotifyOfPropertyChange(() => Available);
+            }
         }
 
         public bool Locked
@@ -74,14 +86,14 @@ namespace Layex.ViewModels
 
         public virtual bool ActivateItem(string viewModelName)
         {
-            IViewModel targetViewModel = GetLocalItem(viewModelName);
+            IViewModel targetViewModel = GetItem(viewModelName);
             if (targetViewModel != null)
             {
                 ActivateItem(targetViewModel);
                 return true;
             }
             IViewModelFactory viewModelFactory;
-            if (_viewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
+            if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
                 IViewModel viewModel = viewModelFactory.Create();
                 ActivateItem(viewModel);
@@ -90,14 +102,40 @@ namespace Layex.ViewModels
             return false;
         }
 
-        public virtual bool DeactivateItem(string viewModelName, bool close = false)
+        public bool ActivateItem<T>(string viewModelName, T param)
         {
-            IViewModel targetViewModel = GetLocalItem(viewModelName);
-            if (targetViewModel != null)
+            IViewModelFactory viewModelFactory;
+            if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
-                DeactivateItem(targetViewModel, close);
+                IViewModel viewModel = viewModelFactory.Create<T>(param);
+                ActivateItem(viewModel);
+                return true;
             }
-            return targetViewModel != null;
+            return false;
+        }
+
+        public bool ActivateItem<T1, T2>(string viewModelName, T1 param1, T2 param2)
+        {
+            IViewModelFactory viewModelFactory;
+            if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
+            {
+                IViewModel viewModel = viewModelFactory.Create<T1, T2>(param1, param2);
+                ActivateItem(viewModel);
+                return true;
+            }
+            return false;
+        }
+
+        public bool ActivateItem<T1, T2, T3>(string viewModelName, T1 param1, T2 param2, T3 param3)
+        {
+            IViewModelFactory viewModelFactory;
+            if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
+            {
+                IViewModel viewModel = viewModelFactory.Create<T1, T2, T3>(param1, param2, param3);
+                ActivateItem(viewModel);
+                return true;
+            }
+            return false;
         }
 
         public override void ActivateItem(IViewModel item)
@@ -113,6 +151,16 @@ namespace Layex.ViewModels
             }
             base.ActivateItem(item);
             ViewModelEventArgs.RaiseEvent(ItemActivated, this, item);
+        }
+
+        public virtual bool DeactivateItem(string viewModelName, bool close = false)
+        {
+            IViewModel targetViewModel = GetItem(viewModelName);
+            if (targetViewModel != null)
+            {
+                DeactivateItem(targetViewModel, close);
+            }
+            return targetViewModel != null;
         }
 
         public override void DeactivateItem(IViewModel item, bool close = false)
@@ -133,15 +181,20 @@ namespace Layex.ViewModels
             ViewModelEventArgs.RaiseEvent(ItemDeactivated, this, item);
         }
 
+        public IViewModel GetItem(string viewModelName)
+        {
+            return Items.FirstOrDefault(x => string.Equals(x.Name, viewModelName, StringComparison.Ordinal));
+        }
+
         public bool ContainsItem(string viewModelName)
         {
-            return GetLocalItem(viewModelName) != null;
+            return GetItem(viewModelName) != null;
         }
         
         public void ResetItems()
         {
             IViewModel activeItem = ActiveItem;
-            IEnumerable<IViewModelFactory> startupItems = _viewModelFactories.Values.Where(x => x.AutoActivate);
+            IEnumerable<IViewModelFactory> startupItems = ViewModelFactories.Values.Where(x => x.AutoActivate);
             foreach (IViewModelFactory viewModelFactory in startupItems)
             {
                 IViewModel viewModel = viewModelFactory.Create();
@@ -227,7 +280,10 @@ namespace Layex.ViewModels
         {
             foreach (Layouts.ViewModel layoutItem in layoutItems)
             {
-                _viewModelFactories[layoutItem.Name] = ViewModelFactoryBase.CreateFactory(layoutItem, DependencyContainer);
+                if (Layouts.LayoutActivator.CanDisplayItem(layoutItem, this, DependencyContainer))
+                {
+                    ViewModelFactories[layoutItem.Name] = ViewModelFactoryBase.CreateFactory(layoutItem, DependencyContainer);
+                }
             }
             ResetItems();
         }
@@ -243,11 +299,6 @@ namespace Layex.ViewModels
 
         protected virtual void ConfigureContainer()
         {
-        }
-
-        private IViewModel GetLocalItem(string viewModelName)
-        {
-            return Items.FirstOrDefault(x => string.Equals(x.Name, viewModelName, StringComparison.Ordinal));
         }
 
         void IRequireDependencyContainer.Configure(IDependencyContainer dependencyContainer)

@@ -7,6 +7,10 @@ namespace Layex
     {
         IDependencyContainer CreateChildContainer();
 
+        bool IsRegistered(Type type);
+
+        bool IsRegistered(Type type, string key);
+
         IDependencyContainer RegisterInstance(Type type, object instance);
 
         IDependencyContainer RegisterInstance(Type type, object instance, string key);
@@ -24,10 +28,21 @@ namespace Layex
 
     public static class ContainerExtensions
     {
+        public static bool IsRegistered<T>(this IDependencyContainer container)
+        {
+            return container.IsRegistered(typeof(T));
+        }
+
+        public static bool IsRegistered<T>(this IDependencyContainer container, string key)
+        {
+            return container.IsRegistered(typeof(T), key);
+        }
+
         public static IDependencyContainer RegisterInstance<T>(this IDependencyContainer container, T instance)
         {
             return container.RegisterInstance(typeof(T), instance);
         }
+
         public static IDependencyContainer RegisterInstance<T>(this IDependencyContainer container, T instance, string key)
         {
             return container.RegisterInstance(typeof(T), instance, key);

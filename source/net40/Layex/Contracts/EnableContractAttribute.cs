@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Layex.Contracts
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public sealed class EnableContractAttribute : Attribute
     {
         public EnableContractAttribute(Type contractType)

@@ -9,6 +9,8 @@ namespace Layex.Layouts
         
         public Type Type { get; set; }
 
+        public Type FilterType { get; set; }
+
         public int Order { get; set; }
 
         public bool AutoActivate { get; set; }

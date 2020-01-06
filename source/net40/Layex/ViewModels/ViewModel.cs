@@ -8,10 +8,26 @@ namespace Layex.ViewModels
     {
         private bool _locked;
         private string _name;
+        private bool _available;
+
+        public ViewModel()
+        {
+            _available = true;
+        }
 
         public string Name
         {
             get { return ((ILayoutedItem)this).Name; }
+        }
+        
+        public bool Available
+        {
+            get { return _available; }
+            set
+            {
+                _available = value;
+                NotifyOfPropertyChange(() => Available);
+            }
         }
 
         public Actions.ActionGroup Actions { get; private set; }

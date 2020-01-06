@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
-namespace Layex.Converters
+namespace Layex.Views
 {
     public class ObjectToBitmapSourceConverter : IValueConverter
     {

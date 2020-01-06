@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace Layex
 {
-    internal sealed class WindowManager : Caliburn.Micro.WindowManager
+    public class WindowManager : Caliburn.Micro.WindowManager
     {
         protected override Window EnsureWindow(object model, object view, bool isDialog)
         {

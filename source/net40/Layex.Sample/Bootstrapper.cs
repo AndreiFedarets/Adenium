@@ -1,6 +1,6 @@
 ﻿namespace Layex.Sample
 {
-    public sealed class Bootstrapper : Layex.Bootstrapper
+    public sealed class Bootstrapper : Layex.BootstrapperBase
     {
     }
 }

@@ -4,6 +4,15 @@
     {
         IViewModel Activate(params string[] names);
 
+        IViewModel Activate(string viewModelName);
+
+        IViewModel Activate<T>(string viewModelName, T param);
+
+        IViewModel Activate<T1, T2>(string viewModelName, T1 param1, T2 param2);
+
+        IViewModel Activate<T1, T2, T3>(string viewModelName, T1 param1, T2 param2, T3 param3);
+
+
         //void ShowWindow(IViewModel viewModel);
 
         //bool? ShowDialog(IViewModel viewModel);

@@ -1,28 +1,27 @@
-﻿using Layex.Layouts;
+﻿using Caliburn.Micro;
+using Layex.Layouts;
 using Layex.ViewModels;
 using Layex.Views;
-using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 
 namespace Layex
 {
-    public abstract class Bootstrapper : BootstrapperBase
+    public abstract class BootstrapperBase : Caliburn.Micro.BootstrapperBase
     {
-        private IDependencyContainer _container;
-
-        static Bootstrapper()
+        static BootstrapperBase()
         {
             ViewManager.Initialize();
         }
 
-        public Bootstrapper()
+        public BootstrapperBase()
         {
             Initialize();
         }
 
-        internal static ILayoutManager LayoutManager { get; private set; }
+
+        public IDependencyContainer DependencyContainer { get; private set; }
 
         protected virtual IDependencyContainer CreateDependencyContainer()
         {
@@ -31,16 +30,16 @@ namespace Layex
 
         protected sealed override void Configure()
         {
-            _container = CreateDependencyContainer();
+            DependencyContainer = CreateDependencyContainer();
             base.Configure();
-            ConfigureContainer(_container);
+            ConfigureContainer(DependencyContainer);
             ConfigureAssemblyResolver();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
             base.OnStartup(sender, e);
-            ApplicationViewModel applicationViewModel = _container.Resolve<ApplicationViewModel>();
+            ApplicationViewModel applicationViewModel = DependencyContainer.Resolve<ApplicationViewModel>();
             applicationViewModel.Initialize();
         }
 
@@ -57,17 +56,26 @@ namespace Layex
 
         protected virtual void ConfigureAssemblyResolver()
         {
-            _container.Resolve<AssemblyResolver>().Initialize();
+            DependencyContainer.Resolve<AssemblyResolver>().Initialize();
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
         {
-            return _container.ResolveAll(service);
+            return DependencyContainer.ResolveAll(service);
         }
 
         protected override object GetInstance(Type service, string key)
         {
-            return _container.Resolve(service, key);
+            object result;
+            if (string.IsNullOrEmpty(key))
+            {
+                result = DependencyContainer.Resolve(service);
+            }
+            else
+            {
+                result = DependencyContainer.Resolve(service, key);
+            }
+            return result;
         }
 
         protected override void PrepareApplication()

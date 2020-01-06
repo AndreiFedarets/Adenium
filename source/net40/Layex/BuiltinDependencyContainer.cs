@@ -21,6 +21,17 @@ namespace Layex
             this.RegisterInstance<IDependencyContainer>(this);
         }
 
+        public bool IsRegistered(Type type)
+        {
+            return IsRegistered(type, string.Empty);
+        }
+
+        public bool IsRegistered(Type type, string key)
+        {
+            IRegistration registration;
+            return TryGetRegistration(type, key, out registration);
+        }
+
         public IDependencyContainer CreateChildContainer()
         {
             return new BuiltinDependencyContainer(this);

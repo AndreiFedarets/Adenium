@@ -4,11 +4,10 @@
                     xmlns:controls="clr-namespace:Layex.Controls"
                     xmlns:views="clr-namespace:Layex.Views"
                     xmlns:themes="clr-namespace:Layex.Themes"
-                    xmlns:converters="clr-namespace:Layex.Converters"
                     xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase">
 
-    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <views:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
     <Style x:Key="BaseStyle" TargetType="{x:Type FrameworkElement}">
         <Setter Property="TextOptions.TextFormattingMode" Value="Display" />

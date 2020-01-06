@@ -2,10 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:v="clr-namespace:Layex.Views;assembly=Layex"
-        xmlns:c="clr-namespace:Layex.Converters;assembly=Layex"
         x:Name="View" Height="600" Width="600" DisplayMode="Grid">
     <v:View.Resources>
-        <c:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <v:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </v:View.Resources>
     <Grid>
         <Grid.RowDefinitions>

@@ -65,5 +65,15 @@ namespace Layex.Layouts
             Contracts.IContract contract = (Contracts.IContract)container.Resolve(item.Type);
             return contract;
         }
+
+        public static bool CanDisplayItem(ViewModel layoutItem, ViewModels.IItemsViewModel parentViewModel, IDependencyContainer container)
+        {
+            if (layoutItem.FilterType == null)
+            {
+                return true;
+            }
+            ILayoutItemFilter filter = (ILayoutItemFilter)container.Resolve(layoutItem.FilterType);
+            return filter.CanDisplayItem(parentViewModel);
+        }
     }
 }

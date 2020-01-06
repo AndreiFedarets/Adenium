@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Layex.Converters
+namespace Layex.Views
 {
     public sealed class BoolToVisibilityConverter : IValueConverter
     {

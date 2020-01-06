@@ -5,6 +5,8 @@ namespace Layex.ViewModels
 {
     public interface IViewModel : INotifyPropertyChangedEx, IDisposableEx
     {
+        bool Available { get; set; }
+
         string Name { get; }
 
         bool Locked { get; set; }

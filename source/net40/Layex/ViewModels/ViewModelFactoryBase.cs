@@ -1,6 +1,8 @@
-﻿namespace Layex.ViewModels
+﻿using Layex.Layouts;
+
+namespace Layex.ViewModels
 {
-    internal abstract class ViewModelFactoryBase : IViewModelFactory
+    public abstract class ViewModelFactoryBase : IViewModelFactory
     {
         protected readonly Layouts.ViewModel LayoutItem;
         protected readonly IDependencyContainer Container;
@@ -22,6 +24,12 @@
         }
 
         public abstract IViewModel Create();
+
+        public abstract IViewModel Create<T>(T param);
+
+        public abstract IViewModel Create<T1, T2>(T1 param1, T2 param2);
+
+        public abstract IViewModel Create<T1, T2, T3>(T1 param1, T2 param2, T3 param3);
 
         public static IViewModelFactory CreateFactory(Layouts.ViewModel layoutItem, IDependencyContainer container)
         {

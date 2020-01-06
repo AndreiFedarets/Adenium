@@ -9,15 +9,23 @@ namespace Layex.ViewModels
 
         event EventHandler<ViewModelEventArgs> ItemDeactivated;
 
+        bool ContainsItem(string viewModelName);
+
+        IViewModel GetItem(string viewModel);
+
         bool ActivateItem(string viewModelName);
 
-        bool DeactivateItem(string viewModelName, bool close = false);
+        bool ActivateItem<T>(string viewModelName, T param);
+
+        bool ActivateItem<T1, T2>(string viewModelName, T1 param1, T2 param2);
+
+        bool ActivateItem<T1, T2, T3>(string viewModelName, T1 param1, T2 param2, T3 param3);
 
         void ActivateItem(IViewModel viewModel);
 
-        void DeactivateItem(IViewModel viewModel, bool close = false);
+        bool DeactivateItem(string viewModelName, bool close = false);
 
-        bool ContainsItem(string viewModelName);
+        void DeactivateItem(IViewModel viewModel, bool close = false);
 
         void ResetItems();
     }

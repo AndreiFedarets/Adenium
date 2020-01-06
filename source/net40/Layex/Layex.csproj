@@ -71,7 +71,7 @@
     <Compile Include="Actions\ActionGroup.cs" />
     <Compile Include="Actions\_Commands\CloseViewModelAction.cs" />
     <Compile Include="Actions\_Commands\ActivateViewModelAction.cs" />
-    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="BootstrapperBase.cs" />
     <Compile Include="BuiltinDependencyContainer.cs" />
     <Compile Include="Contracts\ContractBase.cs" />
     <Compile Include="Contracts\ContractCollection.cs" />
@@ -91,10 +91,13 @@
     <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
     <Compile Include="Controls\_Specialized\ViewItem.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
-    <Compile Include="Converters\ObjectToBitmapSourceConverter.cs" />
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="ViewModels\IDialogViewModel.cs" />
+    <Compile Include="Views\_Converters\ObjectToBitmapSourceConverter.cs" />
+    <Compile Include="Views\_Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Extensions\DelayedNotification.cs" />
     <Compile Include="Extensions\FrameworkElementExtensions.cs" />
-    <Compile Include="Extensions\XmlReaderExtension.cs" />
+    <Compile Include="Extensions\GridViewComposition.cs" />
+    <Compile Include="Extensions\GridViewSorting.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="IBootstrapperEnvironment.cs" />
     <Compile Include="IDependencyContainer.cs" />
@@ -104,6 +107,7 @@
     <Compile Include="Layouts\Application.cs" />
     <Compile Include="Layouts\Contract.cs" />
     <Compile Include="Layouts\ContractCollection.cs" />
+    <Compile Include="Layouts\ILayoutItemFilter.cs" />
     <Compile Include="Layouts\_Services\FileLayoutLocator.cs" />
     <Compile Include="Layouts\ActionItem.cs" />
     <Compile Include="Layouts\_Services\ILayoutLocator.cs" />
@@ -141,11 +145,11 @@
     <Compile Include="ViewModels\ViewModelEventArgs.cs" />
     <Compile Include="ViewModels\_Internal\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\IRequireDependencyContainer.cs" />
-    <Compile Include="ViewModels\_Internal\IViewModelFactory.cs" />
-    <Compile Include="ViewModels\_Internal\MultiViewModelFactory.cs" />
-    <Compile Include="ViewModels\_Internal\SingleViewModelFactory.cs" />
-    <Compile Include="ViewModels\_Internal\ViewModelFactoryBase.cs" />
-    <Compile Include="ViewModels\_Internal\ViewModelManager.cs" />
+    <Compile Include="ViewModels\IViewModelFactory.cs" />
+    <Compile Include="ViewModels\MultiViewModelFactory.cs" />
+    <Compile Include="ViewModels\SingleViewModelFactory.cs" />
+    <Compile Include="ViewModels\ViewModelFactoryBase.cs" />
+    <Compile Include="ViewModels\ViewModelManager.cs" />
     <Compile Include="Views\DisplayMode.cs" />
     <Compile Include="Views\View.cs" />
     <Compile Include="Views\_Internal\ViewManager.cs" />
@@ -165,9 +169,6 @@
     <None Include="Properties\StrongName.snk" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Resource Include="Images\Close.png" />
-  </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>

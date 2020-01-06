@@ -55,7 +55,43 @@ namespace Layex.Views
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            IViewModel oldViewModel = e.OldValue as IViewModel;
+            if (oldViewModel != null)
+            {
+                oldViewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            }
+            IViewModel newViewModel = e.NewValue as IViewModel;
+            if (newViewModel != null)
+            {
+                newViewModel.PropertyChanged += OnViewModelPropertyChanged;
+            }
             RenderContent();
+            UpdateAvailability();
+        }
+
+        private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (string.Equals(e.PropertyName, nameof(IViewModel.Available), StringComparison.Ordinal))
+            {
+                UpdateAvailability();
+            }
+        }
+
+        private void UpdateAvailability()
+        {
+            IViewModel viewModel = DataContext as IViewModel;
+            if (viewModel == null)
+            {
+                return;
+            }
+            if (viewModel.Available)
+            {
+                Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Visibility = Visibility.Collapsed;
+            }
         }
     }
 }
