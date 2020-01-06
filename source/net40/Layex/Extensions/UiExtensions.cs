@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Layex.Extensions
 {
-    public static class FrameworkElementExtensions
+    public static class UiExtensions
     {
         //public static Panel GetItemsControlPanel(this ItemsControl itemsControl)
         //{
@@ -77,24 +78,83 @@ namespace Layex.Extensions
         //    return children;
         //}
 
-        public static T FindFirstChild<T>(this UIElement element, string name = null) where T : class
+        public static void ScrollTo(this ItemsControl itemsControl, object item)
         {
-            if (element is T)
+            ScrollViewer scrollViewer = null;
+            DependencyObject parent = itemsControl;
+            while (true)
             {
-                if (!string.IsNullOrWhiteSpace(name) && element is FrameworkElement)
+                parent = VisualTreeHelper.GetChild(parent, 0);
+                if (parent == null)
                 {
-                    FrameworkElement frameworkElement = (FrameworkElement) element;
+                    return;
+                }
+                scrollViewer = parent as ScrollViewer;
+                if (scrollViewer != null)
+                {
+                    break;
+                }
+            }
+            int index = itemsControl.Items.IndexOf(item);
+            if (index != -1)
+            {
+                scrollViewer.ScrollToVerticalOffset(index);
+            }
+        }
+
+        public static void FindVisualChildren<T>(this DependencyObject dependencyObject, List<T> results) where T : DependencyObject
+        {
+            int count = VisualTreeHelper.GetChildrenCount(dependencyObject);
+            for (int i = 0; i < count; i++)
+            {
+                DependencyObject currentObject = VisualTreeHelper.GetChild(dependencyObject, i);
+                T current = currentObject as T;
+                if (current != null)
+                {
+                    results.Add(current);
+                }
+                FindVisualChildren<T>(currentObject, results);
+            }
+        }
+
+        public static T FindFirstVisualChild<T>(this DependencyObject dependencyObject) where T : DependencyObject
+        {
+            int count = VisualTreeHelper.GetChildrenCount(dependencyObject);
+            for (int i = 0; i < count; i++)
+            {
+                DependencyObject currentObject = VisualTreeHelper.GetChild(dependencyObject, i);
+                T current = currentObject as T;
+                if (current != null)
+                {
+                    return current;
+                }
+                current = FindFirstVisualChild<T>(currentObject);
+                if (current != null)
+                {
+                    return current;
+                }
+            }
+            return null;
+        }
+
+        public static T FindFirstChild<T>(this DependencyObject dependencyObject, string name = null) where T : class
+        {
+            if (dependencyObject is T)
+            {
+                if (!string.IsNullOrWhiteSpace(name) && dependencyObject is FrameworkElement)
+                {
+                    FrameworkElement frameworkElement = (FrameworkElement) dependencyObject;
                     if (string.Equals(frameworkElement.Name, name, StringComparison.OrdinalIgnoreCase))
                     {
-                        return element as T;
+                        return dependencyObject as T;
                     }
                 }
                 else
                 {
-                    return element as T;
+                    return dependencyObject as T;
                 }
             }
-            Panel panel = element as Panel;
+            Panel panel = dependencyObject as Panel;
             if (panel != null)
             {
                 foreach (UIElement panelItem in panel.Children)
@@ -106,7 +166,7 @@ namespace Layex.Extensions
                     }
                 }
             }
-            ContentControl contentControl = element as ContentControl;
+            ContentControl contentControl = dependencyObject as ContentControl;
             if (contentControl != null)
             {
                 UIElement visual = contentControl.Content as UIElement;
@@ -119,7 +179,7 @@ namespace Layex.Extensions
                     }
                 }
             }
-            ItemsControl itemsControl = element as ItemsControl;
+            ItemsControl itemsControl = dependencyObject as ItemsControl;
             if (itemsControl != null)
             {
                 foreach (object itemsControlItem in itemsControl.Items)

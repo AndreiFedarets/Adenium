@@ -95,7 +95,7 @@
     <Compile Include="Views\_Converters\ObjectToBitmapSourceConverter.cs" />
     <Compile Include="Views\_Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Extensions\DelayedNotification.cs" />
-    <Compile Include="Extensions\FrameworkElementExtensions.cs" />
+    <Compile Include="Extensions\UiExtensions.cs" />
     <Compile Include="Extensions\GridViewComposition.cs" />
     <Compile Include="Extensions\GridViewSorting.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
@@ -145,10 +145,10 @@
     <Compile Include="ViewModels\ViewModelEventArgs.cs" />
     <Compile Include="ViewModels\_Internal\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\IRequireDependencyContainer.cs" />
-    <Compile Include="ViewModels\IViewModelFactory.cs" />
-    <Compile Include="ViewModels\MultiViewModelFactory.cs" />
-    <Compile Include="ViewModels\SingleViewModelFactory.cs" />
-    <Compile Include="ViewModels\ViewModelFactoryBase.cs" />
+    <Compile Include="ViewModels\_Factory\IViewModelFactory.cs" />
+    <Compile Include="ViewModels\_Factory\MultiViewModelFactory.cs" />
+    <Compile Include="ViewModels\_Factory\SingleViewModelFactory.cs" />
+    <Compile Include="ViewModels\_Factory\ViewModelFactoryBase.cs" />
     <Compile Include="ViewModels\ViewModelManager.cs" />
     <Compile Include="Views\DisplayMode.cs" />
     <Compile Include="Views\View.cs" />

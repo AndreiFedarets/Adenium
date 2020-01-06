@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
 
 namespace Layex.Views
 {
@@ -81,16 +82,14 @@ namespace Layex.Views
 
         private static Type LocateTypeForModelTypeInternal(Type type, DependencyObject dependencyObject, object @object)
         {
-            //object[] attributes = type.GetCustomAttributes(typeof(ViewModelAttribute), false);
-            //ViewModelAttribute attribute = (ViewModelAttribute)attributes.FirstOrDefault();
-            //Type viewType = null;
-            //if (attribute != null && !string.IsNullOrWhiteSpace(attribute.ViewType))
-            //{
-            //    viewType = Type.GetType(attribute.ViewType);
-            //}
-            //viewType = viewType ?? LocateTypeForModelType(type, dependencyObject, @object);
-            //return viewType;
-            Type viewType = LocateTypeForModelType(type, dependencyObject, @object);
+            object[] attributes = type.GetCustomAttributes(typeof(ViewModelAttribute), false);
+            ViewModelAttribute attribute = (ViewModelAttribute)attributes.FirstOrDefault();
+            Type viewType = null;
+            if (attribute != null && !string.IsNullOrWhiteSpace(attribute.ViewType))
+            {
+                viewType = Type.GetType(attribute.ViewType);
+            }
+            viewType = viewType ?? LocateTypeForModelType(type, dependencyObject, @object);
             return viewType;
         }
 
