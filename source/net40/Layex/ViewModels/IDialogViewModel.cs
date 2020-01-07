@@ -1,8 +1,7 @@
 ﻿namespace Layex.ViewModels
 {
-    [Contracts.EnableContract(typeof(Contracts.DialogContract))]
-    public interface IDialogViewModel : IViewModel, Contracts.IDialogContractConsumer
+    public interface IDialogViewModel : IViewModel
     {
-        bool? DialogResult { get; }
+        bool? DialogResult { get; set; }
     }
 }

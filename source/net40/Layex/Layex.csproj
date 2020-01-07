@@ -83,7 +83,7 @@
     <Compile Include="Contracts\_Dialog\DialogContract.cs" />
     <Compile Include="Contracts\_Dialog\IDialogContractConsumer.cs" />
     <Compile Include="Contracts\_Dialog\IDialogContractSource.cs" />
-    <Compile Include="Controls\_Generic\AutoPanel.cs" />
+    <Compile Include="Controls\_Generic\TilePanel.cs" />
     <Compile Include="Controls\_Generic\BlurlessImage.cs" />
     <Compile Include="Controls\_Generic\ColorImage.cs" />
     <Compile Include="Controls\_Generic\ImageButton.cs" />
@@ -91,6 +91,9 @@
     <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
     <Compile Include="Controls\_Specialized\ViewItem.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
+    <Compile Include="Layouts\_Services\CompositeLayoutProvider.cs" />
+    <Compile Include="Layouts\_Services\FileSystemLayoutProvider.cs" />
+    <Compile Include="Layouts\_Services\ILayoutProvider.cs" />
     <Compile Include="ViewModels\IDialogViewModel.cs" />
     <Compile Include="Views\_Converters\ObjectToBitmapSourceConverter.cs" />
     <Compile Include="Views\_Converters\BoolToVisibilityConverter.cs" />
@@ -108,18 +111,13 @@
     <Compile Include="Layouts\Contract.cs" />
     <Compile Include="Layouts\ContractCollection.cs" />
     <Compile Include="Layouts\ILayoutItemFilter.cs" />
-    <Compile Include="Layouts\_Services\FileLayoutLocator.cs" />
     <Compile Include="Layouts\ActionItem.cs" />
-    <Compile Include="Layouts\_Services\ILayoutLocator.cs" />
-    <Compile Include="Layouts\_Services\ILayoutManager.cs" />
     <Compile Include="Layouts\ItemCollection.cs" />
     <Compile Include="Layouts\ViewModel.cs" />
     <Compile Include="Layouts\Layout.cs" />
     <Compile Include="Layouts\ViewModelCollection.cs" />
-    <Compile Include="Layouts\_Services\ILayoutReader.cs" />
     <Compile Include="Layouts\_Services\LayoutActivator.cs" />
-    <Compile Include="Layouts\_Services\LayoutManager.cs" />
-    <Compile Include="Layouts\_Services\XamlLayoutReader.cs" />
+    <Compile Include="Layouts\_Services\XamlLayoutParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -155,6 +153,7 @@
     <Compile Include="Views\_Internal\ViewManager.cs" />
     <Compile Include="_Internal\AssemblyResolver.cs" />
     <Compile Include="_Internal\BootstrapperEnvironment.cs" />
+    <Compile Include="_Internal\PlatformProviderWrapper.cs" />
     <Compile Include="_Internal\WindowManager.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

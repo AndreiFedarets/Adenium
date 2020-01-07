@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Layex.Sample.ViewModels
 {
-    public sealed class SampleItemsViewModel : ItemsViewModel, IDialogViewModel
+    public sealed class SampleItemsViewModel : ItemsViewModel, IDialogViewModel, Contracts.IDialogContractConsumer
     {
         public SampleItemsViewModel()
         {
@@ -16,15 +16,17 @@ namespace Layex.Sample.ViewModels
 
         public bool DialogReady { get; private set; }
 
-        public bool? DialogResult
-        {
-            get { return DialogReady; }
-        }
+        public bool? DialogResult { get; set; }
 
         public void OnReadyChanged(bool ready)
         {
             DialogReady = ready;
             NotifyOfPropertyChange(() => DialogReady);
+        }
+
+        public void Submit()
+        {
+            TryClose(true);
         }
     }
 }

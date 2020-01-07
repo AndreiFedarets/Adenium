@@ -99,8 +99,8 @@ namespace Layex.ViewModels
 
         protected virtual Layouts.Layout LoadLayout()
         {
-            Layouts.ILayoutManager layoutManager = DependencyContainer.Resolve<Layouts.ILayoutManager>();
-            return layoutManager.GetLayout(((ILayoutedItem)this).Name);
+            Layouts.ILayoutProvider layoutProvider = DependencyContainer.Resolve<Layouts.ILayoutProvider>();
+            return layoutProvider.GetLayout(this);
         }
 
         protected virtual void InitializeActions(Layouts.ActionItemCollection layoutItems)

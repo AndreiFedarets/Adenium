@@ -15,12 +15,6 @@ namespace Layex
             ViewManager.Initialize();
         }
 
-        public BootstrapperBase()
-        {
-            Initialize();
-        }
-
-
         public IDependencyContainer DependencyContainer { get; private set; }
 
         protected virtual IDependencyContainer CreateDependencyContainer()
@@ -28,12 +22,23 @@ namespace Layex
             return new BuiltinDependencyContainer();
         }
 
+        protected virtual ILayoutProvider CreateLayoutProvider()
+        {
+            return new FileSystemLayoutProvider(AppDomain.CurrentDomain.BaseDirectory);
+        }
+
+        protected override void StartRuntime()
+        {
+            PlatformProviderWrapper.Initialize();
+            base.StartRuntime();
+        }
+
         protected sealed override void Configure()
         {
             DependencyContainer = CreateDependencyContainer();
+            ConfigureAssemblyResolver();
             base.Configure();
             ConfigureContainer(DependencyContainer);
-            ConfigureAssemblyResolver();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
@@ -46,16 +51,14 @@ namespace Layex
         protected virtual void ConfigureContainer(IDependencyContainer container)
         {
             container.RegisterType<ApplicationViewModel, ApplicationViewModel>(true);
-            container.RegisterType<IBootstrapperEnvironment, BootstrapperEnvironment>(true);
             container.RegisterType<IWindowManager, WindowManager>(true);
             container.RegisterType<IViewModelManager, ViewModelManager>(true);
-            container.RegisterType<ILayoutLocator, FileLayoutLocator>(true);
-            container.RegisterType<ILayoutReader, XamlLayoutReader>(true);
-            container.RegisterType<ILayoutManager, LayoutManager>(true);
+            container.RegisterInstance<ILayoutProvider>(CreateLayoutProvider());
         }
 
         protected virtual void ConfigureAssemblyResolver()
         {
+            DependencyContainer.RegisterType<IBootstrapperEnvironment, BootstrapperEnvironment>(true);
             DependencyContainer.Resolve<AssemblyResolver>().Initialize();
         }
 

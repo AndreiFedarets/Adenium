@@ -16,16 +16,7 @@
         <Setter Property="TextBlock.FontFamily" Value="{x:Static themes:FontsAndColors.FontFamily}" />
         <Setter Property="TextBlock.FontSize" Value="{x:Static themes:FontsAndColors.ContentFontSize}" />
         <Setter Property="Margin" Value="2" />
-        <!--<Setter Property="Control.Padding" Value="3" />-->
         <Setter Property="Focusable" Value="False" />
-    </Style>
-
-    <!-- ContentControl ========================================================================================================= -->
-    <Style TargetType="{x:Type ContentControl}" BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style>
 
     <!-- TextBlock ============================================================================================================== -->
@@ -464,15 +455,15 @@
                                             <ColumnDefinition />
                                             <ColumnDefinition Width="{Binding ElementName=PanelHeaderBorder, Path=ActualHeight}" />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="{Binding ViewModel.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="3" />
+                                        <TextBlock Grid.Column="0" Text="{Binding DataContext.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" Margin="3" />
                                         <Button Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="Close()" 
-                                                caliburn:Bind.ModelWithoutContext="{Binding ViewModel, RelativeSource={RelativeSource TemplatedParent}}"
-                                                Visibility="{Binding ViewModel.Locked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
+                                                caliburn:Bind.Model="{Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Visibility="{Binding DataContext.Locked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=true}"/>
                                     </Grid>
                                     
                                 </Border>
                                 <Border x:Name="ContentBorder" Grid.Row="1" Padding="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <ContentPresenter x:Name="ContentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    <ContentPresenter caliburn:View.Model="{Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Border>
                             </Grid>
                         </Border>
@@ -498,7 +489,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type views:View}">
                     <ContentControl Background="{TemplateBinding Background}">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <ContentPresenter />
                     </ContentControl>
                 </ControlTemplate>
             </Setter.Value>
@@ -511,14 +502,14 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <controls:AutoPanel />
+                    <controls:TilePanel />
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <controls:ViewItem ViewModel="{Binding}" />
+                    <controls:ViewItem DataContext="{Binding}" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -547,7 +538,7 @@
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <controls:ViewItem ViewModel="{Binding}" />
+                    <controls:ViewItem DataContext="{Binding}" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>

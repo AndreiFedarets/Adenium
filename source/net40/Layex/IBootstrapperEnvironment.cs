@@ -6,8 +6,6 @@ namespace Layex
     {
         void AddProbingPath(string path);
 
-        IEnumerable<string> FindFiles(string searchPattern);
-
         string FindFile(string searchPattern);
     }
 }

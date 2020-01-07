@@ -55,7 +55,7 @@ namespace Layex.ViewModels
         {
             if (_viewModel == null)
             {
-                _viewModel = Layouts.LayoutActivator.Activate(LayoutItem, Container);
+                _viewModel = Layouts.LayoutActivator.Activate(LayoutItem, container);
                 _viewModel.Deactivated += OnViewModelDeactivated;
             }
             return _viewModel;

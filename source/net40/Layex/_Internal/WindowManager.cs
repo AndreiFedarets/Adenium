@@ -7,37 +7,13 @@ namespace Layex
     {
         protected override Window EnsureWindow(object model, object view, bool isDialog)
         {
-            Window window = view as Window;
-            if (window == null)
-            {
-                window = InstanceWindow();
-                window.Content = view;
-                window.SizeToContent = SizeToContent.Manual;
-                window.SetValue(Caliburn.Micro.View.IsGeneratedProperty, true);
-                CloneSize(window, view);
-                Window window2 = InferOwnerOf(window);
-                if (window2 != null)
-                {
-                    window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                    window.Owner = window2;
-                }
-                else
-                {
-                    window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                }
-            }
-            else
-            {
-                Window window3 = InferOwnerOf(window);
-                if (window3 != null && isDialog)
-                {
-                    window.Owner = window3;
-                }
-            }
+            Window window = base.EnsureWindow(model, view, isDialog);
+            window.SizeToContent = SizeToContent.Manual;
+            CloneSize(window, view);
             return window;
         }
 
-        private void CloneSize(Window window, object view)
+        protected virtual void CloneSize(Window window, object view)
         {
             Control viewControl = view as Control;
             if (viewControl == null)
@@ -76,12 +52,6 @@ namespace Layex
                 window.Width = viewControl.Width + extraWidth;
                 viewControl.Width = double.NaN;
             }
-        }
-
-        private Window InstanceWindow()
-        {
-            Window window = new Window();
-            return window;
         }
     }
 }

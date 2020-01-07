@@ -32,6 +32,6 @@
             <ComboBox Grid.Column="2" ItemsSource="{Binding DisplayModes}" SelectedItem="{Binding DisplayMode, ElementName=View}" />
         </Grid>
         <ContentControl x:Name="ViewContent" Grid.Row="2" />
-        <Button Grid.Row="3" x:Name="Close" IsEnabled="{Binding DialogReady}" Content="Close" />
+        <Button Grid.Row="3" x:Name="Submit" IsEnabled="{Binding DialogReady}" Content="Submit" />
     </Grid>
 </v:View>

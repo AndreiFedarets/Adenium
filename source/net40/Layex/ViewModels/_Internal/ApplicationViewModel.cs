@@ -33,7 +33,14 @@ namespace Layex.ViewModels
             base.ActivateItem(item);
             if (newItem)
             {
-                _windowManager.ShowWindow(item);
+                if (item is IDialogViewModel)
+                {
+                    _windowManager.ShowDialog(item);
+                }
+                else
+                {
+                    _windowManager.ShowWindow(item);
+                }
             }
         }
 

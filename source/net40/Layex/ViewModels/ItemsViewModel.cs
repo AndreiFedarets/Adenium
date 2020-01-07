@@ -84,58 +84,58 @@ namespace Layex.ViewModels
 
         public event EventHandler<ViewModelEventArgs> ItemDeactivated;
 
-        public virtual bool ActivateItem(string viewModelName)
+        public virtual IViewModel ActivateItem(string viewModelName)
         {
             IViewModel targetViewModel = GetItem(viewModelName);
+            if (targetViewModel == null)
+            {
+                IViewModelFactory viewModelFactory;
+                if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
+                {
+                    targetViewModel = viewModelFactory.Create();
+                }
+            }
             if (targetViewModel != null)
             {
                 ActivateItem(targetViewModel);
-                return true;
             }
-            IViewModelFactory viewModelFactory;
-            if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
-            {
-                IViewModel viewModel = viewModelFactory.Create();
-                ActivateItem(viewModel);
-                return true;
-            }
-            return false;
+            return targetViewModel;
         }
 
-        public bool ActivateItem<T>(string viewModelName, T param)
+        public IViewModel ActivateItem<T>(string viewModelName, T param)
         {
+            IViewModel viewModel = null;
             IViewModelFactory viewModelFactory;
             if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
-                IViewModel viewModel = viewModelFactory.Create<T>(param);
+                viewModel = viewModelFactory.Create<T>(param);
                 ActivateItem(viewModel);
-                return true;
             }
-            return false;
+            return viewModel;
         }
 
-        public bool ActivateItem<T1, T2>(string viewModelName, T1 param1, T2 param2)
+        public IViewModel ActivateItem<T1, T2>(string viewModelName, T1 param1, T2 param2)
         {
+            IViewModel viewModel = null;
             IViewModelFactory viewModelFactory;
             if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
-                IViewModel viewModel = viewModelFactory.Create<T1, T2>(param1, param2);
+                viewModel = viewModelFactory.Create<T1, T2>(param1, param2);
                 ActivateItem(viewModel);
-                return true;
             }
-            return false;
+            return viewModel;
         }
 
-        public bool ActivateItem<T1, T2, T3>(string viewModelName, T1 param1, T2 param2, T3 param3)
+        public IViewModel ActivateItem<T1, T2, T3>(string viewModelName, T1 param1, T2 param2, T3 param3)
         {
+            IViewModel viewModel = null;
             IViewModelFactory viewModelFactory;
             if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
-                IViewModel viewModel = viewModelFactory.Create<T1, T2, T3>(param1, param2, param3);
+                viewModel = viewModelFactory.Create<T1, T2, T3>(param1, param2, param3);
                 ActivateItem(viewModel);
-                return true;
             }
-            return false;
+            return viewModel;
         }
 
         public override void ActivateItem(IViewModel item)
@@ -258,8 +258,8 @@ namespace Layex.ViewModels
 
         protected virtual Layouts.Layout LoadLayout()
         {
-            Layouts.ILayoutManager layoutManager = DependencyContainer.Resolve<Layouts.ILayoutManager>();
-            return layoutManager.GetLayout(((ILayoutedItem)this).Name);
+            Layouts.ILayoutProvider layoutProvider = DependencyContainer.Resolve<Layouts.ILayoutProvider>();
+            return layoutProvider.GetLayout(this);
         }
 
         protected virtual void InitializeContracts(Layouts.ContractCollection layoutItems)

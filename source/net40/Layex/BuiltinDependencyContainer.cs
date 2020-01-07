@@ -9,7 +9,7 @@ namespace Layex
         private readonly Dictionary<string, IRegistration> _registrations;
         private readonly BuiltinDependencyContainer _parent;
 
-        private BuiltinDependencyContainer(BuiltinDependencyContainer parent)
+        protected BuiltinDependencyContainer(BuiltinDependencyContainer parent)
             : this()
         {
             _parent = parent;
@@ -32,7 +32,7 @@ namespace Layex
             return TryGetRegistration(type, key, out registration);
         }
 
-        public IDependencyContainer CreateChildContainer()
+        public virtual IDependencyContainer CreateChildContainer()
         {
             return new BuiltinDependencyContainer(this);
         }
@@ -69,7 +69,14 @@ namespace Layex
             IRegistration registration;
             if (!TryGetRegistration(type, key, out registration))
             {
-                registration = new TypeRegistration(type, this);
+                if (type.IsInterface || type.IsAbstract)
+                {
+                    throw new InvalidOperationException($"Unable to create instance of interface or abstract type '{type}'");
+                }
+                else
+                {
+                    registration = new TypeRegistration(type, this);
+                }
             }
             return registration.GetInstance();
         }
@@ -91,7 +98,7 @@ namespace Layex
             return instances;
         }
 
-        private bool TryGetRegistration(Type type, string key, out IRegistration registration)
+        protected virtual bool TryGetRegistration(Type type, string key, out IRegistration registration)
         {
             string registrationKey = BuildRegistrationKey(type, key);
             lock (_registrations)
@@ -123,12 +130,12 @@ namespace Layex
             return string.Concat(type.FullName, "@", key);
         }
 
-        private interface IRegistration
+        protected interface IRegistration
         {
             object GetInstance();
         }
 
-        private sealed class InstanceRegistration : IRegistration
+        protected sealed class InstanceRegistration : IRegistration
         {
             private readonly object _instance;
 
@@ -143,7 +150,7 @@ namespace Layex
             }
         }
 
-        private class TypeRegistration : IRegistration
+        protected class TypeRegistration : IRegistration
         {
             private readonly BuiltinDependencyContainer _container;
             private readonly Type _instanceType;
@@ -152,7 +159,7 @@ namespace Layex
             {
                 if (instanceType.IsInterface || instanceType.IsAbstract)
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException($"Interface or abstract type '{instanceType}' cannot be registered as target type");
                 }
                 _instanceType = instanceType;
                 _container = container;
@@ -178,7 +185,7 @@ namespace Layex
             }
         }
 
-        private sealed class SingletonTypeRegistration : TypeRegistration
+        protected sealed class SingletonTypeRegistration : TypeRegistration
         {
             private readonly Lazy<object> _instance;
 
