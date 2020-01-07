@@ -8,6 +8,7 @@ namespace Layex.Controls
     public class ViewItem : ContentControl
     {
         public static readonly DependencyProperty DisplayPanelProperty;
+        private ContentControl _contentPresenter;
 
         static ViewItem()
         {
@@ -30,5 +31,28 @@ namespace Layex.Controls
                 DisplayPanel = parentView.DisplayMode == DisplayMode.Grid;
             }
         }
+
+        protected override void OnContentChanged(object oldContent, object newContent)
+        {
+            base.OnContentChanged(oldContent, newContent);
+            FrameworkElement newElement = newContent as FrameworkElement;
+            if (newElement != null)
+            {
+                Height = newElement.Height;
+                newElement.Height = double.NaN;
+                Width = newElement.Width;
+                newElement.Width = double.NaN;
+            }
+        }
+
+        //public override void OnApplyTemplate()
+        //{
+        //    _contentPresenter = GetTemplateChild("ContentPresenter") as ContentControl;
+        //    if (_contentPresenter != null)
+        //    {
+                
+        //    }
+        //    base.OnApplyTemplate();
+        //}
     }
 }

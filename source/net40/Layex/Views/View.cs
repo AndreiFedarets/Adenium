@@ -1,6 +1,8 @@
 ﻿using Layex.Controls;
+using Layex.Extensions;
 using Layex.ViewModels;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,6 +11,9 @@ namespace Layex.Views
     public class View : UserControl
     {
         public static readonly DependencyProperty DisplayModeProperty;
+
+        private HorizontalAlignment? _horizontalAlignment;
+        private VerticalAlignment? _verticalAlignment;
 
         static View()
         {
@@ -19,12 +24,38 @@ namespace Layex.Views
         public View()
         {
             DataContextChanged += OnDataContextChanged;
+            DependencyPropertyDescriptor horizontalAlignmentDescriptor = DependencyPropertyDescriptor.FromProperty(HorizontalAlignmentProperty, typeof(FrameworkElement));
+            horizontalAlignmentDescriptor.AddValueChanged(this, OnHorizontalAlignmentChanged);
+
+            DependencyPropertyDescriptor verticalAlignmentDescriptor = DependencyPropertyDescriptor.FromProperty(VerticalAlignmentProperty, typeof(FrameworkElement));
+            verticalAlignmentDescriptor.AddValueChanged(this, OnVerticalAlignmentChanged);
+        }
+
+        private void OnHorizontalAlignmentChanged(object sender, EventArgs eventArgs)
+        {
+            _horizontalAlignment = HorizontalAlignment;
+        }
+
+        private void OnVerticalAlignmentChanged(object sender, EventArgs eventArgs)
+        {
+            _verticalAlignment = VerticalAlignment;
         }
 
         public DisplayMode DisplayMode
         {
             get { return (DisplayMode)GetValue(DisplayModeProperty); }
             set { SetValue(DisplayModeProperty, value); }
+        }
+
+        protected override void OnVisualParentChanged(DependencyObject oldParent)
+        {
+            base.OnVisualParentChanged(oldParent);
+            View parentView = this.FindParent<View>();
+            if (parentView == null || parentView.DisplayMode != DisplayMode.Grid)
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch;
+                VerticalAlignment = VerticalAlignment.Stretch;
+            }
         }
 
         private void RenderContent()
@@ -92,6 +123,20 @@ namespace Layex.Views
             {
                 Visibility = Visibility.Collapsed;
             }
+        }
+
+        protected override Size MeasureOverride(Size constraint)
+        {
+            Size size = base.MeasureOverride(constraint);
+            if (_horizontalAlignment.HasValue && _horizontalAlignment.Value == HorizontalAlignment.Stretch && !double.IsPositiveInfinity(constraint.Width))
+            {
+                size.Width = constraint.Width;
+            }
+            if (_verticalAlignment.HasValue && _verticalAlignment.Value == VerticalAlignment.Stretch && !double.IsPositiveInfinity(constraint.Height))
+            {
+                size.Height = constraint.Height;
+            }
+            return size;
         }
     }
 }
