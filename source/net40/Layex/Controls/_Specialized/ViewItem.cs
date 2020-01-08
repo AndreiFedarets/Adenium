@@ -1,19 +1,19 @@
-﻿using Layex.Extensions;
-using Layex.Views;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Layex.Controls
 {
     public class ViewItem : ContentControl
     {
         public static readonly DependencyProperty DisplayPanelProperty;
-        private ContentControl _contentPresenter;
+        public static readonly DependencyProperty HeaderBackgroundProperty;
 
         static ViewItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof (ViewItem), new FrameworkPropertyMetadata(typeof (ViewItem)));
             DisplayPanelProperty = DependencyProperty.Register("DisplayPanel", typeof(bool), typeof(ViewItem), new PropertyMetadata());
+            HeaderBackgroundProperty = DependencyProperty.Register("HeaderBackground", typeof(Brush), typeof(ViewItem), new PropertyMetadata(Brushes.Transparent));
         }
 
         public bool DisplayPanel
@@ -22,14 +22,10 @@ namespace Layex.Controls
             set { SetValue(DisplayPanelProperty, value); }
         }
 
-        protected override void OnVisualParentChanged(DependencyObject oldParent)
+        public Brush HeaderBackground
         {
-            base.OnVisualParentChanged(oldParent);
-            View parentView = this.FindParent<View>();
-            if (parentView != null)
-            {
-                DisplayPanel = parentView.DisplayMode == DisplayMode.Grid;
-            }
+            get { return (Brush)GetValue(HeaderBackgroundProperty); }
+            set { SetValue(HeaderBackgroundProperty, value); }
         }
     }
 }

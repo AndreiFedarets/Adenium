@@ -10,15 +10,12 @@ namespace Layex.Controls
     {
         //private const int ElementsSpace = 1; // space between elements, must be >= 0
         private static readonly Point PossibleElementAdjustment;
-        private static readonly Point PossibleAspectRationScale;
         public static DependencyProperty AreaProperty;
         private readonly List<UIElement> _measuredElements;
-        private Size _previousDesiredSize;
 
         static TilePanel()
         {
-            PossibleElementAdjustment = new Point(0.9f, 1.1f);
-            PossibleAspectRationScale = new Point(0.9f, 1.1f);
+            PossibleElementAdjustment = new Point(1f, 1f);
             AreaProperty = DependencyProperty.RegisterAttached("Area", typeof(Rect), typeof(TilePanel), new PropertyMetadata(default(Rect)));
         }
 
@@ -219,10 +216,10 @@ namespace Layex.Controls
             Rect availableArea = new Rect(new Point(0, 0), availableSize);
             Point checkPoint = new Point(location.X + offset, location.Y + offset);
             //verify if this location is out of available area space
-            //if (!availableArea.Contains(checkPoint))
-            //{
-            //    return default(Rect);
-            //}
+            if (!availableArea.Contains(checkPoint))
+            {
+                return default(Rect);
+            }
             //verify if this location is already used by another element
             foreach (UIElement element in _measuredElements)
             {

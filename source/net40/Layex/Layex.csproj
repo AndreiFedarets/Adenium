@@ -150,6 +150,7 @@
     <Compile Include="ViewModels\ViewModelManager.cs" />
     <Compile Include="Views\DisplayMode.cs" />
     <Compile Include="Views\View.cs" />
+    <Compile Include="Views\_Converters\ThicknessMaskConverter.cs" />
     <Compile Include="Views\_Internal\ViewManager.cs" />
     <Compile Include="_Internal\AssemblyResolver.cs" />
     <Compile Include="_Internal\BootstrapperEnvironment.cs" />
