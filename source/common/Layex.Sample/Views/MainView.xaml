@@ -1,7 +1,0 @@
-﻿<v:View x:Class="Layex.Sample.Views.MainView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:v="clr-namespace:Layex.Views;assembly=Layex"
-        Height="300" Width="400">
-    <Button x:Name="OpenSampleItemsView" Content="Open Sample Items View" Height="50" Width="200" />
-</v:View>
