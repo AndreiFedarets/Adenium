@@ -2,7 +2,6 @@
 using Layex.Extensions;
 using Layex.ViewModels;
 using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,9 +11,6 @@ namespace Layex.Views
     {
         public static readonly DependencyProperty DisplayModeProperty;
 
-        private HorizontalAlignment? _horizontalAlignment;
-        private VerticalAlignment? _verticalAlignment;
-
         static View()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(typeof(View)));
@@ -23,22 +19,9 @@ namespace Layex.Views
 
         public View()
         {
+            HorizontalAlignment = HorizontalAlignment.Left;
+            VerticalAlignment = VerticalAlignment.Top;
             DataContextChanged += OnDataContextChanged;
-            DependencyPropertyDescriptor horizontalAlignmentDescriptor = DependencyPropertyDescriptor.FromProperty(HorizontalAlignmentProperty, typeof(FrameworkElement));
-            horizontalAlignmentDescriptor.AddValueChanged(this, OnHorizontalAlignmentChanged);
-
-            DependencyPropertyDescriptor verticalAlignmentDescriptor = DependencyPropertyDescriptor.FromProperty(VerticalAlignmentProperty, typeof(FrameworkElement));
-            verticalAlignmentDescriptor.AddValueChanged(this, OnVerticalAlignmentChanged);
-        }
-
-        private void OnHorizontalAlignmentChanged(object sender, EventArgs eventArgs)
-        {
-            _horizontalAlignment = HorizontalAlignment;
-        }
-
-        private void OnVerticalAlignmentChanged(object sender, EventArgs eventArgs)
-        {
-            _verticalAlignment = VerticalAlignment;
         }
 
         public DisplayMode DisplayMode
@@ -128,11 +111,11 @@ namespace Layex.Views
         protected override Size MeasureOverride(Size constraint)
         {
             Size size = base.MeasureOverride(constraint);
-            if (_horizontalAlignment.HasValue && _horizontalAlignment.Value == HorizontalAlignment.Stretch && !double.IsPositiveInfinity(constraint.Width))
+            if (HorizontalAlignment == HorizontalAlignment.Stretch && !double.IsPositiveInfinity(constraint.Width))
             {
                 size.Width = constraint.Width;
             }
-            if (_verticalAlignment.HasValue && _verticalAlignment.Value == VerticalAlignment.Stretch && !double.IsPositiveInfinity(constraint.Height))
+            if (VerticalAlignment == VerticalAlignment.Stretch && !double.IsPositiveInfinity(constraint.Height))
             {
                 size.Height = constraint.Height;
             }
