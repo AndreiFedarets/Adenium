@@ -1,5 +1,4 @@
 ﻿using Layex.Controls;
-using Layex.Extensions;
 using Layex.ViewModels;
 using System;
 using System.Windows;
@@ -19,8 +18,6 @@ namespace Layex.Views
 
         public View()
         {
-            HorizontalAlignment = HorizontalAlignment.Left;
-            VerticalAlignment = VerticalAlignment.Top;
             DataContextChanged += OnDataContextChanged;
         }
 
@@ -28,17 +25,6 @@ namespace Layex.Views
         {
             get { return (DisplayMode)GetValue(DisplayModeProperty); }
             set { SetValue(DisplayModeProperty, value); }
-        }
-
-        protected override void OnVisualParentChanged(DependencyObject oldParent)
-        {
-            base.OnVisualParentChanged(oldParent);
-            View parentView = this.FindParent<View>();
-            if (parentView == null || parentView.DisplayMode != DisplayMode.Grid)
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch;
-                VerticalAlignment = VerticalAlignment.Stretch;
-            }
         }
 
         private void RenderContent()

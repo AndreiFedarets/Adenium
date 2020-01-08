@@ -7,24 +7,25 @@ namespace Layex.Views
 {
     public sealed class BoolToVisibilityConverter : IValueConverter
     {
+        public Visibility TrueValue { get; set; }
+
+        public Visibility FalseValue { get; set; }
+
+        public BoolToVisibilityConverter()
+        {
+            TrueValue = Visibility.Visible;
+            FalseValue = Visibility.Collapsed;
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool visible = System.Convert.ToBoolean(value);
-            bool reverse = System.Convert.ToBoolean(parameter);
-            if (reverse)
-            {
-                visible = !visible;
-            }
-            if (visible)
-            {
-                return Visibility.Visible;
-            }
-            return Visibility.Collapsed;
+            return visible ? TrueValue : FalseValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return (Visibility)value == TrueValue;
         }
     }
 }
