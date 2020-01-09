@@ -4,6 +4,7 @@
     {
         Content,
         Tab,
-        Grid
+        Tile,
+        Stack
     }
 }

@@ -83,12 +83,14 @@
     <Compile Include="Contracts\_Dialog\DialogContract.cs" />
     <Compile Include="Contracts\_Dialog\IDialogContractConsumer.cs" />
     <Compile Include="Contracts\_Dialog\IDialogContractSource.cs" />
+    <Compile Include="Controls\_Generic\StackPanel.cs" />
     <Compile Include="Controls\_Generic\TilePanel.cs" />
     <Compile Include="Controls\_Generic\BlurlessImage.cs" />
     <Compile Include="Controls\_Generic\ColorImage.cs" />
     <Compile Include="Controls\_Generic\ImageButton.cs" />
     <Compile Include="Controls\_Generic\TileButton.cs" />
-    <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
+    <Compile Include="Controls\_Specialized\ViewStackControl.cs" />
+    <Compile Include="Controls\_Specialized\ViewTileControl.cs" />
     <Compile Include="Controls\_Specialized\ViewItem.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
     <Compile Include="Layouts\_Services\CompositeLayoutProvider.cs" />
