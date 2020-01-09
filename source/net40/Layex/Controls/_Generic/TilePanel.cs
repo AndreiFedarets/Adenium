@@ -10,16 +10,12 @@ namespace Layex.Controls
     {
         //private const int ElementsSpace = 1; // space between elements, must be >= 0
         private static readonly Point PossibleElementAdjustment;
-        private static readonly Point PossibleAspectRationScale;
         public static DependencyProperty AreaProperty;
         private readonly List<UIElement> _measuredElements;
-        private double _previousAspectRatio;
-        private Size _previousDesiredSize;
 
         static TilePanel()
         {
-            PossibleElementAdjustment = new Point(0.9f, 1.1f);
-            PossibleAspectRationScale = new Point(0.9f, 1.1f);
+            PossibleElementAdjustment = new Point(1f, 1f);
             AreaProperty = DependencyProperty.RegisterAttached("Area", typeof(Rect), typeof(TilePanel), new PropertyMetadata(default(Rect)));
         }
 
@@ -50,68 +46,41 @@ namespace Layex.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            Size measurSize;
-            double aspectRatio = 0;
-            double maxWidth = availableSize.Width;
-            double maxHeight = availableSize.Height;
-            if (double.IsPositiveInfinity(availableSize.Width) && double.IsPositiveInfinity(availableSize.Height))
-            {
-                measurSize = availableSize;
-                //TODO: get current screen aspect ratio
-                aspectRatio = SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight; 
-            }
-            else if (double.IsPositiveInfinity(availableSize.Width) || double.IsPositiveInfinity(availableSize.Height))
-            {
-                measurSize = availableSize;
-                aspectRatio = 0;
-            }
-            else
-            {
-                measurSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
-                aspectRatio = availableSize.Width / availableSize.Height;
-            }
-            Size desiredSize = _previousDesiredSize;
-            if (!VerifyAllElementsMeasured() || !VerifyAspectRatioUnchanged())
-            {
-                desiredSize = MeasureElements(measurSize, maxWidth, maxHeight, aspectRatio);
-                AdjustElements(desiredSize);
-                desiredSize = ScaleElements(availableSize, desiredSize);
-                _previousAspectRatio = desiredSize.Width / desiredSize.Height;
-            }
-            else
-            {
-                desiredSize = ScaleElements(availableSize, desiredSize);
-            }
-            _previousDesiredSize = desiredSize;
+            //aspectRatio = SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight; 
+
+            Size desiredSize = MeasureElements(availableSize);
+            AdjustElements(desiredSize);
+            desiredSize = ScaleElements(availableSize, desiredSize);
+
+            //if (!VerifyAllElementsMeasured())
+            //{
+            //    desiredSize = MeasureElements(availableSize);
+            //    AdjustElements(desiredSize);
+            //    desiredSize = ScaleElements(availableSize, desiredSize);
+            //}
+            //else
+            //{
+            //    desiredSize = ScaleElements(availableSize, desiredSize);
+            //}
+            //_previousDesiredSize = desiredSize;
             return desiredSize;
         }
 
-        private bool VerifyAspectRatioUnchanged()
-        {
-            if (_previousAspectRatio == 0 || _previousDesiredSize == default(Size))
-            {
-                return false;
-            }
-            double currentAspectRatio = _previousDesiredSize.Width / _previousDesiredSize.Height;
-            return currentAspectRatio * PossibleAspectRationScale.X < _previousAspectRatio &&
-                   currentAspectRatio * PossibleAspectRationScale.Y > _previousAspectRatio;
-        }
-
-        private bool VerifyAllElementsMeasured()
-        {
-            if (_measuredElements.Count != InternalChildren.Count)
-            {
-                return false;
-            }
-            for (int i = 0; i < _measuredElements.Count; i++)
-            {
-                if (!ReferenceEquals(_measuredElements[i], InternalChildren[i]))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+        //private bool VerifyAllElementsMeasured()
+        //{
+        //    if (_measuredElements.Count != InternalChildren.Count)
+        //    {
+        //        return false;
+        //    }
+        //    for (int i = 0; i < _measuredElements.Count; i++)
+        //    {
+        //        if (!ReferenceEquals(_measuredElements[i], InternalChildren[i]))
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    return true;
+        //}
 
         private Size ScaleElements(Size availableSize, Size desiredSize)
         {
@@ -131,7 +100,7 @@ namespace Layex.Controls
             return availableSize;
         }
 
-        private Size MeasureElements(Size availableSize, double maxWidth, double maxHeight, double aspectRatio)
+        private Size MeasureElements(Size availableSize)
         {
             Rect desiredArea = new Rect();
             _measuredElements.Clear();
@@ -139,7 +108,7 @@ namespace Layex.Controls
             {
                 if (element != null)
                 {
-                    Rect elementArea = MeasureElement(element, availableSize, maxWidth, maxHeight, aspectRatio);
+                    Rect elementArea = MeasureElement(element, ref availableSize);
                     SetAreaProperty(element, elementArea);
                     _measuredElements.Add(element);
                     desiredArea.Union(elementArea);
@@ -177,20 +146,20 @@ namespace Layex.Controls
             }
         }
 
-        private Rect MeasureElement(UIElement element, Size availableSize, double maxWidth, double maxHeight, double aspectRatio)
+        private Rect MeasureElement(UIElement element, ref Size availableSize)
         {
             element.Measure(availableSize);
             double minimumFreeArea = double.MaxValue;
             Rect desiredRect = default(Rect);
             foreach (Rect placeholder in GetPlaceholders(availableSize))
             {
-                Rect elementRect = AdjustPlaceholder(element, maxWidth, maxHeight, placeholder);
+                Rect elementRect = AdjustPlaceholder(element, placeholder);
                 if (elementRect == default(Rect))
                 {
                     continue;
                 }
                 //TODO: handle also best fit to placeholder
-                double freeArea = CalculateFreeArea(elementRect, availableSize, aspectRatio);
+                double freeArea = CalculateFreeArea(elementRect, availableSize);
                 if (freeArea < minimumFreeArea)
                 {
                     minimumFreeArea = freeArea;
@@ -199,10 +168,17 @@ namespace Layex.Controls
             }
             if (desiredRect == default(Rect))
             {
-                throw new InvalidOperationException();
+                availableSize = ScaleAvailableSize(availableSize);
+                return MeasureElement(element, ref availableSize);
             }
             element.Measure(desiredRect.Size);
             return desiredRect;
+        }
+
+        private Size ScaleAvailableSize(Size availableSize)
+        {
+            const double scaleRatio = 1.2;
+            return new Size(availableSize.Width * scaleRatio, availableSize.Height * scaleRatio);
         }
 
         private List<Rect> GetPlaceholders(Size availableSize)
@@ -240,10 +216,10 @@ namespace Layex.Controls
             Rect availableArea = new Rect(new Point(0, 0), availableSize);
             Point checkPoint = new Point(location.X + offset, location.Y + offset);
             //verify if this location is out of available area space
-            //if (!availableArea.Contains(checkPoint))
-            //{
-            //    return default(Rect);
-            //}
+            if (!availableArea.Contains(checkPoint))
+            {
+                return default(Rect);
+            }
             //verify if this location is already used by another element
             foreach (UIElement element in _measuredElements)
             {
@@ -366,7 +342,7 @@ namespace Layex.Controls
             return placeholder;
         }
 
-        private double CalculateFreeArea(Rect candidateArea, Size availableSize, double aspectRatio)
+        private double CalculateFreeArea(Rect candidateArea, Size availableSize)
         {
             //calculate actual width and height of elements and summ of their areas
             double elementsWidth = candidateArea.Right;
@@ -389,9 +365,10 @@ namespace Layex.Controls
             double areaWidth;
             double areaHeight;
             //should we match aspectReatio or not?
-            if (aspectRatio != 0)
+            if (!double.IsPositiveInfinity(availableSize.Width) && !double.IsPositiveInfinity(availableSize.Height))
             {
                 //calculate area size pro rata to aspect ratio
+                double aspectRatio = availableSize.Width / availableSize.Height;
                 areaWidth = Math.Max(elementsWidth, aspectRatio * elementsHeight);
                 areaHeight = Math.Max(elementsHeight, elementsWidth / aspectRatio);
             }
@@ -407,30 +384,9 @@ namespace Layex.Controls
             return freeArea;
         }
 
-        private Rect AdjustPlaceholder(UIElement element, double maxWidth, double maxHeight, Rect placeholder)
+        private Rect AdjustPlaceholder(UIElement element, Rect placeholder)
         {
             Size elementSize = element.DesiredSize;
-            //FrameworkElement frameworkElement = element as FrameworkElement;
-            //if (frameworkElement != null)
-            //{
-            //    if (frameworkElement.HorizontalAlignment == HorizontalAlignment.Stretch)
-            //    {
-            //        double elementDesiredWidth = double.IsPositiveInfinity(placeholder.Width) ? maxWidth : placeholder.Width;
-            //        if (!double.IsInfinity(elementDesiredWidth))
-            //        {
-            //            elementSize.Width = elementDesiredWidth;
-            //        }
-            //    }
-            //    if (frameworkElement.VerticalAlignment == VerticalAlignment.Stretch)
-            //    {
-            //        double elementDesiredHeight = double.IsPositiveInfinity(placeholder.Height) ? maxHeight : placeholder.Height;
-            //        if (!double.IsInfinity(elementDesiredHeight))
-            //        {
-            //            elementSize.Height = elementDesiredHeight;
-            //        }
-            //    }
-            //}
-            //check placeholder width fits element desired width
             if (placeholder.Width < elementSize.Width)
             {
                 double minPossibleWidth = PossibleElementAdjustment.X * elementSize.Width;
