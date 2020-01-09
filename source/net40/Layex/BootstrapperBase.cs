@@ -80,15 +80,5 @@ namespace Layex
             }
             return result;
         }
-
-        protected override void PrepareApplication()
-        {
-            base.PrepareApplication();
-            ResourceDictionary resource = new ResourceDictionary
-            {
-                Source = new Uri("/Layex;component/Themes/Generic.xaml", UriKind.RelativeOrAbsolute)
-            };
-            Application.Resources.MergedDictionaries.Add(resource);
-        }
     }
 }
