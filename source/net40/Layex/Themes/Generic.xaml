@@ -2,12 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:caliburn="http://www.caliburnproject.org"
                     xmlns:controls="clr-namespace:Layex.Controls"
-                    xmlns:views="clr-namespace:Layex.Views"
-                    xmlns:themes="clr-namespace:Layex.Themes"
-                    xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-                    xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase">
-    <!--diag:PresentationTraceSources.TraceLevel=High-->
-    
+                    xmlns:views="clr-namespace:Layex.Views">
+    <!-- xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase" -->
+    <!-- diag:PresentationTraceSources.TraceLevel=High-->
+
+    <views:BoolToVisibilityConverter x:Key="CloseButtonVisibilityConverter" TrueValue="Hidden" FalseValue="Visible" />
+    <views:ThicknessMaskConverter x:Key="ViewItemHeaderBorderThicknessMaskConverter" />
+
     <!-- Button:CloseButtonStyle ============================================================================================================================================================================================ -->
     <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -93,28 +94,24 @@
     
     <!-- ViewItem:Default =================================================================================================================================================================================================== -->
     <Style TargetType="{x:Type controls:ViewItem}">
+        <Setter Property="Margin" Value="2" />
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="#CCCCCC" />
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" />
         <Setter Property="Background" Value="#F8F8F8" />
         <Setter Property="HeaderBackground" Value="#F8F8F8" />
         <Setter Property="Padding" Value="2" />
-        <!--<Setter Property="caliburn:View.Model" Value="{Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ViewItem}">
                     <Grid>
-                        <Grid.Resources>
-                            <views:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Hidden" FalseValue="Visible" />
-                            <views:ThicknessMaskConverter x:Key="ThicknessMaskConverter" />
-                        </Grid.Resources>
                         <Border x:Name="AdornerBorder" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Border Grid.Row="0" x:Name="PanelHeader" BorderThickness="{TemplateBinding BorderThickness, Converter={StaticResource ThicknessMaskConverter}, ConverterParameter='0,0,0,1'}" 
-                                        BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding HeaderBackground}">
+                                <Border Grid.Row="0" x:Name="PanelHeader" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding HeaderBackground}"
+                                        BorderThickness="{TemplateBinding BorderThickness, Converter={StaticResource ViewItemHeaderBorderThicknessMaskConverter}, ConverterParameter='0,0,0,1'}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
@@ -123,12 +120,11 @@
                                         <TextBlock Grid.Column="0" Text="{Binding DataContext.DisplayName, RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" Margin="4,0,0,0" />
                                         <Button Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="Close()" 
                                                 caliburn:Bind.Model="{Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}"
-                                                Visibility="{Binding DataContext.Locked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                Visibility="{Binding DataContext.Locked, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource CloseButtonVisibilityConverter}}" />
                                     </Grid>
                                 </Border>
                                 <Border x:Name="PanelContent" Grid.Row="1" Padding="{TemplateBinding Padding}">
                                     <ContentControl caliburn:View.Model="{Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <!--<ContentPresenter />-->
                                 </Border>
                             </Grid>
                         </Border>
@@ -192,16 +188,13 @@
             <Setter.Value>
                 <DataTemplate>
                     <Grid>
-                        <Grid.Resources>
-                            <views:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
-                        </Grid.Resources>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding DisplayName, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <Button Grid.Column="1" Style="{StaticResource CloseButtonStyle}" caliburn:Message.Attach="Close()" caliburn:Bind.ModelWithoutContext="{Binding}"
-                                Visibility="{Binding Locked, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                Visibility="{Binding Locked, Converter={StaticResource CloseButtonVisibilityConverter}}"/>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
