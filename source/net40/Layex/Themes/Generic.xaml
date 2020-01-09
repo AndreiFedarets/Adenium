@@ -98,7 +98,6 @@
         <Setter Property="Background" Value="#F8F8F8" />
         <Setter Property="HeaderBackground" Value="#F8F8F8" />
         <Setter Property="Padding" Value="2" />
-        <!--<Setter Property="caliburn:View.Model" Value="{Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}" />-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ViewItem}">
@@ -128,7 +127,6 @@
                                 </Border>
                                 <Border x:Name="PanelContent" Grid.Row="1" Padding="{TemplateBinding Padding}">
                                     <ContentControl caliburn:View.Model="{Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <!--<ContentPresenter />-->
                                 </Border>
                             </Grid>
                         </Border>

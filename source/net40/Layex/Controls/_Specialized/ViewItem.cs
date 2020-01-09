@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace Layex.Controls
 {
-    public class ViewItem : ContentControl
+    public class ViewItem : Control
     {
         public static readonly DependencyProperty DisplayPanelProperty;
         public static readonly DependencyProperty HeaderBackgroundProperty;
