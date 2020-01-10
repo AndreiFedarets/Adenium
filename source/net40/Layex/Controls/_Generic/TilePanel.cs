@@ -137,7 +137,6 @@ namespace Layex.Controls
                 availableSize = ScaleAvailableSize(availableSize);
                 return MeasureElement(element, ref availableSize);
             }
-            element.Measure(desiredRect.Size);
             return desiredRect;
         }
 
