@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Layex.Controls
 {
     public class TilePanel : Panel
     {
-        //private const int ElementsSpace = 1; // space between elements, must be >= 0
-        private static readonly Point PossibleElementAdjustment;
         public static DependencyProperty AreaProperty;
+        public static DependencyProperty OrientationProperty;
         private readonly List<UIElement> _measuredElements;
 
         static TilePanel()
         {
-            PossibleElementAdjustment = new Point(1f, 1f);
             AreaProperty = DependencyProperty.RegisterAttached("Area", typeof(Rect), typeof(TilePanel), new PropertyMetadata(default(Rect)));
+            OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation?), typeof(TilePanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        }
+
+        public Orientation? Orientation
+        {
+            get { return (Orientation?)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
         }
 
         public TilePanel()
@@ -46,41 +50,11 @@ namespace Layex.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            //aspectRatio = SystemParameters.PrimaryScreenWidth / SystemParameters.PrimaryScreenHeight; 
-
             Size desiredSize = MeasureElements(availableSize);
             AdjustElements(desiredSize);
             desiredSize = ScaleElements(availableSize, desiredSize);
-
-            //if (!VerifyAllElementsMeasured())
-            //{
-            //    desiredSize = MeasureElements(availableSize);
-            //    AdjustElements(desiredSize);
-            //    desiredSize = ScaleElements(availableSize, desiredSize);
-            //}
-            //else
-            //{
-            //    desiredSize = ScaleElements(availableSize, desiredSize);
-            //}
-            //_previousDesiredSize = desiredSize;
             return desiredSize;
         }
-
-        //private bool VerifyAllElementsMeasured()
-        //{
-        //    if (_measuredElements.Count != InternalChildren.Count)
-        //    {
-        //        return false;
-        //    }
-        //    for (int i = 0; i < _measuredElements.Count; i++)
-        //    {
-        //        if (!ReferenceEquals(_measuredElements[i], InternalChildren[i]))
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-        //}
 
         private Size ScaleElements(Size availableSize, Size desiredSize)
         {
@@ -93,6 +67,7 @@ namespace Layex.Controls
             foreach (UIElement element in InternalChildren)
             {
                 Rect elementArea = GetAreaProperty(element);
+                //TODO: handle MinWidth and MinHeight
                 elementArea.Scale(scaleX, scaleY);
                 element.Measure(elementArea.Size);
                 SetAreaProperty(element, elementArea);
@@ -171,7 +146,6 @@ namespace Layex.Controls
                 availableSize = ScaleAvailableSize(availableSize);
                 return MeasureElement(element, ref availableSize);
             }
-            element.Measure(desiredRect.Size);
             return desiredRect;
         }
 
@@ -192,19 +166,23 @@ namespace Layex.Controls
             foreach (UIElement element in _measuredElements)
             {
                 Rect elementArea = GetAreaProperty(element);
-
-                Point topRightPoint = new Point(elementArea.TopRight.X, elementArea.TopRight.Y);
-                Rect topRight = BuildPlaceholder(topRightPoint, availableSize, placeholders);
-                if (topRight != default(Rect))
+                if (!Orientation.HasValue || Orientation.Value == System.Windows.Controls.Orientation.Horizontal)
                 {
-                    placeholders.Add(topRight);
+                    Point topRightPoint = new Point(elementArea.TopRight.X, elementArea.TopRight.Y);
+                    Rect topRight = BuildPlaceholder(topRightPoint, availableSize, placeholders);
+                    if (topRight != default(Rect))
+                    {
+                        placeholders.Add(topRight);
+                    }
                 }
-
-                Point bottomLeftPoint = new Point(elementArea.BottomLeft.X, elementArea.BottomLeft.Y);
-                Rect bottomLeft = BuildPlaceholder(bottomLeftPoint, availableSize, placeholders);
-                if (bottomLeft != default(Rect))
+                if (!Orientation.HasValue || Orientation.Value == System.Windows.Controls.Orientation.Vertical)
                 {
-                    placeholders.Add(bottomLeft);
+                    Point bottomLeftPoint = new Point(elementArea.BottomLeft.X, elementArea.BottomLeft.Y);
+                    Rect bottomLeft = BuildPlaceholder(bottomLeftPoint, availableSize, placeholders);
+                    if (bottomLeft != default(Rect))
+                    {
+                        placeholders.Add(bottomLeft);
+                    }
                 }
             }
             return placeholders;
@@ -389,40 +367,18 @@ namespace Layex.Controls
             Size elementSize = element.DesiredSize;
             if (placeholder.Width < elementSize.Width)
             {
-                double minPossibleWidth = PossibleElementAdjustment.X * elementSize.Width;
-                if (placeholder.Width < minPossibleWidth)
-                {
-                    return default(Rect);
-                }
+                return default(Rect);
             }
-            //compact placeholder to element desired width if needed and possible
-            else
-            {
-                double maxPossibleWidth = PossibleElementAdjustment.Y * elementSize.Width;
-                if (placeholder.Width > maxPossibleWidth)
-                {
-                    placeholder.Width = elementSize.Width;
-                }
-            }
+            //compact placeholder to element desired width
+            placeholder.Width = elementSize.Width;
 
             //check placeholder height fits element desired height
             if (placeholder.Height < elementSize.Height)
             {
-                double minPossibleHeight = PossibleElementAdjustment.X * elementSize.Height;
-                if (placeholder.Height < minPossibleHeight)
-                {
-                    return default(Rect);
-                }
+                return default(Rect);
             }
-            //compact placeholder to element desired height if needed and possible
-            else
-            {
-                double maxPossibleHeight = PossibleElementAdjustment.Y * elementSize.Height;
-                if (placeholder.Height > maxPossibleHeight)
-                {
-                    placeholder.Height = elementSize.Height;
-                }
-            }
+            //compact placeholder to element desired height
+            placeholder.Height = elementSize.Height;
 
             return placeholder;
         }

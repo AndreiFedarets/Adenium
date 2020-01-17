@@ -9,7 +9,7 @@ namespace Layex.Sample.ViewModels
         public SampleItemsViewModel()
         {
             DisplayName = "Layouted Items Sample";
-            DisplayModes = new[] { DisplayMode.Grid, DisplayMode.Tab };
+            DisplayModes = new[] { DisplayMode.Tile, DisplayMode.Stack, DisplayMode.Tab };
         }
 
         public IEnumerable<DisplayMode> DisplayModes { get; }

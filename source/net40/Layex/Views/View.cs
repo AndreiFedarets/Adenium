@@ -37,10 +37,13 @@ namespace Layex.Views
             switch (DisplayMode)
             {
                 case DisplayMode.Tab:
-                    contentControl.Content = new ViewTabControl() { DataContext = DataContext };
+                    contentControl.Content = new ViewTabControl();
                     break;
-                case DisplayMode.Grid:
-                    contentControl.Content = new ViewGridControl() { DataContext = DataContext };
+                case DisplayMode.Tile:
+                    contentControl.Content = new ViewTileControl();
+                    break;
+                case DisplayMode.Stack:
+                    contentControl.Content = new ViewStackControl();
                     break;
                 default:
                     throw new NotSupportedException($"DisplayMode.'{DisplayMode}' value is not supported");
