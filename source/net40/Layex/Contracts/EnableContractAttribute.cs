@@ -30,6 +30,11 @@ namespace Layex.Contracts
             return Equals(other as EnableContractAttribute);
         }
 
+        public override int GetHashCode()
+        {
+            return ContractType.GetHashCode();
+        }
+
         public bool Equals(EnableContractAttribute other)
         {
             if (other == null)

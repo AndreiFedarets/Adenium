@@ -1,7 +1,6 @@
-﻿using Layex.ViewModels;
-using System;
+﻿using System;
 
-namespace Layex.Extensions
+namespace Layex.ViewModels
 {
     public static class ViewModelExtensions
     {

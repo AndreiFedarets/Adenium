@@ -36,7 +36,6 @@ namespace Layex
         protected sealed override void Configure()
         {
             DependencyContainer = CreateDependencyContainer();
-            ConfigureAssemblyResolver();
             base.Configure();
             ConfigureContainer(DependencyContainer);
         }
@@ -50,15 +49,15 @@ namespace Layex
 
         protected virtual void ConfigureContainer(IDependencyContainer container)
         {
+            container.RegisterType<IBootstrapperEnvironment, BootstrapperEnvironment>(true);
             container.RegisterType<ApplicationViewModel, ApplicationViewModel>(true);
             container.RegisterType<IWindowManager, WindowManager>(true);
             container.RegisterType<IViewModelManager, ViewModelManager>(true);
             container.RegisterInstance<ILayoutProvider>(CreateLayoutProvider());
         }
 
-        protected virtual void ConfigureAssemblyResolver()
+        protected void ConfigureAssemblyResolver()
         {
-            DependencyContainer.RegisterType<IBootstrapperEnvironment, BootstrapperEnvironment>(true);
             DependencyContainer.Resolve<AssemblyResolver>().Initialize();
         }
 
@@ -79,16 +78,6 @@ namespace Layex
                 result = DependencyContainer.Resolve(service, key);
             }
             return result;
-        }
-
-        protected override void PrepareApplication()
-        {
-            base.PrepareApplication();
-            ResourceDictionary resource = new ResourceDictionary
-            {
-                Source = new Uri("/Layex;component/Themes/Generic.xaml", UriKind.RelativeOrAbsolute)
-            };
-            Application.Resources.MergedDictionaries.Add(resource);
         }
     }
 }

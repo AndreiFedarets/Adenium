@@ -83,17 +83,21 @@
     <Compile Include="Contracts\_Dialog\DialogContract.cs" />
     <Compile Include="Contracts\_Dialog\IDialogContractConsumer.cs" />
     <Compile Include="Contracts\_Dialog\IDialogContractSource.cs" />
+    <Compile Include="Controls\_Generic\StackPanel.cs" />
     <Compile Include="Controls\_Generic\TilePanel.cs" />
     <Compile Include="Controls\_Generic\BlurlessImage.cs" />
     <Compile Include="Controls\_Generic\ColorImage.cs" />
     <Compile Include="Controls\_Generic\ImageButton.cs" />
     <Compile Include="Controls\_Generic\TileButton.cs" />
-    <Compile Include="Controls\_Specialized\ViewGridControl.cs" />
+    <Compile Include="Controls\_Specialized\ViewStackControl.cs" />
+    <Compile Include="Controls\_Specialized\ViewTileControl.cs" />
     <Compile Include="Controls\_Specialized\ViewItem.cs" />
     <Compile Include="Controls\_Specialized\ViewTabControl.cs" />
     <Compile Include="Layouts\_Services\CompositeLayoutProvider.cs" />
     <Compile Include="Layouts\_Services\FileSystemLayoutProvider.cs" />
     <Compile Include="Layouts\_Services\ILayoutProvider.cs" />
+    <Compile Include="ViewModels\DialogItemsViewModel.cs" />
+    <Compile Include="ViewModels\DialogViewModel.cs" />
     <Compile Include="ViewModels\IDialogViewModel.cs" />
     <Compile Include="Views\_Converters\ObjectToBitmapSourceConverter.cs" />
     <Compile Include="Views\_Converters\BoolToVisibilityConverter.cs" />
@@ -101,7 +105,7 @@
     <Compile Include="Extensions\UiExtensions.cs" />
     <Compile Include="Extensions\GridViewComposition.cs" />
     <Compile Include="Extensions\GridViewSorting.cs" />
-    <Compile Include="Extensions\ViewModelExtensions.cs" />
+    <Compile Include="ViewModels\ViewModelExtensions.cs" />
     <Compile Include="IBootstrapperEnvironment.cs" />
     <Compile Include="IDependencyContainer.cs" />
     <Compile Include="Layouts\ActionCommand.cs" />
@@ -131,7 +135,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Themes\FontsAndColors.cs" />
     <Compile Include="ViewModels\IDisposableEx.cs" />
     <Compile Include="ViewModels\IItemsViewModel.cs" />
     <Compile Include="ILayoutedItem.cs" />
@@ -151,7 +154,7 @@
     <Compile Include="Views\DisplayMode.cs" />
     <Compile Include="Views\View.cs" />
     <Compile Include="Views\_Converters\ThicknessMaskConverter.cs" />
-    <Compile Include="Views\_Internal\ViewManager.cs" />
+    <Compile Include="Views\ViewManager.cs" />
     <Compile Include="_Internal\AssemblyResolver.cs" />
     <Compile Include="_Internal\BootstrapperEnvironment.cs" />
     <Compile Include="_Internal\PlatformProviderWrapper.cs" />
@@ -168,7 +171,9 @@
     <AppDesigner Include="Properties\" />
     <None Include="Properties\StrongName.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\_Internal\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
