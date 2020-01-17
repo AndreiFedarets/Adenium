@@ -25,7 +25,7 @@ namespace Layex.Layouts
             {
                 if (string.IsNullOrEmpty(_name))
                 {
-                    return ViewModelExtensions.GetViewModelDefaultName(Type);
+                    return ViewModels.ViewModelExtensions.GetViewModelDefaultName(Type);
                 }
                 return _name;
             }

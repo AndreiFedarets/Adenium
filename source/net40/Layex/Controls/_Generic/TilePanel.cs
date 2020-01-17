@@ -8,11 +8,19 @@ namespace Layex.Controls
     public class TilePanel : Panel
     {
         public static DependencyProperty AreaProperty;
+        public static DependencyProperty OrientationProperty;
         private readonly List<UIElement> _measuredElements;
 
         static TilePanel()
         {
             AreaProperty = DependencyProperty.RegisterAttached("Area", typeof(Rect), typeof(TilePanel), new PropertyMetadata(default(Rect)));
+            OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation?), typeof(TilePanel), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        }
+
+        public Orientation? Orientation
+        {
+            get { return (Orientation?)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
         }
 
         public TilePanel()
@@ -59,6 +67,7 @@ namespace Layex.Controls
             foreach (UIElement element in InternalChildren)
             {
                 Rect elementArea = GetAreaProperty(element);
+                //TODO: handle MinWidth and MinHeight
                 elementArea.Scale(scaleX, scaleY);
                 element.Measure(elementArea.Size);
                 SetAreaProperty(element, elementArea);
@@ -157,19 +166,23 @@ namespace Layex.Controls
             foreach (UIElement element in _measuredElements)
             {
                 Rect elementArea = GetAreaProperty(element);
-
-                Point topRightPoint = new Point(elementArea.TopRight.X, elementArea.TopRight.Y);
-                Rect topRight = BuildPlaceholder(topRightPoint, availableSize, placeholders);
-                if (topRight != default(Rect))
+                if (!Orientation.HasValue || Orientation.Value == System.Windows.Controls.Orientation.Horizontal)
                 {
-                    placeholders.Add(topRight);
+                    Point topRightPoint = new Point(elementArea.TopRight.X, elementArea.TopRight.Y);
+                    Rect topRight = BuildPlaceholder(topRightPoint, availableSize, placeholders);
+                    if (topRight != default(Rect))
+                    {
+                        placeholders.Add(topRight);
+                    }
                 }
-
-                Point bottomLeftPoint = new Point(elementArea.BottomLeft.X, elementArea.BottomLeft.Y);
-                Rect bottomLeft = BuildPlaceholder(bottomLeftPoint, availableSize, placeholders);
-                if (bottomLeft != default(Rect))
+                if (!Orientation.HasValue || Orientation.Value == System.Windows.Controls.Orientation.Vertical)
                 {
-                    placeholders.Add(bottomLeft);
+                    Point bottomLeftPoint = new Point(elementArea.BottomLeft.X, elementArea.BottomLeft.Y);
+                    Rect bottomLeft = BuildPlaceholder(bottomLeftPoint, availableSize, placeholders);
+                    if (bottomLeft != default(Rect))
+                    {
+                        placeholders.Add(bottomLeft);
+                    }
                 }
             }
             return placeholders;

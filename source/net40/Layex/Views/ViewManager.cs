@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Layex.Views
 {
-    internal static class ViewManager
+    public static class ViewManager
     {
         public const string ViewContentPartName = "ViewContent";
         private static readonly Func<object, DependencyObject, object, UIElement> LocateForModel;

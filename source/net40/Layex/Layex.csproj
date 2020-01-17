@@ -96,6 +96,8 @@
     <Compile Include="Layouts\_Services\CompositeLayoutProvider.cs" />
     <Compile Include="Layouts\_Services\FileSystemLayoutProvider.cs" />
     <Compile Include="Layouts\_Services\ILayoutProvider.cs" />
+    <Compile Include="ViewModels\DialogItemsViewModel.cs" />
+    <Compile Include="ViewModels\DialogViewModel.cs" />
     <Compile Include="ViewModels\IDialogViewModel.cs" />
     <Compile Include="Views\_Converters\ObjectToBitmapSourceConverter.cs" />
     <Compile Include="Views\_Converters\BoolToVisibilityConverter.cs" />
@@ -103,7 +105,7 @@
     <Compile Include="Extensions\UiExtensions.cs" />
     <Compile Include="Extensions\GridViewComposition.cs" />
     <Compile Include="Extensions\GridViewSorting.cs" />
-    <Compile Include="Extensions\ViewModelExtensions.cs" />
+    <Compile Include="ViewModels\ViewModelExtensions.cs" />
     <Compile Include="IBootstrapperEnvironment.cs" />
     <Compile Include="IDependencyContainer.cs" />
     <Compile Include="Layouts\ActionCommand.cs" />
@@ -152,7 +154,7 @@
     <Compile Include="Views\DisplayMode.cs" />
     <Compile Include="Views\View.cs" />
     <Compile Include="Views\_Converters\ThicknessMaskConverter.cs" />
-    <Compile Include="Views\_Internal\ViewManager.cs" />
+    <Compile Include="Views\ViewManager.cs" />
     <Compile Include="_Internal\AssemblyResolver.cs" />
     <Compile Include="_Internal\BootstrapperEnvironment.cs" />
     <Compile Include="_Internal\PlatformProviderWrapper.cs" />
@@ -169,7 +171,9 @@
     <AppDesigner Include="Properties\" />
     <None Include="Properties\StrongName.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\_Internal\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
