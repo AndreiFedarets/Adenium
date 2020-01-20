@@ -102,20 +102,13 @@ namespace Layex.Views
 
         public static UIElement LocateViewForViewModel(IViewModel viewModel)
         {
-            return LocateForModelPrivate(viewModel, null, null);
+            UIElement view = LocateForModelPrivate(viewModel, null, null);
+            if (view != null)
+            {
+                ViewModelBinder.Bind(viewModel, view, null);
+            }
+            return view;
         }
-
-        //public static UIElement LocateViewForModel(object viewModel)
-        //{
-        //    UIElement viewElement = ViewLocator.LocateForModel(viewModel, null, null);
-        //    View view = viewElement as View;
-        //    if (view == null)
-        //    {
-        //        return viewElement;
-        //    }
-        //    ViewModelBinder.Bind(viewModel, view, null);
-        //    return view;
-        //}
 
         public static ContentControl FindViewContent(View view)
         {
