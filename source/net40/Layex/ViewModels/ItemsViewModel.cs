@@ -96,10 +96,6 @@ namespace Layex.ViewModels
                     ActivateItemInternal(childContainer, viewModel);
                 }
             }
-            if (viewModel != null)
-            {
-                ActivateItem(viewModel);
-            }
             return viewModel;
         }
 
