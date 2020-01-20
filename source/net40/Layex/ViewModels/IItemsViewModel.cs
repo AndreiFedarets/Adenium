@@ -21,6 +21,14 @@ namespace Layex.ViewModels
 
         IViewModel ActivateItem<T1, T2, T3>(string viewModelName, T1 param1, T2 param2, T3 param3);
 
+        TViewModel ActivateItem<TViewModel>() where TViewModel : IViewModel;
+
+        TViewModel ActivateItem<TViewModel, T>(T param) where TViewModel : IViewModel;
+
+        TViewModel ActivateItem<TViewModel, T1, T2>(T1 param1, T2 param2) where TViewModel : IViewModel;
+
+        TViewModel ActivateItem<TViewModel, T1, T2, T3>(T1 param1, T2 param2, T3 param3) where TViewModel : IViewModel;
+
         void ActivateItem(IViewModel viewModel);
 
         bool DeactivateItem(string viewModelName, bool close = false);

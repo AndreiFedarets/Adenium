@@ -12,6 +12,21 @@
 
         IViewModel Activate<T1, T2, T3>(string viewModelName, T1 param1, T2 param2, T3 param3);
 
+        TViewModel Create<TViewModel>() where TViewModel : IViewModel;
+
+        TViewModel Create<TViewModel, T>(T param) where TViewModel : IViewModel;
+
+        TViewModel Create<TViewModel, T1, T2>(T1 param1, T2 param2) where TViewModel : IViewModel;
+
+        TViewModel Create<TViewModel, T1, T2, T3>(T1 param1, T2 param2, T3 param3) where TViewModel : IViewModel;
+
+        TViewModel Activate<TViewModel>() where TViewModel : IViewModel;
+
+        TViewModel Activate<TViewModel, T>(T param) where TViewModel : IViewModel;
+
+        TViewModel Activate<TViewModel, T1, T2>(T1 param1, T2 param2) where TViewModel : IViewModel;
+
+        TViewModel Activate<TViewModel, T1, T2, T3>(T1 param1, T2 param2, T3 param3) where TViewModel : IViewModel;
 
         //void ShowWindow(IViewModel viewModel);
 
