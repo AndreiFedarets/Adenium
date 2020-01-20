@@ -190,8 +190,17 @@ namespace Layex.ViewModels
 
         public override void ActivateItem(IViewModel item)
         {
-            IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-            ActivateItemInternal(childContainer, item);
+            //if (!Items.Contains(item))
+            //{
+            //    if (item is IRequireDependencyContainer requireDependencyContainer)
+            //    {
+            //        IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+            //        requireDependencyContainer.Configure(childContainer);
+            //    }
+            //    Contracts.RegisterItem(item);
+            //}
+            base.ActivateItem(item);
+            ViewModelEventArgs.RaiseEvent(ItemActivated, this, item);
         }
 
         private void ActivateItemInternal(IDependencyContainer container, IViewModel item)
@@ -204,8 +213,7 @@ namespace Layex.ViewModels
                 }
                 Contracts.RegisterItem(item);
             }
-            base.ActivateItem(item);
-            ViewModelEventArgs.RaiseEvent(ItemActivated, this, item);
+            ActivateItem(item);
         }
 
         public virtual bool DeactivateItem(string viewModelName, bool close = false)

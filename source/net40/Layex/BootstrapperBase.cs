@@ -10,12 +10,30 @@ namespace Layex
 {
     public abstract class BootstrapperBase : Caliburn.Micro.BootstrapperBase
     {
+        private readonly IBootstrapperEnvironment _bootstrapperEnvironment;
+        private readonly AssemblyResolver _assemblyResolver;
+        private IDependencyContainer _container;
+
         static BootstrapperBase()
         {
             ViewManager.Initialize();
         }
 
-        public IDependencyContainer DependencyContainer { get; private set; }
+        public BootstrapperBase(bool initializeAssemblyResolver)
+        {
+            _bootstrapperEnvironment = new BootstrapperEnvironment();
+            _assemblyResolver = new AssemblyResolver(_bootstrapperEnvironment);
+            if (initializeAssemblyResolver)
+            {
+                _assemblyResolver.Initialize();
+            }
+        }
+
+        public BootstrapperBase()
+            : this(true)
+        {
+
+        }
 
         protected virtual IDependencyContainer CreateDependencyContainer()
         {
@@ -27,6 +45,11 @@ namespace Layex
             return new FileSystemLayoutProvider(AppDomain.CurrentDomain.BaseDirectory);
         }
 
+        protected virtual void ConfigureEnvironment(IBootstrapperEnvironment bootstrapperEnvironment)
+        {
+
+        }
+
         protected override void StartRuntime()
         {
             PlatformProviderWrapper.Initialize();
@@ -35,15 +58,16 @@ namespace Layex
 
         protected sealed override void Configure()
         {
-            DependencyContainer = CreateDependencyContainer();
+            ConfigureEnvironment(_bootstrapperEnvironment);
+            _container = CreateDependencyContainer();
             base.Configure();
-            ConfigureContainer(DependencyContainer);
+            ConfigureContainer(_container);
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
             base.OnStartup(sender, e);
-            ApplicationViewModel applicationViewModel = DependencyContainer.Resolve<ApplicationViewModel>();
+            ApplicationViewModel applicationViewModel = _container.Resolve<ApplicationViewModel>();
             applicationViewModel.Initialize();
         }
 
@@ -56,14 +80,9 @@ namespace Layex
             container.RegisterInstance<ILayoutProvider>(CreateLayoutProvider());
         }
 
-        protected void ConfigureAssemblyResolver()
-        {
-            DependencyContainer.Resolve<AssemblyResolver>().Initialize();
-        }
-
         protected override IEnumerable<object> GetAllInstances(Type service)
         {
-            return DependencyContainer.ResolveAll(service);
+            return _container.ResolveAll(service);
         }
 
         protected override object GetInstance(Type service, string key)
@@ -71,11 +90,11 @@ namespace Layex
             object result;
             if (string.IsNullOrEmpty(key))
             {
-                result = DependencyContainer.Resolve(service);
+                result = _container.Resolve(service);
             }
             else
             {
-                result = DependencyContainer.Resolve(service, key);
+                result = _container.Resolve(service, key);
             }
             return result;
         }
