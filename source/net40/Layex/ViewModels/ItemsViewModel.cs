@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using Layex.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -86,20 +85,22 @@ namespace Layex.ViewModels
 
         public virtual IViewModel ActivateItem(string viewModelName)
         {
-            IViewModel targetViewModel = GetItem(viewModelName);
-            if (targetViewModel == null)
+            IViewModel viewModel = GetItem(viewModelName);
+            if (viewModel == null)
             {
                 IViewModelFactory viewModelFactory;
                 if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
                 {
-                    targetViewModel = viewModelFactory.Create();
+                    IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+                    viewModel = viewModelFactory.Create(childContainer);
+                    ActivateItemInternal(childContainer, viewModel);
                 }
             }
-            if (targetViewModel != null)
+            if (viewModel != null)
             {
-                ActivateItem(targetViewModel);
+                ActivateItem(viewModel);
             }
-            return targetViewModel;
+            return viewModel;
         }
 
         public IViewModel ActivateItem<T>(string viewModelName, T param)
@@ -108,8 +109,9 @@ namespace Layex.ViewModels
             IViewModelFactory viewModelFactory;
             if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
-                viewModel = viewModelFactory.Create<T>(param);
-                ActivateItem(viewModel);
+                IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+                viewModel = viewModelFactory.Create<T>(childContainer, param);
+                ActivateItemInternal(childContainer, viewModel);
             }
             return viewModel;
         }
@@ -120,8 +122,9 @@ namespace Layex.ViewModels
             IViewModelFactory viewModelFactory;
             if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
-                viewModel = viewModelFactory.Create<T1, T2>(param1, param2);
-                ActivateItem(viewModel);
+                IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+                viewModel = viewModelFactory.Create<T1, T2>(childContainer, param1, param2);
+                ActivateItemInternal(childContainer, viewModel);
             }
             return viewModel;
         }
@@ -132,20 +135,72 @@ namespace Layex.ViewModels
             IViewModelFactory viewModelFactory;
             if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
-                viewModel = viewModelFactory.Create<T1, T2, T3>(param1, param2, param3);
-                ActivateItem(viewModel);
+                IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+                viewModel = viewModelFactory.Create<T1, T2, T3>(childContainer, param1, param2, param3);
+                ActivateItemInternal(childContainer, viewModel);
             }
             return viewModel;
         }
 
+
+        public TViewModel ActivateItem<TViewModel>() where TViewModel : IViewModel
+        {
+            Layouts.ViewModel viewModelLayout = new Layouts.ViewModel();
+            viewModelLayout.Type = typeof(TViewModel);
+            MultiViewModelFactory viewModelFactory = new MultiViewModelFactory(viewModelLayout);
+            IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+            TViewModel viewModel = (TViewModel)viewModelFactory.Create(childContainer);
+            ActivateItemInternal(childContainer, viewModel);
+            return viewModel;
+        }
+
+        public TViewModel ActivateItem<TViewModel, T>(T param) where TViewModel : IViewModel
+        {
+            Layouts.ViewModel viewModelLayout = new Layouts.ViewModel();
+            viewModelLayout.Type = typeof(TViewModel);
+            MultiViewModelFactory viewModelFactory = new MultiViewModelFactory(viewModelLayout);
+            IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+            TViewModel viewModel = (TViewModel)viewModelFactory.Create<T>(childContainer, param);
+            ActivateItemInternal(childContainer, viewModel);
+            return viewModel;
+        }
+
+        public TViewModel ActivateItem<TViewModel, T1, T2>(T1 param1, T2 param2) where TViewModel : IViewModel
+        {
+            Layouts.ViewModel viewModelLayout = new Layouts.ViewModel();
+            viewModelLayout.Type = typeof(TViewModel);
+            MultiViewModelFactory viewModelFactory = new MultiViewModelFactory(viewModelLayout);
+            IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+            TViewModel viewModel = (TViewModel)viewModelFactory.Create<T1, T2>(childContainer, param1, param2);
+            ActivateItemInternal(childContainer, viewModel);
+            return viewModel;
+        }
+
+        public TViewModel ActivateItem<TViewModel, T1, T2, T3>(T1 param1, T2 param2, T3 param3) where TViewModel : IViewModel
+        {
+            Layouts.ViewModel viewModelLayout = new Layouts.ViewModel();
+            viewModelLayout.Type = typeof(TViewModel);
+            MultiViewModelFactory viewModelFactory = new MultiViewModelFactory(viewModelLayout);
+            IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+            TViewModel viewModel = (TViewModel)viewModelFactory.Create<T1, T2, T3>(childContainer, param1, param2, param3);
+            ActivateItemInternal(childContainer, viewModel);
+            return viewModel;
+        }
+
+
         public override void ActivateItem(IViewModel item)
+        {
+            IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+            ActivateItemInternal(childContainer, item);
+        }
+
+        private void ActivateItemInternal(IDependencyContainer container, IViewModel item)
         {
             if (!Items.Contains(item))
             {
                 if (item is IRequireDependencyContainer requireDependencyContainer)
                 {
-                    IDependencyContainer childDependencyContainer = DependencyContainer.CreateChildContainer();
-                    requireDependencyContainer.Configure(childDependencyContainer);
+                    requireDependencyContainer.Configure(container);
                 }
                 Contracts.RegisterItem(item);
             }
@@ -197,8 +252,9 @@ namespace Layex.ViewModels
             IEnumerable<IViewModelFactory> startupItems = ViewModelFactories.Values.Where(x => x.AutoActivate);
             foreach (IViewModelFactory viewModelFactory in startupItems)
             {
-                IViewModel viewModel = viewModelFactory.Create();
-                ActivateItem(viewModel);
+                IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
+                IViewModel viewModel = viewModelFactory.Create(childContainer);
+                ActivateItemInternal(childContainer, viewModel);
             }
             if (activeItem == null && Items.Any())
             {
@@ -282,7 +338,7 @@ namespace Layex.ViewModels
             {
                 if (Layouts.LayoutActivator.CanDisplayItem(layoutItem, this, DependencyContainer))
                 {
-                    ViewModelFactories[layoutItem.Name] = ViewModelFactoryBase.CreateFactory(layoutItem, DependencyContainer);
+                    ViewModelFactories[layoutItem.Name] = ViewModelFactoryBase.CreateFactory(layoutItem);
                 }
             }
             ResetItems();
