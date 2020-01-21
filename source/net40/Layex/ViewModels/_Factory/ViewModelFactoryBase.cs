@@ -19,13 +19,7 @@
             get { return LayoutItem.Name; }
         }
 
-        public abstract IViewModel Create(IDependencyContainer container);
-
-        public abstract IViewModel Create<T>(IDependencyContainer container, T param);
-
-        public abstract IViewModel Create<T1, T2>(IDependencyContainer container, T1 param1, T2 param2);
-
-        public abstract IViewModel Create<T1, T2, T3>(IDependencyContainer container, T1 param1, T2 param2, T3 param3);
+        public abstract IViewModel Create(IDependencyContainer container, bool forceCreate);
 
         public static IViewModelFactory CreateFactory(Layouts.ViewModel layoutItem)
         {

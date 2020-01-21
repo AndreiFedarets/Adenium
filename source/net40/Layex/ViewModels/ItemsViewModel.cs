@@ -92,7 +92,7 @@ namespace Layex.ViewModels
                 if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
                 {
                     IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-                    viewModel = viewModelFactory.Create(childContainer);
+                    viewModel = viewModelFactory.Create(childContainer, false);
                     ActivateItemInternal(childContainer, viewModel);
                 }
             }
@@ -110,7 +110,8 @@ namespace Layex.ViewModels
             if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
                 IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-                viewModel = viewModelFactory.Create<T>(childContainer, param);
+                childContainer.RegisterInstance<T>(param);
+                viewModel = viewModelFactory.Create(childContainer, true);
                 ActivateItemInternal(childContainer, viewModel);
             }
             return viewModel;
@@ -123,7 +124,9 @@ namespace Layex.ViewModels
             if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
                 IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-                viewModel = viewModelFactory.Create<T1, T2>(childContainer, param1, param2);
+                childContainer.RegisterInstance<T1>(param1);
+                childContainer.RegisterInstance<T2>(param2);
+                viewModel = viewModelFactory.Create(childContainer, true);
                 ActivateItemInternal(childContainer, viewModel);
             }
             return viewModel;
@@ -136,12 +139,14 @@ namespace Layex.ViewModels
             if (ViewModelFactories.TryGetValue(viewModelName, out viewModelFactory))
             {
                 IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-                viewModel = viewModelFactory.Create<T1, T2, T3>(childContainer, param1, param2, param3);
+                childContainer.RegisterInstance<T1>(param1);
+                childContainer.RegisterInstance<T2>(param2);
+                childContainer.RegisterInstance<T3>(param3);
+                viewModel = viewModelFactory.Create(childContainer, true);
                 ActivateItemInternal(childContainer, viewModel);
             }
             return viewModel;
         }
-
 
         public TViewModel ActivateItem<TViewModel>() where TViewModel : IViewModel
         {
@@ -149,7 +154,7 @@ namespace Layex.ViewModels
             viewModelLayout.Type = typeof(TViewModel);
             MultiViewModelFactory viewModelFactory = new MultiViewModelFactory(viewModelLayout);
             IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-            TViewModel viewModel = (TViewModel)viewModelFactory.Create(childContainer);
+            TViewModel viewModel = (TViewModel)viewModelFactory.Create(childContainer, true);
             ActivateItemInternal(childContainer, viewModel);
             return viewModel;
         }
@@ -160,7 +165,8 @@ namespace Layex.ViewModels
             viewModelLayout.Type = typeof(TViewModel);
             MultiViewModelFactory viewModelFactory = new MultiViewModelFactory(viewModelLayout);
             IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-            TViewModel viewModel = (TViewModel)viewModelFactory.Create<T>(childContainer, param);
+            childContainer.RegisterInstance<T>(param);
+            TViewModel viewModel = (TViewModel)viewModelFactory.Create(childContainer, true);
             ActivateItemInternal(childContainer, viewModel);
             return viewModel;
         }
@@ -171,7 +177,9 @@ namespace Layex.ViewModels
             viewModelLayout.Type = typeof(TViewModel);
             MultiViewModelFactory viewModelFactory = new MultiViewModelFactory(viewModelLayout);
             IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-            TViewModel viewModel = (TViewModel)viewModelFactory.Create<T1, T2>(childContainer, param1, param2);
+            childContainer.RegisterInstance<T1>(param1);
+            childContainer.RegisterInstance<T2>(param2);
+            TViewModel viewModel = (TViewModel)viewModelFactory.Create(childContainer, true);
             ActivateItemInternal(childContainer, viewModel);
             return viewModel;
         }
@@ -182,7 +190,10 @@ namespace Layex.ViewModels
             viewModelLayout.Type = typeof(TViewModel);
             MultiViewModelFactory viewModelFactory = new MultiViewModelFactory(viewModelLayout);
             IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-            TViewModel viewModel = (TViewModel)viewModelFactory.Create<T1, T2, T3>(childContainer, param1, param2, param3);
+            childContainer.RegisterInstance<T1>(param1);
+            childContainer.RegisterInstance<T2>(param2);
+            childContainer.RegisterInstance<T3>(param3);
+            TViewModel viewModel = (TViewModel)viewModelFactory.Create(childContainer, true);
             ActivateItemInternal(childContainer, viewModel);
             return viewModel;
         }
@@ -253,7 +264,7 @@ namespace Layex.ViewModels
             foreach (IViewModelFactory viewModelFactory in startupItems)
             {
                 IDependencyContainer childContainer = DependencyContainer.CreateChildContainer();
-                IViewModel viewModel = viewModelFactory.Create(childContainer);
+                IViewModel viewModel = viewModelFactory.Create(childContainer, true);
                 ActivateItemInternal(childContainer, viewModel);
             }
             if (activeItem == null && Items.Any())
