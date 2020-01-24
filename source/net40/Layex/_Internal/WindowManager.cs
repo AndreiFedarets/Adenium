@@ -9,13 +9,13 @@ namespace Layex
         {
             Window window = base.EnsureWindow(model, view, isDialog);
             window.SizeToContent = SizeToContent.Manual;
-            CloneSize(window, view);
+            CloneProperties(window, view);
             return window;
         }
 
-        protected virtual void CloneSize(Window window, object view)
+        protected virtual void CloneProperties(Window window, object viewObject)
         {
-            Control viewControl = view as Control;
+            Control viewControl = viewObject as Control;
             if (viewControl == null)
             {
                 return;
@@ -51,6 +51,11 @@ namespace Layex
             {
                 window.Width = viewControl.Width + extraWidth;
                 viewControl.Width = double.NaN;
+            }
+            Views.View view = viewObject as Views.View;
+            if (view != null)
+            {
+                window.WindowStyle = view.WindowStyle;
             }
         }
     }

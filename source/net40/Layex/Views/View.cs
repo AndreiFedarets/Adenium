@@ -9,11 +9,13 @@ namespace Layex.Views
     public class View : UserControl
     {
         public static readonly DependencyProperty DisplayModeProperty;
+        public static readonly DependencyProperty WindowStyleProperty;
 
         static View()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(typeof(View)));
             DisplayModeProperty = DependencyProperty.Register("DisplayMode", typeof(DisplayMode), typeof(View), new PropertyMetadata(DisplayMode.Content, OnDisplayModePropertyChanged));
+            WindowStyleProperty = DependencyProperty.Register("WindowStyle", typeof(WindowStyle), typeof(View), new PropertyMetadata(WindowStyle.SingleBorderWindow, OnWindowStylePropertyChanged));
         }
 
         public View()
@@ -25,6 +27,12 @@ namespace Layex.Views
         {
             get { return (DisplayMode)GetValue(DisplayModeProperty); }
             set { SetValue(DisplayModeProperty, value); }
+        }
+
+        public WindowStyle WindowStyle
+        {
+            get { return (WindowStyle)GetValue(WindowStyleProperty); }
+            set { SetValue(WindowStyleProperty, value); }
         }
 
         private void RenderContent()
@@ -54,6 +62,11 @@ namespace Layex.Views
         {
             View view = (View)sender;
             view.RenderContent();
+        }
+
+        private static void OnWindowStylePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs eventArgs)
+        {
+
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
