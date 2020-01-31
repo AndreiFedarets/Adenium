@@ -124,7 +124,7 @@
                                     </Grid>
                                 </Border>
                                 <Border x:Name="PanelContent" Grid.Row="1" Padding="{TemplateBinding Padding}">
-                                    <ContentControl caliburn:View.Model="{Binding DataContext, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <ContentControl Content="{Binding View, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Border>
                             </Grid>
                         </Border>

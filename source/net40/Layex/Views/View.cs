@@ -9,11 +9,13 @@ namespace Layex.Views
     public class View : UserControl
     {
         public static readonly DependencyProperty DisplayModeProperty;
+        public static readonly DependencyProperty DisplayPanelProperty;
 
         static View()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(View), new FrameworkPropertyMetadata(typeof(View)));
             DisplayModeProperty = DependencyProperty.Register("DisplayMode", typeof(DisplayMode), typeof(View), new PropertyMetadata(DisplayMode.Content, OnDisplayModePropertyChanged));
+            DisplayPanelProperty = DependencyProperty.Register("DisplayPanel", typeof(bool?), typeof(View), new PropertyMetadata(null));
         }
 
         public View()
@@ -25,6 +27,12 @@ namespace Layex.Views
         {
             get { return (DisplayMode)GetValue(DisplayModeProperty); }
             set { SetValue(DisplayModeProperty, value); }
+        }
+
+        public bool? DisplayPanel
+        {
+            get { return (bool?)GetValue(DisplayPanelProperty); }
+            set { SetValue(DisplayPanelProperty, value); }
         }
 
         private void RenderContent()
@@ -55,7 +63,7 @@ namespace Layex.Views
             View view = (View)sender;
             view.RenderContent();
         }
-
+        
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             IViewModel oldViewModel = e.OldValue as IViewModel;
