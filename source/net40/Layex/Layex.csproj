@@ -158,7 +158,7 @@
     <Compile Include="_Internal\AssemblyResolver.cs" />
     <Compile Include="_Internal\BootstrapperEnvironment.cs" />
     <Compile Include="_Internal\PlatformProviderWrapper.cs" />
-    <Compile Include="_Internal\WindowManager.cs" />
+    <Compile Include="WindowManager.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

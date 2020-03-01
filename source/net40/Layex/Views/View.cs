@@ -11,6 +11,7 @@ namespace Layex.Views
         public static readonly DependencyProperty DisplayModeProperty;
         public static readonly DependencyProperty DisplayPanelProperty;
         public static readonly DependencyProperty WindowStyleProperty;
+        public static readonly DependencyProperty WindowStateProperty;
 
         static View()
         {
@@ -18,6 +19,7 @@ namespace Layex.Views
             DisplayModeProperty = DependencyProperty.Register("DisplayMode", typeof(DisplayMode), typeof(View), new PropertyMetadata(DisplayMode.Content, OnDisplayModePropertyChanged));
             DisplayPanelProperty = DependencyProperty.Register("DisplayPanel", typeof(bool?), typeof(View), new PropertyMetadata(null));
             WindowStyleProperty = DependencyProperty.Register("WindowStyle", typeof(WindowStyle), typeof(View), new PropertyMetadata(WindowStyle.SingleBorderWindow, OnWindowStylePropertyChanged));
+            WindowStateProperty = DependencyProperty.Register("WindowState", typeof(WindowState), typeof(View), new PropertyMetadata(WindowState.Normal, OnWindowStatePropertyChanged));
         }
 
         public View()
@@ -41,6 +43,12 @@ namespace Layex.Views
         {
             get { return (WindowStyle)GetValue(WindowStyleProperty); }
             set { SetValue(WindowStyleProperty, value); }
+        }
+
+        public WindowState WindowState
+        {
+            get { return (WindowState)GetValue(WindowStateProperty); }
+            set { SetValue(WindowStateProperty, value); }
         }
 
         private void RenderContent()
@@ -73,6 +81,11 @@ namespace Layex.Views
         }
 
         private static void OnWindowStylePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs eventArgs)
+        {
+
+        }
+
+        private static void OnWindowStatePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs eventArgs)
         {
 
         }
