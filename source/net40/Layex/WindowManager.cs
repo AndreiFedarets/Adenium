@@ -55,8 +55,9 @@ namespace Layex
             Views.View view = viewObject as Views.View;
             if (view != null)
             {
-                window.WindowStyle = view.WindowStyle;
-                window.WindowState = view.WindowState;
+                window.WindowStyle = Views.WindowProperties.GetWindowStyle(view);
+                window.WindowState = Views.WindowProperties.GetWindowState(view);
+                window.ResizeMode = Views.WindowProperties.GetResizeMode(view);
             }
         }
     }

@@ -99,6 +99,7 @@
     <Compile Include="ViewModels\DialogItemsViewModel.cs" />
     <Compile Include="ViewModels\DialogViewModel.cs" />
     <Compile Include="ViewModels\IDialogViewModel.cs" />
+    <Compile Include="Views\WindowProperties.cs" />
     <Compile Include="Views\_Converters\ObjectToBitmapSourceConverter.cs" />
     <Compile Include="Views\_Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Extensions\DelayedNotification.cs" />
